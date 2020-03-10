@@ -1,0 +1,136 @@
+.form-style{
+    border: 2px solid #c3bebe;
+    padding: 10px 10px;
+}
+.small-heading{
+    margin-top: 10px;
+    background: #46abf3;
+    color: white;
+    padding: 5px;
+}
+.small-heading-extra{
+    margin-top: 10px;
+    background: #3D5380;
+    color: white;
+    padding: 5px;
+}
+.big-heading{
+    background: #46abf3;
+    color: white;
+    padding: 11px 0;
+    margin: 20px 0 0 0;
+    font-size: 20px;
+}
+.big-heading-extra{
+    background: #3D5380;
+    color: white;
+    padding: 11px 0;
+    margin: 20px 0 0 0;
+    font-size: 20px;
+}
+.mar-bott{
+    margin-bottom: 1em;
+}
+.mar-top{
+    margin-top: 24px;
+}
+.fac{
+    display: block;}
+#type_vis{
+    display: none;
+}#task_upload_form{
+    display: none;
+}
+/*  ********** dashboard start ************  */
+.switch_bar {
+    text-align: center;
+    margin: 0px;
+    padding: 10px 0px;
+    background: #eee;
+    border-bottom: #ddd 1px solid;
+    -moz-box-shadow: 0 0 3px #eee;
+    -webkit-box-shadow: 0 0 3px #eee;
+    box-shadow: 0 0 3px #eee;
+}
+.switch_bar li {
+    display: inline-block;
+    box-sizing: content-box;
+    height: 66px;
+    width: 66px;
+    padding: 2px;
+    position: relative;
+    border: #c9c9c9 1px solid;
+    margin: 2px 1px;
+    -moz-box-shadow: 0 0 3px #ccc;
+    -webkit-box-shadow: 0 0 3px #ccc;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.img {
+    width: 280px;
+    height: 230px;
+    position: -ms-device-fixed;
+    border: 2px solid #ddd;
+}
+.imgs {
+    width: 15%;
+    position: -ms-device-fixed;
+}
+.imgss {
+    width: 10%;
+    position: -ms-device-fixed;
+}
+/*image hover*/
+.img_hover {
+    position: relative;
+    width: 100%;
+
+}
+.overlay {
+    position: absolute;
+    bottom: 0;
+    /*background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.5); !* Black see-through *!*/
+    color: #A8A5A5;
+    width: 100%;
+    transition: .5s ease;
+    opacity:0;
+    color: white;
+    font-size: 20px;
+    padding: 20px;
+    text-align: center;
+}
+.img_hover:hover .overlay {
+    opacity: 1;
+}
+/*image hover*/
+
+.hidden{display:none;}
+.binsert
+{
+    height: 133px;
+    width: 300px;
+    font-size: x-large;
+}
+
+.social_icon{
+    height: 47px;
+    margin: 0px 36px;
+}
+.social_icon_two{
+    height: 47px;
+    /*margin: 0px 7px;*/
+}
+.about_us_text{
+    font-family: cursive;
+}
+/* media for doughnut*/
+@media only screen and (max-width: 800px) {
+    #doughnut {
+        display: none;
+    }
+}
+
+
