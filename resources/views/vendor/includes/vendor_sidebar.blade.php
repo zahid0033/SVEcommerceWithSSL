@@ -10,16 +10,16 @@
                     <span>DashBoard</span>
                 </a>
             </li>
-            <li class="sub-menu">
-                <a class="@yield('Profile')" {{--href="{{route('nvdashboard')}}"--}} title="Restricted">
+            {{--<li class="sub-menu">
+                <a class="@yield('Profile')" --}}{{--href="{{route('nvdashboard')}}"--}}{{-- title="Restricted">
                     <i class="fa fa-user"></i>
                     <span><del>Profile</del></span>
                 </a>
-            </li>
+            </li>--}}
             <li class="sub-menu">
                 <a class="@yield('Category_management')" href="{{route('categoryManagementView')}}" >
                     <i class="fas fa-list-ul"></i>
-                    <span>Category </span>
+                    s<span>Category </span>
                 </a>
             </li>
             <li class="sub-menu">

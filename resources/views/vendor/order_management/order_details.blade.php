@@ -22,7 +22,7 @@
                         <tr >
                             <td >
                                 @php
-                                    $time = date('g:i a,d M,Y',strtotime($order->created_at) + 6 * 3600);
+                                    $time = date('g:i a,d M,Y',strtotime($order->created_at) + 0 * 3600);
                                 @endphp
                                 <span class="label label-info label-mini"><i class="fas fa-clock"></i></span> <b> {{$time}}</b>
                             </td>

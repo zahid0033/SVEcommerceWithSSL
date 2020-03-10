@@ -966,7 +966,8 @@ class normalVendorController extends Controller
         }
         elseif($type == 'product')
         {
-            if (!empty($search)) {
+            if (!empty($search))
+            {
                 $search_product = Product::where('name', 'LIKE', '%' . $search . '%')->get();
                 foreach ($search_product as $p) {
                     $product_array[] = $p->id;
@@ -985,6 +986,12 @@ class normalVendorController extends Controller
                 $search_count = count($search_result);
                 $count = $search_count . ' records found';
             }
+            else
+            {
+                $search_result = Order::whereIn('status',['Delivered','Shipping','Processing'])->orderBy('updated_at','DESC')->get();
+                $search_count = 0;
+                $count = '';
+            }
         }
         $returnHTML = view('vendor.order_management.search')->with('search_result', $search_result)->with('search_count', $search_count)->render();
         return response()->json(array('success' => true, 'table_data'=>$returnHTML,'total_data'=>$count));
@@ -997,8 +1004,8 @@ class normalVendorController extends Controller
     {
         $dateRange = $request->daterange;
         $date = explode('-', $dateRange);
-        $from = date('Y-m-d', strtotime($date[0]));
-        $to = date('Y-m-d', strtotime($date[1]));
+        $from = date('Y-m-d 00:00:00', strtotime($date[0]));
+        $to = date('Y-m-d 23:59:59', strtotime($date[1]));
         $orders = Order::whereBetween('created_at', [$from, $to])->orderBy('Status','DESC')->paginate(18);;
         return view('vendor.order_management.order',compact('orders'));
     }
@@ -1152,12 +1159,13 @@ class normalVendorController extends Controller
     public function salesReport(Request $request)
     {
         $dateRange = $request->daterange;
+        //echo $dateRange;
         $date = explode('-',$dateRange);
-
-        $from = date('Y-m-d', strtotime($date[0]));
-        $to = date('Y-m-d', strtotime($date[1]));
+        $from = date('Y-m-d 00:00:00', strtotime($date[0]));
+        $to = date('Y-m-d 23:59:59', strtotime($date[1]));
+        //echo $from."-".$to;
         $products = Product::orderby('category_id','ASC')->get();
-        $orders = Order::whereBetween('created_at', [$from, $to])->get();
+        $orders = Order::whereBetween('created_at', [$from , $to])->get();
         foreach($products as $pi => $p)
         {//products
             $soldTotal=0;$amountTotal=0; $OffersoldTotal=0;$OfferamountTotal=0;

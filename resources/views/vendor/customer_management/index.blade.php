@@ -6,7 +6,7 @@
         <div class="row mar-top">
             <div class="col-md-8">
                 <label  class=" label label-primary">Search</label>
-                <input name="search" type="text" id="search_customer"  onKeyUp="getSearchCustomer()" placeholder="Write here to search customer" class="form-control form-control-sm " >
+                <input name="search" type="text" id="search_customer" onmouseleave="getSearchCustomer()"  onKeyUp="getSearchCustomer()" placeholder="Write here to search customer" class="form-control form-control-sm " >
             </div>
             <div class="col-md-4">
                 <b><span id="search_customer_total_record" style="color: #0BBA8B"></span></b>
