@@ -26,10 +26,6 @@ class CreateOrdersTable extends Migration
             $table->string('offer_type')->nullable();
             $table->string('offer_percentage')->nullable();
             $table->string('free_product_ids')->nullable();
-            $table->integer('subtotal')->nullable();
-            $table->integer('total')->nullable();
-            $table->string('status')->nullable();
-            $table->string('reason')->nullable();
             $table->string('slug')->nullable();
             $table->timestamps();
         });
