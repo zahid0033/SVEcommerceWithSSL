@@ -30,6 +30,7 @@
                             <th scope="col"class="text-center"><i class="fas fa-box-open"></i> Product</th>
                             <th scope="col" class="text-center"><i class="fas fa-sort-amount-down"></i> Sold Total</th>
                             <th scope="col"class="text-center"><i class="fas fa-money-bill-wave"></i> Amount</th>
+                            <th scope="col"class="text-center"><i class="fas fa-money-bill-wave"></i> NObin</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -49,6 +50,9 @@
                                 <td class="text-center"><b>{{$productSoldTotal[$i]}} pc</b></td>
                                 <td class="text-center">
                                     <b>৳ {{ number_format($productAmountTotal[$i])}}</b>
+                                </td>
+                                <td class="text-center">
+                                    <b>৳ {{ number_format($storeAmountTotal[$i])}}</b>
                                 </td>
                             </tr>
                         @endforeach

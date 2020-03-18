@@ -1,7 +1,7 @@
 @extends('vendor.master')
-@section('title','Orders')
+@section('title','Shipping Orders')
 @section('Order_management','active')
-@section('Order','active')
+@section('ShippingOrder','active')
 @section('content')
     <div class="container-fluid">
         <div class="row">
@@ -14,8 +14,11 @@
                         <span></span> <i class="fa fa-caret-down"></i>
                     </div>
                     <input type="text" id="daterange" name="daterange"  class="form-control form-control-sm" style="display: none"/>
+                    <input type="text"  name="type"   value ="processing" class="form-control form-control-sm" style="display: none"/>
                 </div>
                 <div class="col-md-8 mar-top text-left">
+                    <input type="text"  name="type"   value ="Shipping" class="form-control form-control-sm" style="display: none"/>
+
                     <button type="submit" class="btn btn-success" style="margin-top: 22px;">Submit</button>
                 </div>
             </form>
@@ -41,12 +44,13 @@
                         <thead class="thead-dark">
                         <tr>
                             <th scope="col"class="text-center"><i class="fab fa-slack-hash"></i> Order Id</th>
-                            <th scope="col" class="text-center"> <i class="fas fa-puzzle-piece"></i> Trx Id</th>
-                            <th scope="col"class="text-center"><i class="fas fa-mobile-alt"></i> Bkash No</th>
+                            <th scope="col" class="text-center"> <i class="fas fa-puzzle-piece"></i>Payment Type</th>
+                            <th scope="col"class="text-center"><i class="fas fa-mobile-alt"></i> Delivery Contact</th>
+                            <th scope="col"class="text-center"><i class="fas fa-map-marker-alt"></i></i> Shipping</th>
+
                             <th scope="col"class="text-center"><i class="fas fa-money-bill-wave"></i> Amount</th>
                             <th scope="col"class="text-center"><i class="fas fa-user-cog"></i></i> Customer</th>
                             <th scope="col"class="text-center"><i class="fas fa-phone-volume"></i></i> Customer Phone</th>
-                            <th scope="col"class="text-center"><i class="fas fa-map-marker-alt"></i></i> Shipping</th>
                             <th scope="col"class="text-center"><i class=" fa fa-edit"></i> Status</th>
                             <th scope="col"class="text-center"> </th>
                         </tr>
@@ -55,12 +59,13 @@
                         @foreach($orders as $s)
                             <tr >
                                 <td class="text-center"><b>{{$s->invoice_id}}</b></td>
-                                <td class="text-center"><b>{{$s->payments->trx_id}}</b></td>
-                                <td class="text-center"><b>{{$s->payments->sender_mobile_number}}</b></td>
-                                <td class="text-center"><b>৳ {{number_format($s->total)}}</b></td>
+                                <td class="text-center"><b>{{$s->payments->card_type}}</b></td>
+                                <td class="text-center"><b>{{$s->shippings->phone}}</b></td>
+                                <td class="text-center"><b>{{$s->shippings->address}} , {{$s->shippings->city}}</b></td>
+
+                                <td class="text-center"><b>৳ {{number_format($s->payments->amount)}}</b></td>
                                 <td class="text-center"><b>{{$s->customers->name}}</b></td>
                                 <td class="text-center"><b>{{$s->customers->phone}}</b></td>
-                                <td class="text-center"><b>{{$s->shippings->address}} , {{$s->shippings->city}}</b></td>
                                 <td class="text-center">@if($s->status === 'Processing')<span class="label label-info label-mini">{{$s->status}}</span>@elseif($s->status === 'Delivered')<span class="label label-success label-mini">{{$s->status}}</span>@else<span class="label label-primary label-mini">{{$s->status}}</span> @endif</td>
                                 <td class="text-left">
                                     <a href="{{route('generateInvoice',Crypt::encrypt($s->id))}}" title="Generate Invoice" class="btn btn-default "><i class="fas fa-file-invoice-dollar"></i> </a>

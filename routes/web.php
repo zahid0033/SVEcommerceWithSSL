@@ -65,13 +65,21 @@ Route::get('/customer/password/reset/{token}', 'CustomerAuth\ResetPasswordContro
     Route::get('/myProfile', 'Userend\customerController@myProfile')->name('pages.myProfile');
     Route::get('/myProfile/edit/{id}', 'Userend\customerController@editMyProfile')->name('pages.editMyProfile');
     Route::post('/myProfile/edit', 'Userend\customerController@profile_edit')->name('pages.profile_edit');
-    Route::post('/place_order', 'Userend\orderController@place_order')->name('place_order');
+
+    Route::post('/place_order', 'Userend\orderController@goPayment')->name('place_order');
+
     Route::get('/temp_orders/{id}', 'Userend\orderController@temp_orders')->name('temp_orders');
     Route::post('/paymentConfirm', 'Userend\orderController@paymentConfirm')->name('paymentConfirm');
     Route::get('/paymentSuccess/{id}', 'Userend\orderController@paymentSuccess')->name('paymentSuccess');
     Route::get('/pendingOrderDetails/{id}', 'Userend\orderController@pendingOrderDetails')->name('pendingOrderDetails');
     Route::get('/confirmedOrderDetails/{id}', 'Userend\orderController@confirmedOrderDetails')->name('confirmedOrderDetails');
 
+
+    /* ======================================== SSLCommerz  ================================================ */
+    Route::post('/failedTransaction','Userend\orderController@failedTransaction')->name('failedTransaction');
+    Route::post('/cancelTransaction','Userend\orderController@cancelTransaction')->name('cancelTransaction');
+    Route::post('/successfulTransaction','Userend\orderController@successfulTransaction')->name('successfulTransaction');
+    /* ======================================== SSLCommerz  ================================================ */
 
 //xahid
 
@@ -119,23 +127,22 @@ Route::get('/offer_management/remove/{id}','Vendor\normalVendorController@offerR
 Route::get('/inventory_management','Vendor\normalVendorController@inventoryManagementView')->name('inventoryManagementView');
 //inventory management #
 //order management
+Route::post('/order_management/daterange','Vendor\normalVendorController@orderReport')->name('orderReport');
+Route::get('/Processingorders','Vendor\normalVendorController@processingOrderView')->name('processingOrderView');
+Route::get('/Shippingorders','Vendor\normalVendorController@shippingOrderView')->name('shippingOrderView');
+Route::get('/Deliveredorders','Vendor\normalVendorController@deliveredOrderView')->name('deliveredOrderView');
 Route::get('/pending_orders','Vendor\normalVendorController@pendingOrderView')->name('pendingOrderView');
-Route::get('/orders','Vendor\normalVendorController@OrderView')->name('OrderView');
-Route::post('/order_management/cancel','Vendor\normalVendorController@orderCancel')->name('orderCancel');
-Route::get('/order_management/proceed/{id}','Vendor\normalVendorController@orderProceed')->name('orderProceed');
-Route::get('/order_management/delivered/{id}','Vendor\normalVendorController@orderDelivered')->name('orderDelivered');
+Route::get('/orders/remove/{id}','Vendor\normalVendorController@OrderRemove')->name('OrderRemove');
 Route::post('/order_management/shipping','Vendor\normalVendorController@orderShipping')->name('orderShipping');
+Route::get('/order_management/delivered/{id}','Vendor\normalVendorController@orderDelivered')->name('orderDelivered');
 Route::get('/order_management/processing/{id}','Vendor\normalVendorController@orderProcessiong')->name('orderProcessiong');
-Route::get('/cancel_orders','Vendor\normalVendorController@cancelOrderView')->name('cancelOrderView');
+Route::get('/failed_orders','Vendor\normalVendorController@failedOrderView')->name('failedOrderView');
+
+/**/
 Route::get('/order_management/order_details/{id}','Vendor\normalVendorController@order_details')->name('order_details');
-Route::get('/order_management/temp_order_details/{id}','Vendor\normalVendorController@temp_order_details')->name('temp_order_details');
 Route::get('/order_management/generateInvoice/{id}', 'Vendor\normalVendorController@generateInvoice')->name('generateInvoice');
-Route::get('/due_orders','Vendor\normalVendorController@dueOrderView')->name('dueOrderView');
-Route::get('/due_orders/remove/{id}','Vendor\normalVendorController@dueOrderRemove')->name('dueOrderRemove');
-Route::post('/order_management/updatePayment','Vendor\normalVendorController@updatePayment')->name('updatePayment');
 Route::get('/order_management/search', 'Vendor\normalVendorController@search')->name('search');//ajax
 Route::get('/order_management/allorders','Vendor\normalVendorController@allOrders')->name('allOrders');
-Route::post('/order_management/daterange','Vendor\normalVendorController@orderReport')->name('orderReport');
 
 //order management #
 //customer_management

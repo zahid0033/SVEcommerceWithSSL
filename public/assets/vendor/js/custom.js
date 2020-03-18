@@ -136,20 +136,6 @@ $(document).on('change','#offer_type',function()
 });
 //page = vendor>offer_management#
 //page = vendor>order_management
-function setCancelOrderId(id,orderid)
-{
-    document.getElementById('order_cancel_id').value = id ;
-    document.getElementById('order_cancel_order_id').value = orderid ;
-}
-function setOrderPayment(id,trx,number,orderid,orderfor)
-{
-    document.getElementById('order_payment_id').value = id ;
-    document.getElementById('order_payment_trx').value = trx ;
-    document.getElementById('order_payment_number').value = number ;
-    document.getElementById('order_payment_order_id').value = orderid ;
-    document.getElementById('order_payment_for').value = orderfor ;
-
-}
 function setOrderShipping(id,orderid,cn,courirer,date)
 {
     document.getElementById('order_shipping_order_id').value = orderid ;
@@ -208,25 +194,25 @@ function printDiv(divName)
 $(document).on('change','#search_type',function()
 {
     let search_type = document.getElementById('search_type');
-    let search_temp = document.getElementById('search_temp');
+    /*let search_temp = document.getElementById('search_temp');*/
     let search_main = document.getElementById('search_main');
     let search_product = document.getElementById('search_product');
     if(search_type.value === 'main')
     {
-        search_temp.style.display = 'none';
+       /* search_temp.style.display = 'none';*/
         search_main.style.display = 'block';
         search_product.style.display = 'none';
     }
-   else if(search_type.value === 'temp')
+   /*else if(search_type.value === 'temp')
    {
         search_temp.style.display = 'block';
         search_main.style.display = 'none';
         search_product.style.display = 'none';
 
-   }
+   }*/
    else if(search_type.value === 'product')
    {
-        search_temp.style.display = 'none';
+      /*  search_temp.style.display = 'none';*/
         search_main.style.display = 'none';
        search_product.style.display = 'block';
 

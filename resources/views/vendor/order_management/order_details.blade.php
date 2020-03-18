@@ -38,8 +38,7 @@
                                         <a href="{{route('orderProcessiong',Crypt::encrypt($order->id))}}" title="Undo to processing" class="btn btn-warning " onclick="return confirm('Are you sure that the order is still in processing ?')"><i class="fas fa-undo"></i></i> </a>
                                 @elseif($order->status === "Pending")
                                     <span class="label label-warning ">{{$order->status}}</span>
-                                        <a href="{{route('orderProceed',Crypt::encrypt($order->id))}}" title="Proceed" class="btn btn-success " onclick="return confirm('Received the money ?')"><i class="fas fa-check"></i> </a>
-                                        <a class="btn btn-danger " data-toggle="modal" data-target="#modal_order_cancel_reason" onclick="setCancelOrderId('{{$order->id}}','{{$order->invoice_id}}')" data-whatever="@mdo" title="Cancel"><i class="fas fa-times"></i></a>
+                                        <a href="{{route('OrderRemove',Crypt::encrypt($order->id))}}" title="Remove" onclick="return confirm('Are you sure ?')" class="btn btn-danger "><i class="fas fa-trash"></i> </a>
                                 @elseif($order->status === "Cancel")
                                     <span class="label label-danger ">{{$order->status}}ed</span>
                                         <a href="{{route('orderProceed',Crypt::encrypt($order->id))}}" title="Proceed" class="btn btn-success  " onclick="return confirm('Received the money ?')"><i class="fas fa-check"></i> </a>
@@ -52,6 +51,9 @@
                                         <span class="label label-default ">{{$order->status}}</span>
                                         <a href="{{route('orderDelivered',Crypt::encrypt($order->id))}}" title="Delivered" class="btn btn-success " onclick="return confirm('Are you sure that the order is delivered ?')"><i class="fas fa-truck-loading"></i> </a>
                                         <a href="{{route('orderProcessiong',Crypt::encrypt($order->id))}}" title="Undo to processing" class="btn btn-warning " onclick="return confirm('Are you sure that the order is still in processing ?')"><i class="fas fa-undo"></i></i> </a>
+                                    @endif
+                                     @if($order->status != "Pending" )
+                                        <a href="{{route('generateInvoice',Crypt::encrypt($order->id))}}" title="Generate Invoice" class="btn btn-default "><i class="fas fa-file-invoice-dollar"></i> </a>
                                     @endif
                                 </span>
                             </td>
@@ -155,14 +157,13 @@
         <div class="row">
             <div class="col-md-12  content-panel" style="overflow: auto">
                 <div class="col-sm-3  "><br>
-                    @if($order->status != "Due")
                     <hr style="border-top: 8px solid #89C0E0; background: transparent;"><br>
                     <table class="table table-hover ">
                         <tbody>
                         <tr>
                             <td >
                                 <span class="label label-success label-mini"><b>Delivery Information</b></span>
-                                @if($order->status === "Shipping" OR $order->status === "Processing")
+                                @if($order->status === "Shipping" OR $order->status === "Processing" )
                                     <a class="btn btn-info btn-xs" data-toggle="modal" data-target="#modal_order_shipping" onclick="setOrderShipping('{{$order->id}}','{{$order->invoice_id}}','{{$order->shippings->shipping_tracking_number}}','{{$order->shippings->courier_name}}','{{$order->shippings->shipping_date}}')" data-whatever="@mdo" title="Shipping"><i class="fas fa-truck"></i></a>
                                 @endif
                             </td>
@@ -203,7 +204,6 @@
                                 <span class="label label-warning label-mini"><i class="fas fa-dolly-flatbed"></i></span> <b>{{$order->shippings->shipping_date}}</b>
                             </td>
                         </tr>
-                    @endif
 
                         </tbody>
                     </table>
@@ -212,56 +212,64 @@
 
                 </div>
                 <div class="col-sm-3 ">
-                    <table class="table table-hover ">
+                    @if($order->status != "Pending")
+                        <table class="table table-hover ">
                         <tbody>
-                        <tr >
+                        {{--<tr >
                             <td >
                                 <span class="label label-default label-mini"> Sub-Total  </span>
                             </td>
-                            <td><b> ৳  {{number_format($order->subtotal)}}</b></td>
+                            <td><b> ৳  {{number_format($order->payments->amount)}}</b></td>
                         </tr>
                         <tr >
                             <td >
                                 <span class="label label-default label-mini"> Delivery Charge </span>
                             </td>
                             <td><b> ৳  {{number_format($order->total - $order->subtotal)}}</b></td>
-                        </tr>
+                        </tr>--}}
                         <tr >
                             <td >
                                 <span class="label label-default label-mini"> Paid-Total  </span>
                             </td>
-                            <td><b> ৳  {{number_format($order->total)}}</b></td>
+                            <td><b> ৳  {{number_format($order->payments->amount)}}</b></td>
                         </tr>
+                        <tr >
+                            <td >
+                                <span class="label label-info label-mini"> Nobin Amount  </span>
+                            </td>
+                            <td><b> ৳  {{number_format($order->payments->store_amount)}}</b></td>
+                        </tr>
+
                     @if($order->status != "Due")
                         <tr >
                             <td class="text-center" colspan="2">
                                 <span class="label label-danger label-mini"><b>Payment Details</b></span>
-                                @if($order->status === "Pending" OR $order->status === "Cancel"  )
-                                    <a class="btn btn-warning btn-xs " data-toggle="modal" data-target="#modal_order_payment_update" onclick="setOrderPayment('{{$order->id}}','{{$order->trx_id}}','{{$order->sender_mobile_number}}','{{$order->invoice_id}}','temp')" data-whatever="@mdo" title="Edit Payment"><i class="fas fa-pen-nib"></i></a>
-                                @elseif($order->status === "Processing")
-                                    <a class="btn btn-warning btn-xs " data-toggle="modal" data-target="#modal_order_payment_update" onclick="setOrderPayment('{{$order->id}}','{{$order->payments->trx_id}}','{{$order->payments->sender_mobile_number}}','{{$order->invoice_id}}','main')" data-whatever="@mdo" title="Edit Payment"><i class="fas fa-pen-nib"></i></a>
-
-                                @endif
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                <span class="label label-primary label-mini">Method  </span> <b> &nbsp;Bkash-{{$order->payments->method}}</b>
+                            <td colspan="2">
+                                <span class="label label-primary label-mini">Payment Method </span> <b> &nbsp;  {{$order->payments->card_type}}</b>
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                <span class="label label-primary label-mini">Trx Id  </span> <b> &nbsp;{{$order->payments->trx_id}}</b>
+                            <td colspan="2">
+                                <span class="label label-primary label-mini">Status  </span> <b> &nbsp;{{$order->payments->status}}</b>
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                <span class="label label-primary label-mini">Bkash Number  </span> <b> &nbsp;{{$order->payments->sender_mobile_number}}</b>
+                            <td colspan="2">
+                                <span class="label label-primary label-mini">Banking </span> <b>&nbsp; {{$order->payments->card_issuer}}</b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <span class="label label-primary label-mini">Card No </span> <b> &nbsp;{{$order->payments->card_no}}</b>
                             </td>
                         </tr>
                     @endif
                         </tbody>
                     </table>
+                    @endif
                 </div>
             </div>
         </div>

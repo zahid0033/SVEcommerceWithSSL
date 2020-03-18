@@ -19,7 +19,7 @@
             <li class="sub-menu">
                 <a class="@yield('Category_management')" href="{{route('categoryManagementView')}}" >
                     <i class="fas fa-list-ul"></i>
-                    s<span>Category </span>
+                    <span>Category </span>
                 </a>
             </li>
             <li class="sub-menu">
@@ -53,10 +53,11 @@
                 </a>
                 <ul class="sub" style="display: none;">
                     <li class="@yield('all_order')" ><a  href="{{route('allOrders')}}"><i class="fas fa-search"></i> Search</a></li>
-                    <li class="@yield('Order')" ><a  href="{{ route('OrderView') }}"><i class="fas fa-clipboard-check"></i> Orders</a></li>
-                    <li class="@yield('cancel_Order')" ><a  href="{{ route('cancelOrderView') }}"><i class="fas fa-list-alt"></i> Canceled Orders</a></li>
+                    <li class="@yield('ProcessingOrder')" ><a  href="{{ route('processingOrderView') }}"><i class="fas fa-network-wired"></i>Processing Orders</a></li>
+                    <li class="@yield('ShippingOrder')" ><a  href="{{ route('shippingOrderView') }}"><i class="fas fa-truck-loading"></i>Shipping Orders</a></li>
+                    <li class="@yield('DeliveredOrder')" ><a  href="{{ route('deliveredOrderView') }}"><i class="fas fa-clipboard-check"></i>Delivered Orders</a></li>
                     <li class="@yield('Pending_Order')" ><a  href="{{ route('pendingOrderView') }}"><i class="fas fa-list-alt"></i> Pending Orders</a></li>
-                    <li class="@yield('Due_Order')" ><a  href="{{ route('dueOrderView') }}"><i class="fas fa-skull"></i> Due Orders</a></li>
+                    <li class="@yield('Failed_Order')" ><a  href="{{ route('failedOrderView') }}"><i class="fas fa-skull"></i> Failed Orders</a></li>
                 </ul>
             </li>
             <li class="sub-menu">

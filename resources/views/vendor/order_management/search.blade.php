@@ -2,12 +2,12 @@
     @foreach($search_result as $s)
         <tr >
             <td class="text-center"><b>{{$s->invoice_id}}</b></td>
-            <td class="text-center"><b>{{$s->payments->trx_id}}</b></td>
-            <td class="text-center"><b>{{$s->payments->sender_mobile_number}}</b></td>
-            <td class="text-center"><b>৳ {{number_format($s->total)}}</b></td>
+            <td class="text-center"><b>{{$s->payments->card_type}}</b></td>
+            <td class="text-center"><b>{{$s->shippings->phone}}</b></td>
+            <td class="text-center"><b>{{$s->shippings->address}} , {{$s->shippings->city}}</b></td>
+            <td class="text-center"><b>৳ {{number_format($s->payments->amount)}}</b></td>
             <td class="text-center"><b>{{$s->customers->name}}</b></td>
             <td class="text-center"><b>{{$s->customers->phone}}</b></td>
-            <td class="text-center"><b>{{$s->shippings->address}} , {{$s->shippings->city}}</b></td>
             <td class="text-center">@if($s->status === 'Pending')<span class="label label-warning label-mini">{{$s->status}}</span>@elseif($s->status === 'Cancel')<span class="label label-danger label-mini">{{$s->status}}</span>@elseif($s->status === 'Processing')<span class="label label-info label-mini">{{$s->status}}</span>@elseif($s->status === 'Delivered')<span class="label label-success label-mini">{{$s->status}}</span>@else<span class="label label-primary label-mini">{{$s->status}}</span> @endif</td>
             <td class="print_hide">
                 @if($s->status === "Processing")

@@ -45,7 +45,6 @@ class normalVendorController extends Controller
         $parent_id = NULL;
         return view('vendor.category_management.index',compact('categories','parent_id','sub'));
     }
-
     public function categoryAdd(Request $request)
     {
         $request->validate([
@@ -108,7 +107,6 @@ class normalVendorController extends Controller
         if(!empty($delete->image)){unlink('assets/vendor/images/categories/'.$delete->image);}
         return redirect()->back()->with('msg',"✔ REMOVED");
     }
-
     public function subCategoryView($pid)
     {
         $categories = Category::where('parent_id',$pid)->paginate(10);
@@ -155,9 +153,7 @@ class normalVendorController extends Controller
         }
         return back()->with('msg','✔ Category Updated');
     }
-
     // ************************ page = category_management #
-
     // ************************ page = brand_management
     public function brandManagementView()
     {
@@ -203,7 +199,6 @@ class normalVendorController extends Controller
                 'status' =>  /*$request->status*/'Active',
             ]);
         }
-
         return back()->with('msg','✔ Brand Added');
     }
     public function brandManagementEdit($id)
@@ -714,23 +709,53 @@ class normalVendorController extends Controller
     }
     //************************ page = inventory_management #
     //************************ page = oder_management
+    public function orderReport(Request $request)
+    {
+        $dateRange = $request->daterange;
+        $date = explode('-', $dateRange);
+        $from = date('Y-m-d 00:00:00', strtotime($date[0]));
+        $to = date('Y-m-d 23:59:59', strtotime($date[1]));
+        if($request->type == "Processing")
+        {
+            $orders = Order::whereBetween('created_at', [$from, $to])->where("status","Processing")->orderBy('id','ASC')->paginate(18);;
+            return view('vendor.order_management.processingOrder',compact('orders'));
+        }
+        if($request->type == "Shipping")
+        {
+            $orders = Order::whereBetween('updated_at', [$from, $to])->where("status","Shipping")->orderBy('id','ASC')->paginate(18);;
+            return view('vendor.order_management.shippingOrder',compact('orders'));
+        }
+        if($request->type == "Delivered")
+        {
+            $orders = Order::whereBetween('updated_at', [$from, $to])->where("status","Delivered")->orderBy('id','ASC')->paginate(18);;
+            return view('vendor.order_management.deliveredOrder',compact('orders'));
+        }
+    }
+    public function processingOrderView()
+    {
+        $orders = Order::where('status','Processing')->orderBy('id','ASC')->paginate(18);
+        return view('vendor.order_management.processingOrder',compact('orders'));
+    }
+    public function shippingOrderView()
+    {
+        $orders = Order::where('status','Shipping')->orderBy('id','ASC')->paginate(18);
+        return view('vendor.order_management.shippingOrder',compact('orders'));
+    }
+    public function deliveredOrderView()
+    {
+        $orders = Order::where('status','Delivered')->orderBy('id','ASC')->paginate(18);
+        return view('vendor.order_management.deliveredOrder',compact('orders'));
+    }
     public function pendingOrderView()
     {
-        $pending_orders = Temp_Order::where('status','Pending')->orderBy('updated_at','DESC')->paginate(18);
-        return view('vendor.order_management.pending',compact('pending_orders'));
+        $orders = Order::where('status','Pending')->orderBy('created_at','DESC')->paginate(18);
+        return view('vendor.order_management.pending',compact('orders'));
     }
-    public function dueOrderView()
-    {
-        $due_orders = Temp_Order::where('status','Due')->orderBy('updated_at','DESC')->paginate(18);
-        return view('vendor.order_management.due',compact('due_orders'));
-    }
-    public function dueOrderRemove($id)
+    public function OrderRemove($id)
     {
         $oid = Crypt::decrypt($id);
-        $delete = Temp_Order::find($oid);
-        $deletePayment = Payment::find($delete->payment_id);
+        $delete = Order::find($oid);
         $deleteShipping = Shipping::find($delete->shipping_id);
-        $delete = Temp_Order::find($oid);
         //work for stock update
         $products = json_decode($delete->product_ids);
         $qty = json_decode($delete->quantity);
@@ -750,44 +775,18 @@ class normalVendorController extends Controller
             }
         }
         $delete->delete();
-        if($delete->status == 'Cancel')
+        if($delete->status == 'Pending')
         {
-            $deletePayment->delete();
             $deleteShipping->delete();
         }
-        return redirect()->route('dueOrderView')->with('msg',"✔ REMOVED");
-    }
-    public function temp_order_details($id)
-    {
-        $oid = Crypt::decrypt($id);
-        $order = Temp_Order::where('id',$oid)->first();
-        $product_ids = json_decode($order->product_ids);
-        $products = Product::wherein('id',$product_ids)->get();
-        $selling_price = json_decode($order->selling_price);
-        $quantity = json_decode($order->quantity);
-        $offer_type = json_decode($order->offer_type);
-        $offer_percentage = json_decode($order->offer_percentage);
-        $free_product_ids = json_decode($order->free_product_ids);
-        $free_products = Product::wherein('id',$free_product_ids)->get();
+        if($delete->status == 'Failed')
+        {
+            $deleteShipping->delete();
+            $deletePayment = Payment::find($delete->payment_id);
+            $deletePayment->delete();
+        }
+        return redirect()->route('pendingOrderView')->with('msg',"✔ REMOVED");
 
-        //print_r($free_product_ids);
-        //echo $selling_price[0] + $selling_price[0] ;
-        return view('vendor.order_management.order_details',compact('order','products','selling_price','quantity','offer_type','offer_percentage','free_products'));
-    }
-    public function orderCancel(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|max:15',
-            'reason' => 'required|max:175',
-        ]);
-        $oid = $request->id;
-        $order = Temp_Order::where('id',$oid)->first();
-        $order->update([
-            'status' => 'Cancel',
-            'reason' => $request->name.': '.$request->reason,
-        ]);
-        return back()->with('msg', "✔ Order Canceled");
-        //return view('vendor.product_management.edit',compact('product','imgarray','brands','categories'));
     }
     public function orderShipping(Request $request)
     {
@@ -809,38 +808,6 @@ class normalVendorController extends Controller
         ]);
         return back()->with('msg', "✔ ".$request->order_id." Updated ");
     }
-    public function orderProceed($id)
-    {
-        $oid = Crypt::decrypt($id);
-        $temp_order = Temp_Order::where('id',$oid)->first();
-        $order =  Order::create([
-            'customer_id' => $temp_order->customer_id,
-            'shipping_id' => $temp_order->shipping_id,
-            'payment_id' => $temp_order->payment_id,
-            'invoice_id' => $temp_order->invoice_id,
-            'product_ids' => $temp_order->product_ids,
-            'selling_price' => $temp_order->selling_price,
-            'quantity' => $temp_order->quantity,
-            'offer_type' => $temp_order->offer_type,
-            'offer_percentage' => $temp_order->offer_percentage,
-            'free_product_ids' => $temp_order->free_product_ids,
-            'subtotal' => $temp_order->subtotal,
-            'total' => $temp_order->total,
-            'status' => 'Processing',
-            'reason' => $temp_order->reason,
-            'slug' => $temp_order->slug,
-        ]);
-//delete temp_orders
-        $temp_order->delete();
-        return redirect()->route('pendingOrderView')->with('msg', "✔ Order Proceed");
-
-        //return view('vendor.product_management.edit',compact('product','imgarray','brands','categories'));
-    }
-    public function OrderView()
-    {
-        $orders = Order::orderBy('Status','DESC')->paginate(18);
-        return view('vendor.order_management.order',compact('orders'));
-    }
     public function orderDelivered($id)
     {
         $oid = Crypt::decrypt($id);
@@ -855,11 +822,12 @@ class normalVendorController extends Controller
         $order->update(['status' => 'Processing']);
         return back()->with('msg', "✔ Order Updated");
     }
-    public function cancelOrderView()
+    public function failedOrderView()
     {
-        $cancel_orders = Temp_Order::where('status','Cancel')->orderBy('updated_at','DESC')->paginate(18);
-        return view('vendor.order_management.cancel',compact('cancel_orders'));
+        $orders = Order::where('status','Failed')->orderBy('created_at','ASC')->paginate(18);
+        return view('vendor.order_management.failed',compact('orders'));
     }
+/**/
     public function order_details($id)
     {
         $oid = Crypt::decrypt($id);
@@ -875,44 +843,6 @@ class normalVendorController extends Controller
 
         return view('vendor.order_management.order_details',compact('order','products','selling_price','quantity','offer_type','offer_percentage','free_products'));
     }
-
-    public function updatePayment(Request $request)
-    {
-        $request->validate([
-            'trx_id' => 'required|max:20',
-            'sender_mobile_number' => 'required|max:15',
-        ]);
-        $oid = $request->id;
-        if($request->orderfor == 'temp')
-        {
-            $order = Temp_Order::where('id',$oid)->first();
-            $payment = Payment::where('id',$order->payment_id);
-            $order->update([
-                'trx_id' => $request->trx_id,
-                'sender_mobile_number' => $request->sender_mobile_number,
-            ]);
-            $payment->update([
-                'trx_id' => $request->trx_id,
-                'sender_mobile_number' => $request->sender_mobile_number,
-            ]);
-        }
-        elseif($request->orderfor == 'main')
-        {
-            $order = Order::where('id',$oid)->first();
-            $payment = Payment::where('id',$order->payment_id);
-            $order->update([
-                'trx_id' => $request->trx_id,
-                'sender_mobile_number' => $request->sender_mobile_number,
-            ]);
-            $payment->update([
-                'trx_id' => $request->trx_id,
-                'sender_mobile_number' => $request->sender_mobile_number,
-            ]);
-        }
-
-        return back()->with('msg', "✔ Payment Updated for ");
-        //return view('vendor.product_management.edit',compact('product','imgarray','brands','categories'));
-    }
     public function generateInvoice($id)
     {
         $oid = Crypt::decrypt($id);
@@ -925,31 +855,14 @@ class normalVendorController extends Controller
         $offer_percentage = json_decode($order->offer_percentage);
         $free_product_ids = json_decode($order->free_product_ids);
         $free_products = Product::wherein('id',$free_product_ids)->get();
-
-        $pdf = PDF::loadView('pdf/pdf', compact('order','products','selling_price','quantity','offer_type','offer_percentage','free_products','address'));
+        $pdf = PDF::loadView('pdf/pdf', compact('order','products','selling_price','quantity','offer_type','offer_percentage','free_products'));
         return $pdf->stream('order :'.$order->invoice_id.'.pdf');
     }
-
     public function search(Request $request)
     {
         $search = $_GET['search'];
         $type = $_GET['type'];
-        if($type == 'temp')
-        {
-            if(!empty($search))
-            {
-                $search_result = Temp_Order::where('invoice_id','LIKE','%'.$search.'%')->orWhere('trx_id','LIKE','%'.$search.'%')->orWhere('sender_mobile_number','LIKE','%'.$search.'%')->orWhere('status','LIKE','%'.$search.'%')->get();
-                $search_count = $search_result->count();
-                $count = $search_count.' records found';
-            }
-            else
-            {
-                $search_result = Temp_Order::whereIn('status',['Pending','Cancel'])->orderBy('updated_at','DESC')->get();
-                $search_count = $search_result->count();
-                $count = '';
-            }
-        }
-        elseif($type == 'main')
+        if($type == 'main')
         {
             if(!empty($search))
             {
@@ -968,11 +881,12 @@ class normalVendorController extends Controller
         {
             if (!empty($search))
             {
-                $search_product = Product::where('name', 'LIKE', '%' . $search . '%')->get();
-                foreach ($search_product as $p) {
+                $search_product = Product::where('name','LIKE','%'.$search.'%')->get();
+                foreach ($search_product as $p)
+                {
                     $product_array[] = $p->id;
                 }
-                $orders = Order::orderBy('status','DESC')->get();
+                $orders = Order::whereIn('status',['Delivered','Shipping','Processing'])->orderBy('status','DESC')->get();
                 $search_result = [];
                 foreach ($orders as $o)
                 {
@@ -989,7 +903,7 @@ class normalVendorController extends Controller
             else
             {
                 $search_result = Order::whereIn('status',['Delivered','Shipping','Processing'])->orderBy('updated_at','DESC')->get();
-                $search_count = 0;
+                $search_count = $search_result->count();;
                 $count = '';
             }
         }
@@ -1000,22 +914,12 @@ class normalVendorController extends Controller
     {
         return view('vendor.order_management.index');
     }
-    public function orderReport(Request $request)
-    {
-        $dateRange = $request->daterange;
-        $date = explode('-', $dateRange);
-        $from = date('Y-m-d 00:00:00', strtotime($date[0]));
-        $to = date('Y-m-d 23:59:59', strtotime($date[1]));
-        $orders = Order::whereBetween('created_at', [$from, $to])->orderBy('Status','DESC')->paginate(18);;
-        return view('vendor.order_management.order',compact('orders'));
-    }
     //************************ page = oder_management #
 
     //************************ page = customer_management
     public function customerList()
     {
         $customerList = Customer::get();
-
         return view('vendor.customer_management.index',compact('customerList'));
     }
     public function customer_details($id)
@@ -1054,19 +958,16 @@ class normalVendorController extends Controller
         $contact = Contact::where('type','contact')->get();
         return view('vendor.contact_management.index',compact('ask_a_question','complain','suggestion','contact'));
     }
-
     public function contact_details($id)
     {
         $contact = Contact::find(Crypt::decrypt($id));
         return view('vendor.contact_management.details',compact('contact'));
     }
-
     public function contact_delete($id)
     {
         Contact::find(Crypt::decrypt($id))->delete();
         return redirect()->back();
     }
-
     public function contact_processing($id)
     {
         $update = Contact::find(Crypt::decrypt($id));
@@ -1075,7 +976,6 @@ class normalVendorController extends Controller
         ]);
         return redirect()->back();
     }
-
     public function contact_solved($id)
     {
         $update = Contact::find(Crypt::decrypt($id));
@@ -1084,7 +984,6 @@ class normalVendorController extends Controller
         ]);
         return redirect()->back();
     }
-
     public function contact_cancel($id)
     {
         $update = Contact::find(Crypt::decrypt($id));
@@ -1093,7 +992,6 @@ class normalVendorController extends Controller
         ]);
         return redirect()->back();
     }
-
     public function contact_note_update(Request $request)
     {
         $id = $request->id;
@@ -1103,7 +1001,6 @@ class normalVendorController extends Controller
         ]);
         return redirect()->back();
     }
-
     public function contact_search()
     {
         $search = $_GET['search'];
@@ -1123,10 +1020,10 @@ class normalVendorController extends Controller
     public function sales()
     {
         $products = Product::orderby('category_id','ASC')->get();
-        $orders = Order::get();
+        $orders = Order::whereIn('status',['Delivered','Shipping','Processing'])->get();
         foreach($products as $pi => $p)
         {//products
-            $soldTotal=0;$amountTotal=0; $OffersoldTotal=0;$OfferamountTotal=0;
+            $soldTotal=0;$amountTotal=0;$storeAmount=0;$OffersoldTotal=0;$OfferamountTotal=0;
             foreach ($orders as $o)
             {//orders
                 $pid = json_decode($o->product_ids);
@@ -1140,6 +1037,7 @@ class normalVendorController extends Controller
                         $offer_percentage = json_decode($o->offer_percentage);
                         $soldTotal +=  (int)$quantity[$i];
                         $amountTotal +=  (int)$spelling_price[$i] * $quantity[$i];
+                        $storeAmount += $o->payments->store_amount;
                         if($offer_type[$i] != NULL)
                         {
                             $OffersoldTotal +=  (int)$quantity[$i];
@@ -1151,10 +1049,12 @@ class normalVendorController extends Controller
             }
             $productSoldTotal[] = $soldTotal;
             $productAmountTotal[] = $amountTotal;
+            $storeAmountTotal[] = $storeAmount;
+            $productStoreAmountTotal[] = $storeAmountTotal;
             $OfferProductSoldTotal[] = $OffersoldTotal;
             $OfferProductAmountTotal[] = $OfferamountTotal;
         }
-        return view('vendor.sales_management.index',compact('products','productSoldTotal','productAmountTotal','OfferProductSoldTotal','OfferProductAmountTotal'));
+        return view('vendor.sales_management.index',compact('products','productSoldTotal','productAmountTotal','storeAmountTotal','OfferProductSoldTotal','OfferProductAmountTotal'));
     }
     public function salesReport(Request $request)
     {

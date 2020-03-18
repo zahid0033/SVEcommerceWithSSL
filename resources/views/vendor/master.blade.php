@@ -96,52 +96,6 @@
                 </div>
                 </form>
                 {{--modal category add #--}}
-                {{--modal category update--}}{{--
-                <form method="post" enctype="multipart/form-data" action="{{ route('categoryUpdate') }}">
-                    @csrf
-                    <div class="modal fade" id="modal_category_update"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel"><b>Update </b></h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <label for="recipient-name" class="col-form-label">Id</label>
-                                        <input id="cat_update_id" name="id" type="text" class="form-control" readonly>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="recipient-name" class="col-form-label">Name</label>
-                                        <input id="cat_update_name" name="name" type="text" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="message-text" class="col-form-label">Description</label>
-                                        <textarea id="cat_update_des" name="description" class="form-control" required></textarea>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="recipient-name" class="col-form-label">Image</label>
-                                        <input id="cat_update_img" name="image" type="file" class="form-control" >
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="recipient-name" class="col-form-label">Status</label>
-                                        <select name="status" class="form-control">
-                                            <option selected value="Active" >Active</option>
-                                            <option value="Deactive" >Deactive</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-success">Update </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                --}}{{--modal category update #--}}
                 {{--modal category update--}}
                 <form method="post" enctype="multipart/form-data" action="{{ route('categoryUpdate') }}">
                     @csrf
@@ -187,80 +141,6 @@
                         </div>
                     </div>
                 </form>
-                {{--modal category update #--}}
-                {{--modal order cancel reason--}}
-                <form method="post" enctype="multipart/form-data" action="{{ route('orderCancel') }}">
-                    @csrf
-                    <div class="modal fade" id="modal_order_cancel_reason"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel"><b>Order Cancel </b></h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <label for="recipient-name" class="col-form-label">Id</label>
-                                        <input id="order_cancel_id" name="id" type="number" class="form-control" readonly style="display:none;">
-                                        <input id="order_cancel_order_id" name="order_id" type="text" class="form-control" readonly>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="recipient-name" class="col-form-label">Cancel By</label>
-                                        <input  name="name" type="text" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label  class="col-form-label">Reason</label>
-                                        <textarea  name="reason" class="form-control" required></textarea>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-danger">Cancel Order </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                {{--modal category update #--}}
-                {{--modal order trx and number update--}}
-                <form method="post" enctype="multipart/form-data" action="{{ route('updatePayment') }}">
-                    @csrf
-                    <div class="modal fade" id="modal_order_payment_update"  role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel"><b>Order Payment Update </b></h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <label for="recipient-name" class="col-form-label">OrderId</label>
-                                        <input id="order_payment_id" name="id" type="number" class="form-control" readonly style="display:none;">
-                                        <input id="order_payment_for" name="orderfor" type="text" class="form-control" readonly style="display:none;">
-                                        <input id="order_payment_order_id" name="order_id" type="text" class="form-control" readonly>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="recipient-name" class="col-form-label">TrxID</label>
-                                        <input id="order_payment_trx"  name="trx_id" type="text" class="form-control" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label  class="col-form-label">BKash Number</label>
-                                        <input id="order_payment_number" name="sender_mobile_number" type="text" class="form-control" required>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-success">Update payment </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                {{--modal category update #--}}
                 {{--modal order shipping --}}
                 <form method="post" enctype="multipart/form-data" action="{{ route('orderShipping') }}">
                     @csrf
