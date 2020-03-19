@@ -55,7 +55,7 @@
                                                 <li><span><b>Free product:</b> {{ $cart_data->options->free_product }}</span></li>
                                             @endif
 
-{{--                                            <li><span>Color: Camelot</span></li>--}}
+                                            {{--                                            <li><span>Color: Camelot</span></li>--}}
                                         </ul>
                                         @php $product_info = \App\Product::find($cart_data->id) @endphp
                                         @if($product_info->stock == 0)
@@ -67,7 +67,7 @@
                                     @else
                                         <td class="price text-center"><strong>{{$cart_data->price}}</strong><br></td>
                                     @endif
-{{--                                    <td class="price text-center"><strong>{{$cart_data->price}}</strong><br></td>--}}
+                                    {{--                                    <td class="price text-center"><strong>{{$cart_data->price}}</strong><br></td>--}}
                                     <td class="qty text-center">
                                         <form method="post" action="{{ route('cart.update') }}">
                                             {{ @csrf_field() }}
@@ -108,14 +108,15 @@
                             <tr>
                                 <th class="empty" colspan="3"></th>
                                 <th>TOTAL</th>
-<!--                                --><?php //$total_with_delivery = str_replace(',', '', Cart::total()) + 20;
-//                                      $total = number_format($total_with_delivery,2) ?>
+                                <!--                                --><?php //$total_with_delivery = str_replace(',', '', Cart::total()) + 20;
+                                //                                      $total = number_format($total_with_delivery,2) ?>
                                 <th colspan="2" class="total">{{Cart::total()}}</th>
                             </tr>
                             </tfoot>
                         </table>
 
-                        <form method="post" action="{{ route('place_order') }}">
+                        {{--                        <form method="post" action="{{ route('place_order') }}">--}}
+                        <form method="post" action="{{ url('/pay') }}">
                             {{ @csrf_field() }}
 
                             @php $i=0 @endphp
@@ -124,16 +125,44 @@
                                     <input type="hidden" name="pro_id_{{$i}}" id="Pro_id{{ $i }}" value="{{ $cart_data->id }}"><br>
                                     <input type="hidden" name="quantity[]" id="quantity{{ $i }}" value="{{ $cart_data->qty }}"><br>
                                     <input type="hidden" name="cart_id_{{$i}}" id="cart_id{{ $i }}" value="{{ $cart_data->rowId }}">
-{{--                                    @if( $errors->has('quantity.'.$i) )--}}
-{{--                                        <span style="color:red">{{ $errors->first('quantity.'.$i) }}</span>--}}
-{{--                                    @endif--}}
+                                    {{--                                    @if( $errors->has('quantity.'.$i) )--}}
+                                    {{--                                        <span style="color:red">{{ $errors->first('quantity.'.$i) }}</span>--}}
+                                    {{--                                    @endif--}}
                                 </div>
                                 @php $i++ @endphp
                             @endforeach
+                            <div class="col-md-12">
+                                <div class="billing-details">
+
+                                    <div class="section-title">
+                                        <h3 class="title">Shipping Details</h3>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="hidden" name="customer_id" value="{{Auth::user()->id}}">
+                                        <input type="hidden" name="temp_order_id">
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="input" type="text" name="name" placeholder="Name" value="{{ Auth::user()->name }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="input" type="email" name="email" placeholder="Email" value="{{ Auth::user()->email }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="input" type="text" name="address" placeholder="Address" value="{{ Auth::user()->address }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="input" type="text" name="city" placeholder="City" value="{{ Auth::user()->city }}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="input" type="tel" name="phone" placeholder="Phone" value="{{ Auth::user()->phone }}" required>
+                                    </div>
+
+                                </div>
+                            </div>
                             <div class="pull-right">
                                 <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                                <input type="submit" value="Place Order" class="primary-btn">
-{{--                                <a href="{{ route('temp_orders') }}" class="primary-btn">Place Order</a>--}}
+                                <input type="submit" value="Go For Payment" class="primary-btn">
+                                {{--                                <a href="{{ route('temp_orders') }}" class="primary-btn">Place Order</a>--}}
                             </div>
                         </form>
                     </div>
