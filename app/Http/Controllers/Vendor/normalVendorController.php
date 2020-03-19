@@ -1071,12 +1071,13 @@ class normalVendorController extends Controller
         $to = date('Y-m-d 23:59:59', strtotime($date[1]));
         //echo $from."-".$to;
         $products = Product::orderby('category_id','ASC')->get();
-        $orders = Order::whereBetween('created_at', [$from , $to])->get();
+        $orders = Order::whereBetween('created_at', [$from , $to])->whereIn('status',['Delivered','Shipping','Processing'])->get();
         foreach($products as $pi => $p)
         {//products
-            $soldTotal=0;$amountTotal=0; $OffersoldTotal=0;$OfferamountTotal=0;
+            $soldTotal=0;$amountTotal=0; $OffersoldTotal=0;$OfferamountTotal=0;$storeAmountTotal = 0;
             foreach ($orders as $o)
             {//orders
+                $storeAmountTotal += $o->payments->store_amount;
                 $pid = json_decode($o->product_ids);
                 foreach($pid as $i => $pid)
                 {//product_ids
@@ -1102,7 +1103,7 @@ class normalVendorController extends Controller
             $OfferProductSoldTotal[] = $OffersoldTotal;
             $OfferProductAmountTotal[] = $OfferamountTotal;
         }
-        return view('vendor.sales_management.index',compact('products','productSoldTotal','productAmountTotal','OfferProductSoldTotal','OfferProductAmountTotal'));
+        return view('vendor.sales_management.index',compact('products','productSoldTotal','productAmountTotal','OfferProductSoldTotal','OfferProductAmountTotal','storeAmountTotal'));
     }
     //************************ page = sales_management #
 
