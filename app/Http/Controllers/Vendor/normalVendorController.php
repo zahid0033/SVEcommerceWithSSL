@@ -1021,40 +1021,46 @@ class normalVendorController extends Controller
     {
         $products = Product::orderby('category_id','ASC')->get();
         $orders = Order::whereIn('status',['Delivered','Shipping','Processing'])->get();
-        foreach($products as $pi => $p)
-        {//products
-            $soldTotal=0;$amountTotal=0;$storeAmount=0;$OffersoldTotal=0;$OfferamountTotal=0;
-            foreach ($orders as $o)
-            {//orders
-                $pid = json_decode($o->product_ids);
-                foreach($pid as $i => $pid)
-                {//product_ids
-                    if($p->id == $pid)
-                    {
-                        $spelling_price = json_decode($o->selling_price);
-                        $quantity = json_decode($o->quantity);
-                        $offer_type = json_decode($o->offer_type);
-                        $offer_percentage = json_decode($o->offer_percentage);
-                        $soldTotal +=  (int)$quantity[$i];
-                        $amountTotal +=  (int)$spelling_price[$i] * $quantity[$i];
-                        $storeAmount += $o->payments->store_amount;
-                        if($offer_type[$i] != NULL)
+        if($orders->count() != 0 and $products->count() !=0)
+        {
+            foreach($products as $pi => $p)
+            {//products
+                $soldTotal=0;$amountTotal=0;$OffersoldTotal=0;$OfferamountTotal=0; $storeAmountTotal = 0;
+                foreach ($orders as $o)
+                {//orders
+                    $storeAmountTotal += $o->payments->store_amount;
+                    $pid = json_decode($o->product_ids);
+                    foreach($pid as $i => $pid)
+                    {//product_ids
+                        if($p->id == $pid)
                         {
-                            $OffersoldTotal +=  (int)$quantity[$i];
-                            $OfferamountTotal +=  (int)$spelling_price[$i] * $quantity[$i];
+                            $selling_price = json_decode($o->selling_price);
+                            $quantity = json_decode($o->quantity);
+                            $offer_type = json_decode($o->offer_type);
+                            //$offer_percentage = json_decode($o->offer_percentage);
+                            $soldTotal +=  (int)$quantity[$i];
+                            $amountTotal +=  (int)$selling_price[$i] * $quantity[$i];
+                            if($offer_type[$i] != NULL)
+                            {
+                                $OffersoldTotal +=  (int)$quantity[$i];
+                                $OfferamountTotal +=  (int)$selling_price[$i] * $quantity[$i];
+                            }
+                            //echo $$soldTotal;
                         }
-                        //echo $$soldTotal;
                     }
                 }
+                $productSoldTotal[] = $soldTotal;
+                $productAmountTotal[] = $amountTotal;
+                $OfferProductSoldTotal[] = $OffersoldTotal;
+                $OfferProductAmountTotal[] = $OfferamountTotal;
             }
-            $productSoldTotal[] = $soldTotal;
-            $productAmountTotal[] = $amountTotal;
-            $storeAmountTotal[] = $storeAmount;
-            $productStoreAmountTotal[] = $storeAmountTotal;
-            $OfferProductSoldTotal[] = $OffersoldTotal;
-            $OfferProductAmountTotal[] = $OfferamountTotal;
+            return view('vendor.sales_management.index',compact('products','productSoldTotal','productAmountTotal','OfferProductSoldTotal','OfferProductAmountTotal','storeAmountTotal'));
         }
-        return view('vendor.sales_management.index',compact('products','productSoldTotal','productAmountTotal','storeAmountTotal','OfferProductSoldTotal','OfferProductAmountTotal'));
+        else
+        {
+            return back()->with('msg','NO Records Found');
+        }
+
     }
     public function salesReport(Request $request)
     {
@@ -1076,16 +1082,16 @@ class normalVendorController extends Controller
                 {//product_ids
                     if($p->id == $pid)
                     {
-                        $spelling_price = json_decode($o->selling_price);
+                        $selling_price = json_decode($o->selling_price);
                         $quantity = json_decode($o->quantity);
                         $offer_type = json_decode($o->offer_type);
                         $offer_percentage = json_decode($o->offer_percentage);
                         $soldTotal +=  (int)$quantity[$i];
-                        $amountTotal +=  (int)$spelling_price[$i] * $quantity[$i];
+                        $amountTotal +=  (int)$selling_price[$i] * $quantity[$i];
                         if($offer_type[$i] != NULL)
                         {
                             $OffersoldTotal +=  (int)$quantity[$i];
-                            $OfferamountTotal +=  (int)$spelling_price[$i] * $quantity[$i];
+                            $OfferamountTotal +=  (int)$selling_price[$i] * $quantity[$i];
                         }
                         //echo $$soldTotal;
                     }

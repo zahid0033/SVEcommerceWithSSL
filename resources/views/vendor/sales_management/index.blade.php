@@ -30,7 +30,6 @@
                             <th scope="col"class="text-center"><i class="fas fa-box-open"></i> Product</th>
                             <th scope="col" class="text-center"><i class="fas fa-sort-amount-down"></i> Sold Total</th>
                             <th scope="col"class="text-center"><i class="fas fa-money-bill-wave"></i> Amount</th>
-                            <th scope="col"class="text-center"><i class="fas fa-money-bill-wave"></i> NObin</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -51,17 +50,17 @@
                                 <td class="text-center">
                                     <b>৳ {{ number_format($productAmountTotal[$i])}}</b>
                                 </td>
-                                <td class="text-center">
-                                    <b>৳ {{ number_format($storeAmountTotal[$i])}}</b>
-                                </td>
                             </tr>
                         @endforeach
                         <tr>
-                            <td class="text-center" colspan="3">
+                            <td class="text-center" colspan="2">
+                                <h4>  <span class="label label-success ">NOBIN Amount( After SSL ) :  ৳ {{ number_format($storeAmountTotal)}} </span></h4
+                            </td>
+                            <td class="text-center" colspan="1">
                                 @php
                                     $total = array_sum($productAmountTotal)
                                 @endphp
-                                <h3 ><kbd>৳ {{ number_format($total)}}</kbd> </h3>
+                                <h4><kbd>+=  ৳ {{ number_format($total)}} </kbd></h4>
                             </td>
                         </tr>
                         </tbody>
@@ -98,11 +97,14 @@
                             </tr>
                         @endforeach
                         <tr>
-                            <td class="text-center" colspan="3">
+                            <td class="text-center" colspan="2">
+
+                            </td>
+                            <td class="text-center" colspan="1">
                                 @php
                                     $total_offer = array_sum($OfferProductAmountTotal)
                                 @endphp
-                                <h3 ><kbd>৳ {{ number_format($total_offer)}}</kbd> </h3>
+                                <h4><kbd>+= ৳ {{ number_format($total_offer)}}</kbd></h4>
                             </td>
                         </tr>
                         </tbody>
@@ -139,11 +141,14 @@
                             </tr>
                         @endforeach
                         <tr>
-                            <td class="text-center" colspan="3">
+                            <td class="text-center" colspan="2">
+
+                            </td>
+                            <td class="text-center" colspan="1">
                                 @php
                                     $total_normal = $total - $total_offer
                                 @endphp
-                                <h3 ><kbd>৳ {{ number_format($total_normal)}}</kbd> </h3>
+                                <h4><kbd>+= ৳ {{ number_format($total_normal)}}</kbd></h4>
                             </td>
                         </tr>
                         </tbody>
