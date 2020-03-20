@@ -1,57 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-@include('includes.header_link')
-<body>
-<div id="loader" class="center"><img src="{{ asset('assets/img/icon/276.gif') }}" alt=""></div>
-@include('includes.top_navbar')
-<!-- HEADER -->
-<header>
-
-    <!-- header -->
-    <div id="header">
-        <div class="container">
-            <div class="pull-left">
-                <!-- Logo -->
-                <div class="header-logo">
-                    <a class="logo" href="#">
-                        {{--                        <img src="{{ asset('assets/img/icon/logo.jpg') }}" alt="">--}}
-                    </a>
-                </div>
-                <!-- /Logo -->
-
-            </div>
-            <div class="pull-right">
-                <ul class="header-btns">
-
-                    <!-- Cart -->
-                    <li class="header-cart">
-                        <a href="{{ route('cart.index') }}">
-                            <div class="header-btns-icon">
-                                <i class="fa fa-shopping-cart"></i>
-                                <span class="qty">{{ Cart::count() }}</span>
-                            </div>
-                            <strong class="text-uppercase">My Cart:</strong>
-                            <br>
-                            <span>{{Cart::total()}}</span>
-                        </a>
-                    </li>
-                    <!-- /Cart -->
-                    <!-- Mobile nav toggle-->
-                    <li class="nav-toggle">
-                        <button class="nav-toggle-btn main-btn icon-btn"><i class="fa fa-bars"></i></button>
-                    </li>
-                    <!-- / Mobile nav toggle -->
-                </ul>
-            </div>
-        </div>
-        <!-- header -->
-    </div>
-    <!-- container -->
-</header>
-<!-- /HEADER -->
-
-@include('includes.navbar')
-
+@extends('master')
+@section('content')
     <!-- BREADCRUMB -->
     <div id="breadcrumb">
         <div class="container">
@@ -220,38 +168,4 @@
         <!-- /section -->
     @endforeach
 
-@include('includes.footer')
-@include('includes.footer_link')
-<script>
-    document.onreadystatechange = function() {
-        if (document.readyState !== "complete") {
-            document.querySelector("#loader").style.visibility = "visible";
-            document.querySelector("body").style.visibility = "hidden";
-        } else {
-            document.querySelector("#loader").style.display = "none";
-            document.querySelector("body").style.visibility = "visible";
-        }
-    };
-    $(document).ready(function () {
-        $("#addCart").click(function () {
-            var price = $(".product-price").text();
-            var productName = $(".product-name").text();
-
-            $("#cart_product_name").html(productName);
-            $("#cart_product_price").html(price);
-        });
-        $("#cancel_cart").click(function () {
-            $("#cart_div").remove();
-        });
-        $("#removeDiv").click(function () {
-            $("#remove").remove();
-            // $("#removeDiv").parent().remove();
-        });
-
-
-
-    });
-</script>
-</body>
-
-</html>
+@endsection

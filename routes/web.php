@@ -9,7 +9,16 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+// SSLCOMMERZ Start
 
+Route::post('/pay', 'Userend\SslCommerzPaymentController@index');
+Route::post('/pay-via-ajax', 'Userend\SslCommerzPaymentController@payViaAjax');
+
+Route::post('/success', 'Userend\SslCommerzPaymentController@success');
+Route::post('/fail', 'Userend\SslCommerzPaymentController@fail');
+Route::post('/cancel', 'Userend\SslCommerzPaymentController@cancel');
+
+Route::post('/ipn', 'Userend\SslCommerzPaymentController@ipn');
 /* ======================================== Website  ================================================ */
 Route::get('/','website\websiteController@index')->name('website.home');
 Route::get('/about_us','website\websiteController@about')->name('website.about');

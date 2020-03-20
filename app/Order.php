@@ -17,7 +17,6 @@ class Order extends Model
     {
         return $this->belongsTo(Shipping::class,'shipping_id');
     }
-
     public function payments()
     {
         return $this->belongsTo(Payment::class,'payment_id');

@@ -33,7 +33,11 @@
                     <li class="header-account dropdown default-dropdown">
                         <div class="dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="true">
                             <div class="header-btns-icon">
-                                <i class="fa fa-user-o"></i>
+                                @if(empty(Auth::user()->image))
+                                    <i class="fa fa-user-o"></i>
+                                @else
+                                    <img class="" src="{{ asset('assets/vendor/images/profile_picture/') }}/{{Auth::user()->image}}" width="35px" alt="" >
+                                @endif
                             </div>
                             <strong class="text-uppercase">My Account <i class="fa fa-caret-down"></i></strong>
                         </div>
