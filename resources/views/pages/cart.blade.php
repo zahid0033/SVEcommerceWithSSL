@@ -1,5 +1,13 @@
 @extends('master')
 @section('content')
+    <!-- message -->
+    @if(session('msg'))
+        <div class="alert alert-success alert-dismissable session_message">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <p align="center" ><marquee direction="up" behavior = "slide" height="20px" width="350px"><strong >{{session('msg')}}!</strong></marquee></p>
+        </div>
+    @endif
+    <!-- /message -->
     <!-- BREADCRUMB -->
     <div id="breadcrumb">
         <div class="container">

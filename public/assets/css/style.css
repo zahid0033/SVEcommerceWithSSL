@@ -1,6 +1,16 @@
 .dropdown-backdrop{
     display: none !important;
 }
+.session_message{
+    width: 25%;
+    float: right;
+    margin-top: 10px;
+    background: #1fb3cad9;
+    margin-bottom: 0px;
+}
+.session_message marquee{
+    text-align: center;
+}
 /* =========== loader ================= */
 #loader {
     border-radius: 0;

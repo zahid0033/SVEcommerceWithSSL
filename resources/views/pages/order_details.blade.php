@@ -24,9 +24,20 @@
                                 <span class="label label-info label-mini">Time</span> <b> {{$time}}</b>
                             </td>
                         </tr>
-                        <tr >
+                        @if($order->status == "Failed")
+                            <tr >
+                                <td >
+                                    <span class="label label-danger label-mini">Status</span> <b> {{$order->status}}</b>
+                                </td>
+                            </tr>
+                        @else
+                            <tr >
+                                <td >
+                                    <span class="label label-info label-mini">Status</span> <b> {{$order->status}}</b>
+                                </td>
+                            </tr>
+                        @endif
 
-                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -94,7 +105,7 @@
                                 @endphp
                                 <img src="{{ asset('assets/vendor/images/products/') }}/{{$imgarray[0]->image}}" width="70px" {{--class="imgs"--}} alt="">
                             </td>
-                            <td class="text-center" ><b> <a href="" title="Click To Edit Product"> {{$products[$i]->name}}</a></b></td>
+                            <td class="text-center" ><b> {{$products[$i]->name}}</b></td>
                             <td class="text-center" >
 
                                 <b>
@@ -190,7 +201,7 @@
                             <td >
                                 <span class="label label-default label-mini"> Sub-Total  </span>
                             </td>
-                            <td><b> ৳  {{number_format($order->subtotal)}}</b></td>
+                            <td><b> ৳  {{number_format($order->payments->amount)}}</b></td>
                         </tr>
                         <tr >
                             <td >
@@ -202,7 +213,7 @@
                             <td >
                                 <span class="label label-default label-mini"> Paid-Total  </span>
                             </td>
-                            <td><b> ৳  {{number_format($order->total)}}</b></td>
+                            <td><b> ৳  {{number_format($order->payments->amount)}}</b></td>
                         </tr>
                         @if($order->status != "Due")
                             <tr >
@@ -212,9 +223,16 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <span class="label label-primary label-mini">Method  </span> <b> &nbsp;Bkash-{{$order->payments->method}}</b>
+                                    <span class="label label-primary label-mini">Method  </span> <b> &nbsp;{{$order->payments->card_type}}</b>
                                 </td>
                             </tr>
+                            @if($order->status == "Failed")
+                                <tr>
+                                    <td>
+                                        <span class="label label-danger label-mini">Error  </span> <b> &nbsp;{{$order->payments->error}}</b>
+                                    </td>
+                                </tr>
+                            @endif
                             <tr>
                                 <td>
                                     <span class="label label-primary label-mini">Trx Id  </span> <b> &nbsp;{{$order->payments->trx_id}}</b>

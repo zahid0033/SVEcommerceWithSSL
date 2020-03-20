@@ -42,12 +42,11 @@ class customerController extends Controller
 
     public function myOrder($id)
     {
-        $temp_Orders = Temp_Order::where('customer_id', Crypt::decrypt($id) )
-                                 ->where('invoice_id','!=',null)
-                                 ->get();
-        $orders = Order::where('customer_id', Crypt::decrypt($id))->get();
-
-        return view('pages.myOrder',compact('temp_Orders','orders'));
+        $orders = Order::where('customer_id', Crypt::decrypt($id))
+                        ->where('payment_id','!=',null)
+                        ->orderBy('id', 'desc')
+                        ->paginate(5);
+        return view('pages.myOrder',compact('orders'));
     }
 
     public function myProfile()
