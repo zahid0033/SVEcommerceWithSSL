@@ -2,8 +2,7 @@
     display: none !important;
 }
 .session_message{
-    width: 25%;
-    float: right;
+    width: 100%;
     margin-top: 10px;
     background: #1fb3cad9;
     margin-bottom: 0px;
@@ -233,6 +232,7 @@ textarea.input {
 
 .section {
   padding-top: 30px;
+  margin-top: 5em;
   padding-bottom: 30px;
 }
 
