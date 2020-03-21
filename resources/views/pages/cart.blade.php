@@ -123,8 +123,7 @@
                             </tfoot>
                         </table>
 
-                        {{--                        <form method="post" action="{{ route('place_order') }}">--}}
-                        <form method="post" action="{{ url('/pay') }}" id="form-id">
+                            <form method="post" action="{{ route('pay') }}" id="form-id">
                             {{ @csrf_field() }}
 
                             @php $i=0 @endphp
