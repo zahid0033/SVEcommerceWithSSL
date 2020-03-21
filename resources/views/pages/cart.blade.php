@@ -139,7 +139,7 @@
                                 </div>
                                 @php $i++ @endphp
                             @endforeach
-                            <div class="col-md-12">
+                            <div class="col-md-8">
                                 <div class="billing-details">
 
                                     <div class="section-title">
@@ -167,18 +167,23 @@
 
                                 </div>
                             </div>
-                            <div class="form-check">
-                                <input type="checkbox" name="checkbox" class="form-check-input" id="mycheckbox" style="width: 2em;height: 2em">
-                                <label class="form-check-label" for="exampleCheck1" style="font-size: 2em">I agree with the terms and conditions</label>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-check">
+                                        <input type="checkbox" name="checkbox" class="form-check-input" id="mycheckbox" style="width: 2em;height: 2em">
+                                        <label class="form-check-label" for="exampleCheck1" style="font-size: 2em">I agree with the terms and conditions</label>
+                                    </div>
+                                    @if( $errors->has('checkbox') )
+                                        <span style="color:red">{{ $errors->first('checkbox') }}</span>
+                                    @endif
+                                    <div class="pull-right">
+                                        <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                                        <input type="submit" value="Go For Payment" class="primary-btn">
+                                        {{--                                <a href="{{ route('temp_orders') }}" class="primary-btn">Place Order</a>--}}
+                                    </div>
+                                </div>
                             </div>
-                            @if( $errors->has('checkbox') )
-                                <span style="color:red">{{ $errors->first('checkbox') }}</span>
-                            @endif
-                            <div class="pull-right">
-                                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                                <input type="submit" value="Go For Payment" class="primary-btn">
-                                {{--                                <a href="{{ route('temp_orders') }}" class="primary-btn">Place Order</a>--}}
-                            </div>
+
                         </form>
                     </div>
 
