@@ -17,11 +17,8 @@
                             </td>
                         </tr>
                         <tr >
-                            <td >
-                                @php
-                                    $time = date('g:i a,d M,Y',strtotime($order->created_at) + 6 * 3600);
-                                @endphp
-                                <span class="label label-info label-mini">Time</span> <b> {{$time}}</b>
+                            <td>
+                                <span class="label label-info label-mini">Time</span> <b> {{date('g:i a , d M Y',strtotime($order->created_at) )}}</b>
                             </td>
                         </tr>
                         @if($order->status == "Failed")
@@ -215,34 +212,42 @@
                             </td>
                             <td><b> ৳  {{number_format($order->payments->amount)}}</b></td>
                         </tr>
-                        @if($order->status != "Due")
+                        @if($order->status != "Pending")
                             <tr >
                                 <td class="text-center" colspan="2">
                                     <span class="label label-danger label-mini"><b>Payment Details</b></span>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <span class="label label-primary label-mini">Method  </span> <b> &nbsp;{{$order->payments->card_type}}</b>
-                                </td>
-                            </tr>
                             @if($order->status == "Failed")
+                                <tr>
+                                    <td>
+                                        <span class="label label-primary label-mini">Method  </span> <b> &nbsp;{{$order->payments->card_issuer}}</b>
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td>
                                         <span class="label label-danger label-mini">Error  </span> <b> &nbsp;{{$order->payments->error}}</b>
                                     </td>
                                 </tr>
+                            @else
+                                <tr>
+                                    <td>
+                                        <span class="label label-primary label-mini">Method  </span> <b> &nbsp;{{$order->payments->card_type}}</b>
+                                    </td>
+                                </tr>
+                                @if($order->payments->card_no != null)
+                                    <tr>
+                                        <td>
+                                            <span class="label label-primary label-mini">Card No  </span> <b> &nbsp;{{$order->payments->card_no}}</b>
+                                        </td>
+                                    </tr>
+                                @endif
+                                <tr>
+                                    <td>
+                                        <span class="label label-primary label-mini">Transaction Id  </span> <b> &nbsp;{{$order->payments->bank_tran_id}}</b>
+                                    </td>
+                                </tr>
                             @endif
-                            <tr>
-                                <td>
-                                    <span class="label label-primary label-mini">Trx Id  </span> <b> &nbsp;{{$order->payments->trx_id}}</b>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="label label-primary label-mini">Bkash Number  </span> <b> &nbsp;{{$order->payments->sender_mobile_number}}</b>
-                                </td>
-                            </tr>
                         @endif
                         </tbody>
                     </table>

@@ -64,7 +64,8 @@
                                 @endif
                             </td>
                             <td>{{ $order->payments->amount }}</td>
-                            <td>{{ $order->created_at }}</td>
+                            <td>{{date('g:i a , d M Y',strtotime($order->created_at) )}}</td>
+{{--                            <td>{{ $order->created_at }}</td>--}}
                             <td><a class="label label-info" href="{{ route('confirmedOrderDetails',Crypt::encrypt($order->id)) }}"><i class="fa fa-arrow-right" aria-hidden="true"></i></a></td>
                         </tr>
 
