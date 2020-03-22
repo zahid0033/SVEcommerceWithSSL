@@ -123,8 +123,7 @@
                             </tfoot>
                         </table>
 
-                        {{--                        <form method="post" action="{{ route('place_order') }}">--}}
-                        <form method="post" action="{{ url('/pay') }}">
+                            <form method="post" action="{{ route('pay') }}" id="form-id">
                             {{ @csrf_field() }}
 
                             @php $i=0 @endphp
@@ -139,7 +138,7 @@
                                 </div>
                                 @php $i++ @endphp
                             @endforeach
-                            <div class="col-md-12">
+                            <div class="col-md-8">
                                 <div class="billing-details">
 
                                     <div class="section-title">
@@ -167,11 +166,23 @@
 
                                 </div>
                             </div>
-                            <div class="pull-right">
-                                <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
-                                <input type="submit" value="Go For Payment" class="primary-btn">
-                                {{--                                <a href="{{ route('temp_orders') }}" class="primary-btn">Place Order</a>--}}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-check">
+                                        <input type="checkbox" name="checkbox" class="form-check-input" id="mycheckbox" style="width: 2em;height: 2em">
+                                        <label class="form-check-label" for="exampleCheck1" style="font-size: 2em">I agree with the terms and conditions</label>
+                                    </div>
+                                    @if( $errors->has('checkbox') )
+                                        <span style="color:red">{{ $errors->first('checkbox') }}</span>
+                                    @endif
+                                    <div class="pull-right">
+                                        <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                                        <input type="submit" value="Go For Payment" class="primary-btn">
+                                        {{--                                <a href="{{ route('temp_orders') }}" class="primary-btn">Place Order</a>--}}
+                                    </div>
+                                </div>
                             </div>
+
                         </form>
                     </div>
 
@@ -179,5 +190,19 @@
             </div>
         @endif
     </div>
+
+    <script>
+        $(document).ready(function ($) {
+            var $form = $('#form-id');
+            var $checkbox = $('#mycheckbox');
+
+            $form.on('submit', function(e) {
+                if(!$checkbox.is(':checked')) {
+                    alert('Please confirm our terms and conditions before proceeding');
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
 
 @endsection

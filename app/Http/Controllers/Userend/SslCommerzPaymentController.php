@@ -23,6 +23,8 @@ class SslCommerzPaymentController extends Controller
 
     public function index(Request $request)
     {
+        $request->validate([ 'checkbox' => 'accepted']);
+
         $user_id = $request->user_id;
         $cart_contents = Cart::content();
 

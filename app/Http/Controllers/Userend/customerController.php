@@ -33,21 +33,6 @@ class customerController extends Controller
     {
         return view('customerAuth.home');
     }
-    public function checkout($id)
-    {
-        $temp_orders = Temp_Order::find(Crypt::decrypt($id));
-        $cart_datas = Cart::content();
-        return view('pages.checkout',compact('cart_datas','temp_orders'));
-    }
-
-    public function myOrder($id)
-    {
-        $orders = Order::where('customer_id', Crypt::decrypt($id))
-                        ->where('payment_id','!=',null)
-                        ->orderBy('id', 'desc')
-                        ->paginate(5);
-        return view('pages.myOrder',compact('orders'));
-    }
 
     public function myProfile()
     {

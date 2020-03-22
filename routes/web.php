@@ -11,8 +11,7 @@
 */
 // SSLCOMMERZ Start
 
-Route::post('/pay', 'Userend\SslCommerzPaymentController@index');
-Route::post('/pay-via-ajax', 'Userend\SslCommerzPaymentController@payViaAjax');
+Route::post('/pay', 'Userend\SslCommerzPaymentController@index')->name('pay');
 
 Route::post('/success', 'Userend\SslCommerzPaymentController@success');
 Route::post('/fail', 'Userend\SslCommerzPaymentController@fail');
@@ -22,12 +21,11 @@ Route::post('/ipn', 'Userend\SslCommerzPaymentController@ipn');
 /* ======================================== Website  ================================================ */
 Route::get('/','website\websiteController@index')->name('website.home');
 Route::get('/about_us','website\websiteController@about')->name('website.about');
-/*Route::get('/products','website\websiteController@products')->name('website.products');*/
 Route::get('/offers','website\websiteController@offers')->name('website.offers');
 Route::get('/contact_us','website\websiteController@contact_us')->name('website.contact');
 Route::post('/submitContact','website\websiteController@submitContact')->name('website.submitContact');
 /* ====================================== Website end  ============================================== */
-/* ====================================================== Frontend  ============================================================== */
+/* ====================================================== Ecommerce Frontend  ============================================================== */
 Route::get('/ecommerce', 'Userend\pagesController@home')->name('pages.home');
 Route::get('/products', 'Userend\pagesController@products')->name('pages.products');
 Route::get('/single_product/{id}', 'Userend\pagesController@single_product')->name('pages.single_product');
@@ -47,9 +45,6 @@ Route::get('/cart_destroy',function (){Cart::destroy();});
 
 Route::get('/generatePdf', 'Userend\pagesController@generatePdf')->name('generatePdf');
 
-Route::get('/react', function (){
-    return view('react');
-});
 
 /* ====================================================== Frontend end   ============================================================== */
 /* ====================================================== customer auth   ============================================================== */
@@ -69,27 +64,12 @@ Route::post('/customer/password/reset', 'CustomerAuth\ResetPasswordController@re
 Route::get('/customer/password/reset/{token}', 'CustomerAuth\ResetPasswordController@showResetForm')->name('customer.password.reset');
 
 //xahid
-    Route::get('/checkout/{id}', 'Userend\customerController@checkout')->name('pages.checkout');
-    Route::get('/myOrder/{id}', 'Userend\customerController@myOrder')->name('pages.myOrder');
     Route::get('/myProfile', 'Userend\customerController@myProfile')->name('pages.myProfile');
     Route::get('/myProfile/edit/{id}', 'Userend\customerController@editMyProfile')->name('pages.editMyProfile');
     Route::post('/myProfile/edit', 'Userend\customerController@profile_edit')->name('pages.profile_edit');
 
-    Route::post('/place_order', 'Userend\orderController@goPayment')->name('place_order');
-
-    Route::get('/temp_orders/{id}', 'Userend\orderController@temp_orders')->name('temp_orders');
-    Route::post('/paymentConfirm', 'Userend\orderController@paymentConfirm')->name('paymentConfirm');
-    Route::get('/paymentSuccess/{id}', 'Userend\orderController@paymentSuccess')->name('paymentSuccess');
-    Route::get('/pendingOrderDetails/{id}', 'Userend\orderController@pendingOrderDetails')->name('pendingOrderDetails');
+    Route::get('/myOrder/{id}', 'Userend\orderController@myOrder')->name('pages.myOrder');
     Route::get('/confirmedOrderDetails/{id}', 'Userend\orderController@confirmedOrderDetails')->name('confirmedOrderDetails');
-
-
-    /* ======================================== SSLCommerz  ================================================ */
-    Route::post('/failedTransaction','Userend\orderController@failedTransaction')->name('failedTransaction');
-    Route::post('/cancelTransaction','Userend\orderController@cancelTransaction')->name('cancelTransaction');
-    Route::post('/successfulTransaction','Userend\orderController@successfulTransaction')->name('successfulTransaction');
-    /* ======================================== SSLCommerz  ================================================ */
-
 //xahid
 
 });
