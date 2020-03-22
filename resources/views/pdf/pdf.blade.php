@@ -27,14 +27,14 @@
         }
     </style>
 </head>
-    <body>
+<body>
 
-        <table width="100%">
+<table width="100%">
     <tr >
         <td valign="left" >
             <strong style="font-size: 15px">Invoice No : {{$order->invoice_id}}</strong> <br>
             <?php
-            $time = date('d M,Y,g:i a',strtotime($order->created_at) + 6 * 3600);
+            $time = date('d M,Y,g:i a',strtotime($order->created_at));
             ?>
             <b style={{--"color: #a0aec0;"--}}> {{$time}}</b><br><br>
             <strong  > Bill to </strong> <br>
@@ -49,17 +49,26 @@
             <br>
         </td>
         <td align="right">
-            <img  src="assets/vendor/images/brands/{{ Auth::user()->brands->image }}" width="90" height="50"    >
-            <br><br>
-            {{ Auth::user()->brands->name }}  <br>
-            {{ Auth::user()->brands->address }}  <br>
-            {{ Auth::user()->brands->phone }}  <br>
-            {{ Auth::user()->brands->email }}  <br>
+            @if(Auth::user()->type == 'Customer')
+                <img  src="assets/vendor/images/brands/nobin.png" width="90" height="50"    >
+                <br><br>
+                NOBIN BANGLADESH  <br>
+                Sector 10 , Road 13 , Uttra ,Dhaka -1208  <br>
+                01552987439 01918643735  <br>
+                nobinbangladesh24@gmail.com  <br>
+            @else
+                <img  src="assets/vendor/images/brands/{{ Auth::user()->brands->image }}" width="90" height="50"    >
+                <br><br>
+                {{ Auth::user()->brands->name }}  <br>
+                {{ Auth::user()->brands->address }}  <br>
+                {{ Auth::user()->brands->phone }}  <br>
+                {{ Auth::user()->brands->email }}  <br>
+            @endif
         </td>
     </tr>
 </table>
-        <br/>
-        <table width="100%">
+<br/>
+<table width="100%">
     <thead style="background-color: #464f47; color: #fff;">
     <tr align="center" >
         <th colspan="2" >ITEM & DESCRIPTION</th>
@@ -76,7 +85,7 @@
         <td align="left" > <strong># {{$i+1}} </strong>
             @if(!empty($products[$i]->image))
                 <?php
-                    $imgarray = json_decode($products[$i]->image);
+                $imgarray = json_decode($products[$i]->image);
                 ?>
                 <img  src="assets/vendor/images/products/{{$imgarray[0]->image}}" width="33" height="25"    >
             @endif
@@ -84,24 +93,24 @@
         </td>
         <td {{--style="color: #a0aec0;"--}} align="center" >
             @if($offer_type[$i] === 'Discount')
-               {{-- Actual Price : ৳ {{number_format($products[$i]->price)}} <br>--}}
+                {{-- Actual Price : ৳ {{number_format($products[$i]->price)}} <br>--}}
                 Discount : {{$offer_percentage[$i]}} %
             @endif
             @if($offer_type[$i] === 'Buy one get one')
                 @if(!empty($free_products[$i]->image))
                     <?php
-                        $imgarray2 = json_decode($free_products[$i]->image);
-                        ?>
-                          {{--<img  src="assets/vendor/images/products/{{$imgarray2[0]->image}}" width="33" height="25"    >--}}
+                    $imgarray2 = json_decode($free_products[$i]->image);
+                    ?>
+                    {{--<img  src="assets/vendor/images/products/{{$imgarray2[0]->image}}" width="33" height="25"    >--}}
                 @endif
                 <b>   Free   <a   href="{{route('productManagementEdit',Crypt::encrypt($free_products[0]->id))}}" title="Click To Edit Product">{{$free_products[0]->name}}</a> </b>
             @endif
         </td>
         <td align="center">
             @if($offer_type[$i] === 'Discount')
-               <del> {{number_format($products[$i]->price)}} </del>
+                <del> {{number_format($products[$i]->price)}} </del>
                 {{number_format($selling_price[$i])}} BDT
-             @else
+            @else
                 {{number_format($selling_price[$i])}} BDT
             @endif
         </td>
@@ -117,35 +126,39 @@
 <table align="right"  width="30%" >
     <tr>
         <td ><span  class="bfont">Sub-Total</span></td>
-        <td ><span  class="bfont">{{number_format($order->subtotal)}} BDT</span></td>
+        <td ><span  class="bfont">{{number_format($order->payments->amount)}} BDT</span></td>
     </tr>
-    <tr>
+    {{--<tr>
         <td ><span  class="bfont">Delivery Charge</span></td>
         <td ><span  class="bfont">{{number_format($order->total - $order->subtotal)}} BDT</span></td>
-    </tr>
+    </tr>--}}
     <tr>
         <td ><span  class="bfont">Paid-Total</span></td>
-        <td  class="gray"><span  class="bfont">{{number_format($order->total)}} BDT</span></td>
+        <td  class="gray"><span  class="bfont">{{number_format($order->payments->amount)}} BDT</span></td>
     </tr>
     <hr width="99%" align="left" >
 </table>
-        <table align="left"  width="70%" style="padding: 50px;" >
-            <tr>
-                <td colspan="2"><b>Payment Details</b></td>
-            </tr>
-            <tr>
-                <td align="left" width="20%" >Method</td>
-                <td align="left" width="50%"  >Bkash-{{$order->payments->method}}</td>
-            </tr>
-            <tr>
-                <td align="left" width="20%" >Trx Id</td>
-                <td align="left" width="50%"  ><b> &nbsp;{{$order->payments->trx_id}}</b></td>
-            </tr>
-            <tr>
-                <td align="left" width="20%" >Bkash Number</td>
-                <td align="left" width="50%"  ><b> &nbsp;{{$order->payments->sender_mobile_number}}</b></td>
-            </tr>
-        </table>
+<table align="left"  width="70%" style="padding: 50px;" >
+    <tr>
+        <td colspan="2"><b>Payment Details</b></td>
+    </tr>
+    <tr>
+        <td align="left" width="20%" >Payment Method</td>
+        <td align="left" width="50%"  >{{$order->payments->card_type}}</td>
+    </tr>
+    <tr>
+        <td align="left" width="20%" >Status</td>
+        <td align="left" width="50%"  ><b> &nbsp;{{$order->payments->status}}</b></td>
+    </tr>
+    <tr>
+        <td align="left" width="20%" >Banking</td>
+        <td align="left" width="50%"  ><b> &nbsp;{{$order->payments->card_issuer}}</b></td>
+    </tr>
+    <tr>
+        <td align="left" width="20%" >Card No</td>
+        <td align="left" width="50%"  ><b> &nbsp;{{$order->payments->card_no}}</b></td>
+    </tr>
+</table>
 
 
 </body>

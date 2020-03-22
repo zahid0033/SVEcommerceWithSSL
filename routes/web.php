@@ -71,6 +71,7 @@ Route::get('/customer/password/reset/{token}', 'CustomerAuth\ResetPasswordContro
 
     Route::get('/myOrder/{id}', 'Userend\orderController@myOrder')->name('pages.myOrder');
     Route::get('/confirmedOrderDetails/{id}', 'Userend\orderController@confirmedOrderDetails')->name('confirmedOrderDetails');
+    Route::get('/generateInvoice/{id}', 'Userend\orderController@generateInvoice')->name('generateInvoice_customer');
 //xahid
 
 });

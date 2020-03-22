@@ -66,7 +66,10 @@
                             <td>{{ $order->payments->amount }}</td>
                             <td>{{date('g:i a , d M Y',strtotime($order->created_at) )}}</td>
 {{--                            <td>{{ $order->created_at }}</td>--}}
-                            <td><a class="label label-info" href="{{ route('confirmedOrderDetails',Crypt::encrypt($order->id)) }}"><i class="fa fa-arrow-right" aria-hidden="true"></i></a></td>
+                            <td>
+                                <a class="label label-info" href="{{ route('confirmedOrderDetails',Crypt::encrypt($order->id)) }}"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                                <a class="label label-success"  href="{{route('generateInvoice_customer',Crypt::encrypt($order->id))}}" title="Generate Invoice"><i class="fa fa-file-text" aria-hidden="true"></i> </a>
+                            </td>
                         </tr>
 
                         @php $i ++ @endphp

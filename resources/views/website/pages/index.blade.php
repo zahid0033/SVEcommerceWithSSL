@@ -9,12 +9,12 @@
             <div><img style="width: 100%" src="{{ asset('assets/website/images/image_wall.jpg') }}" alt=""></div>
         </div>
     </section>
-    <section id="why_us" style="margin: 50px 0">
-        <div class="container">
-            <h1 class="text-center mt-5 mb-3">Our Achievements</h1>
-            <p class="text-center">Nobin Bangladesh was established by Mr. Anamul Hasan in 2001, is a fast growing Mobile Phone brand in Bangladesh and has been operating its business successfully for 19 years in the name of MOHAMMADIA TELECOM.in recent we have now NOBIN BANGLADESH is a sister concern of MOHAMMADIA TELECOM and workforce of  more than 50. Main products of Nobin Bangladesh are Television, Cellular Phone, Watch, Electrical Fan, LED Bulb. Nobin Bangladesh is the manufacturer and seller in the relevant industry and has gained high reputation in terms of its unbeatable capability for producing Electrical and Electronics goods in the most competitive way in aspect of quality, cost, design and innovation.</p>
-        </div>
-    </section>
+{{--    <section id="why_us" style="margin: 50px 0">--}}
+{{--        <div class="container">--}}
+{{--            <h1 class="text-center mt-5 mb-3">Our Achievements</h1>--}}
+{{--            <p class="text-center">Nobin Bangladesh was established by Mr. Anamul Hasan in 2001, is a fast growing Mobile Phone brand in Bangladesh and has been operating its business successfully for 19 years in the name of MOHAMMADIA TELECOM.in recent we have now NOBIN BANGLADESH is a sister concern of MOHAMMADIA TELECOM and workforce of  more than 50. Main products of Nobin Bangladesh are Television, Cellular Phone, Watch, Electrical Fan, LED Bulb. Nobin Bangladesh is the manufacturer and seller in the relevant industry and has gained high reputation in terms of its unbeatable capability for producing Electrical and Electronics goods in the most competitive way in aspect of quality, cost, design and innovation.</p>--}}
+{{--        </div>--}}
+{{--    </section>--}}
     <section>
         <div class="section">
             <!-- container -->
@@ -104,12 +104,19 @@
         <div class="section section-grey">
             <!-- container -->
             <div class="container">
+                <!-- section title -->
+                <div class="col-md-12">
+                    <div class="section-title">
+                        <h2 class="title">Our Best Categories</h2>
+                    </div>
+                </div>
+                <!-- section title -->
                 <!-- row -->
                 <div class="row">
                     <!-- banner -->
                     <div class="col-md-8">
                             <a  href="{{ route('pages.subCatgProductSearch',Crypt::encrypt($categories[0]->id) ) }}" class="banner banner-1">
-                                <img src="{{ asset('assets/vendor/images/categories') }}/{{ $categories[0]->image }}" alt="">
+                                <img src="{{ asset('assets/vendor/images/categories') }}/{{ $categories[0]->image }}" alt="" style="height: 600px">
                                 <div class="banner-caption text-center">
                                     <h1 class="primary-color">HOT DEAL<br><span class="white-color font-weak">{{$categories[0]->name}}</span></h1>
                                     {{--                                <button class="primary-btn">Shop Now</button>--}}
@@ -121,7 +128,7 @@
                     <!-- banner -->
                     <div class="col-md-4 col-sm-6">
                         <a class="banner banner-1" href="{{ route('pages.subCatgProductSearch',Crypt::encrypt($categories[1]->id) ) }}">
-                            <img src="{{ asset('assets/vendor/images/categories') }}/{{ $categories[1]->image }}" alt="">
+                            <img src="{{ asset('assets/vendor/images/categories') }}/{{ $categories[1]->image }}" alt="" style="height: 280px">
                             <div class="banner-caption text-center">
                                 <h2 class="white-color">{{$categories[1]->name}}</h2>
                             </div>
@@ -132,7 +139,7 @@
                     <!-- banner -->
                     <div class="col-md-4 col-sm-6">
                         <a class="banner banner-1" href="{{ route('pages.subCatgProductSearch',Crypt::encrypt($categories[2]->id) ) }}">
-                            <img src="{{ asset('assets/vendor/images/categories') }}/{{ $categories[2]->image }}" alt="">
+                            <img src="{{ asset('assets/vendor/images/categories') }}/{{ $categories[2]->image }}" alt="" style="height: 280px">
                             <div class="banner-caption text-center">
                                 <h2 class="white-color">{{$categories[2]->name}}</h2>
                             </div>

@@ -7,9 +7,7 @@
                     registered at House# 17 Road# Horonath Ghosh Road, PS# Lalbagh,PO# Posta, Dhaka-1211, Bangladesh.And. Please visit our page www.nobinbangladesh.com or you
                     can also call at “01407019955” “01407019944” and email at “nobinbangladesh24@gmail.com”.</p>
                 <p><b>Definition</b></p>
-                <p> The terms &amp; conditions of NOBIN BANGLADESH website are applicable to the “Users”
-                    of the site (which are referred to as “Adult” (Above 18 or Equal 18). Here, Organization
-                    NOBIN BANGLADESH is presented as Refer the User information as “personal details”.</p>
+                <p> The terms &amp; conditions of NOBIN BANGLADESH website are applicable to the “Users” of the site . Here, Organization NOBIN BANGLADESH is presented as Refer the User information as “personal details”.</p>
                 <br>
                 <p><b>Create your Account</b></p>
                 <p>You can create your account at NOBIN BANGLADESH to Order any Electronics Goods.
@@ -21,13 +19,11 @@
                 <br>
                 <p><b>Registration: To register at our website, you must be</b></p>
                 <ul style="list-style: square;" class="terms">
-                    <li>18 years old or above and sign up with your valid email address &amp; your exact details.</li>
                     <li>Choose a username according to our rules, like 1 uppercase, lowercase, numbers, and Smileys maximum 8 characters.</li>
                     <li>If you provide wrong information we have the authority to suspend your user account without any prior notice.</li>
                     <li>You are requested to keep your account username and password confidential to yourself.</li>
                     <li>If you find that anyone else is using your account, inform us about the fact by contacting our support team.</li>
                     <li>You have full authority to share your credentials with others, but we will not be held liable for it.</li>
-                    <li>You can stop/ block your account whenever you want.</li>
                 </ul>
                 <br>
                 <p><b>Users who are purchasing Product from NOBIN BANGLADESH are referred to as “Buyer/Customer/Consumer”</b></p>
@@ -49,7 +45,7 @@
                 <p>When you purchase any Product, you are agreeing to pay the fees exactly as it is on the website through Mobile Banking, Visa card, Mobile Wallet or Mastercard. But if your payment fails because of any illegal or unauthorized activity, you agree to pay the corresponding fee within the next 7 days OF CLAIM FROM NOBIN BANGLADESH.</p>
                 <br>
                 <p><b>Refund</b></p>
-                <p>One’s Purchase then 72 Hours’ time to inform NOBIN BANGLADESH Contact Person for refund. for need refund analyzing everything and Confirm Right and Reserved by NOBIN BANGLADESH you can contact support team, we will check and take action according to the refund policy. As per our agreement, refund credit in case of those issues and after review within next 30 days, NOBIN BANGLADESH will refund the credit. But if we find that you are misusing the Refund Policy, we have full right to suspend your account without any prior notice. </p>
+                <p>One’s Purchase then 72 Hours’ time to inform NOBIN BANGLADESH Contact Person for refund. for need refund analyzing everything and Confirm Right and Reserved by NOBIN BANGLADESH you can contact support team, we will check and take action according to the refund policy. As per our agreement, refund credit in case of those issues and after review within next 30 days, NOBIN BANGLADESH will refund the credit of 10% from your amount. But if we find that you are misusing the Refund Policy, we have full right to suspend your account without any prior notice. </p>
                 <br>
                 <p><b>Content Disclaimer</b></p>
                 <p>The content on the Sites, including all text, information, software, technology, data, logos, marks, designs, text, graphics, pictures, audio and video files, other data or copyrightable materials or content, and their selection and arrangement, is referred to herein as &quot;Content</p>
