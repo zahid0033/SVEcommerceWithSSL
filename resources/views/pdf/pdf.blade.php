@@ -49,7 +49,8 @@
             <br>
         </td>
         <td align="right">
-            <img  src="assets/vendor/images/brands/{{ Auth::user()->brands->image }}" width="90" height="50"    >
+            {{--<img  src="assets/vendor/images/brands/{{ Auth::user()->brands->image }}" width="90" height="50"    >--}}
+            <img  src="assets/vendor/images/brands/nobin.png" width="90" height="50"    >
             <br><br>
             {{ Auth::user()->brands->name }}  <br>
             {{ Auth::user()->brands->address }}  <br>
