@@ -167,10 +167,10 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-12" style="padding-top: 2em">
                                     <div class="form-check">
-                                        <input type="checkbox" name="checkbox" class="form-check-input" id="mycheckbox" style="width: 2em;height: 2em">
-                                        <label class="form-check-label" for="exampleCheck1" style="font-size: 2em">I agree with the terms and conditions</label>
+                                        <input type="checkbox" name="checkbox" class="form-check-input" id="mycheckbox" style="width: 1.5em;height: 1.5em">
+                                        <label class="form-check-label" for="exampleCheck1" style="font-size: 1.8em">I agree with the terms and conditions</label>
                                     </div>
                                     @if( $errors->has('checkbox') )
                                         <span style="color:red">{{ $errors->first('checkbox') }}</span>
