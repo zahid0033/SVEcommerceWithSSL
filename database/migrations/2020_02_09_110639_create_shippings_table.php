@@ -21,7 +21,7 @@ class CreateShippingsTable extends Migration
             $table->string('address')->nullable();
             $table->string('city')->nullable();
             $table->string('phone')->nullable();
-            $table->unsignedInteger('shipping_tracking_number')->nullable();
+            $table->unsignedBigInteger('shipping_tracking_number')->nullable();
             $table->string('courier_name')->nullable();
             $table->date('shipping_date')->nullable();
             $table->string('slug')->nullable();
