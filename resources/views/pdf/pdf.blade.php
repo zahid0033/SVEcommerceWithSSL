@@ -49,13 +49,21 @@
             <br>
         </td>
         <td align="right">
-            {{--<img  src="assets/vendor/images/brands/{{ Auth::user()->brands->image }}" width="90" height="50"    >--}}
-            <img  src="assets/vendor/images/brands/nobin.png" width="90" height="50"    >
-            <br><br>
-            {{ Auth::user()->brands->name }}  <br>
-            {{ Auth::user()->brands->address }}  <br>
-            {{ Auth::user()->brands->phone }}  <br>
-            {{ Auth::user()->brands->email }}  <br>
+            @if(Auth::user()->type == 'Customer')
+                <img  src="assets/vendor/images/brands/nobin.png" width="90" height="50"    >
+                <br><br>
+                NOBIN BANGLADESH  <br>
+                Sector 10 , Road 13 , Uttra ,Dhaka -1208  <br>
+                01552987439 01918643735  <br>
+                nobinbangladesh24@gmail.com  <br>
+            @else
+                <img  src="assets/vendor/images/brands/{{ Auth::user()->brands->image }}" width="90" height="50"    >
+                <br><br>
+                {{ Auth::user()->brands->name }}  <br>
+                {{ Auth::user()->brands->address }}  <br>
+                {{ Auth::user()->brands->phone }}  <br>
+                {{ Auth::user()->brands->email }}  <br>
+            @endif
         </td>
     </tr>
 </table>
