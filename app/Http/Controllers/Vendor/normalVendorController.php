@@ -154,7 +154,7 @@ class normalVendorController extends Controller
         return back()->with('msg','✔ Category Updated');
     }
     // ************************ page = category_management #
-    // ************************ page = brand_management
+    // ************************ page = ~brand_management
     public function brandManagementView()
     {
         $brands = Brand::where('vendor_id',Auth::user()->id)->paginate(6);
