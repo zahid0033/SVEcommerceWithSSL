@@ -34,7 +34,7 @@
         <td valign="left" >
             <strong style="font-size: 15px">Invoice No : {{$order->invoice_id}}</strong> <br>
             <?php
-            $time = date('d M,Y,g:i a',strtotime($order->created_at) + 6 * 3600);
+            $time = date('d M,Y,g:i a',strtotime($order->created_at));
             ?>
             <b style={{--"color: #a0aec0;"--}}> {{$time}}</b><br><br>
             <strong  > Bill to </strong> <br>
