@@ -117,15 +117,15 @@
 <table align="right"  width="30%" >
     <tr>
         <td ><span  class="bfont">Sub-Total</span></td>
-        <td ><span  class="bfont">{{number_format($order->subtotal)}} BDT</span></td>
+        <td ><span  class="bfont">{{number_format($order->payments->amount)}} BDT</span></td>
     </tr>
-    <tr>
+    {{--<tr>
         <td ><span  class="bfont">Delivery Charge</span></td>
         <td ><span  class="bfont">{{number_format($order->total - $order->subtotal)}} BDT</span></td>
-    </tr>
+    </tr>--}}
     <tr>
         <td ><span  class="bfont">Paid-Total</span></td>
-        <td  class="gray"><span  class="bfont">{{number_format($order->total)}} BDT</span></td>
+        <td  class="gray"><span  class="bfont">{{number_format($order->payments->amount)}} BDT</span></td>
     </tr>
     <hr width="99%" align="left" >
 </table>
@@ -134,16 +134,20 @@
                 <td colspan="2"><b>Payment Details</b></td>
             </tr>
             <tr>
-                <td align="left" width="20%" >Method</td>
-                <td align="left" width="50%"  >Bkash-{{$order->payments->method}}</td>
+                <td align="left" width="20%" >Payment Method</td>
+                <td align="left" width="50%"  >{{$order->payments->card_type}}</td>
             </tr>
             <tr>
-                <td align="left" width="20%" >Trx Id</td>
-                <td align="left" width="50%"  ><b> &nbsp;{{$order->payments->trx_id}}</b></td>
+                <td align="left" width="20%" >Status</td>
+                <td align="left" width="50%"  ><b> &nbsp;{{$order->payments->status}}</b></td>
             </tr>
             <tr>
-                <td align="left" width="20%" >Bkash Number</td>
-                <td align="left" width="50%"  ><b> &nbsp;{{$order->payments->sender_mobile_number}}</b></td>
+                <td align="left" width="20%" >Banking</td>
+                <td align="left" width="50%"  ><b> &nbsp;{{$order->payments->card_issuer}}</b></td>
+            </tr>
+            <tr>
+                <td align="left" width="20%" >Card No</td>
+                <td align="left" width="50%"  ><b> &nbsp;{{$order->payments->card_no}}</b></td>
             </tr>
         </table>
 

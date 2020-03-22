@@ -46,10 +46,10 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:customers'],
+            'phone' => ['required','max:13','unique:customers'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
-
     /**
      * Create a new user instance after a valid registration.
      *
@@ -61,13 +61,15 @@ class RegisterController extends Controller
         return Customer::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'phone' => $data['phone'],
             'gender' => $data['gender'],
+            'address' => $data['address'],
+            'city' => $data['city'],
             'status' => 'Active',
             'type' => 'Customer',
             'password' => Hash::make($data['password']),
         ]);
     }
-
     public function showRegistrationForm()
     {
         return view('customerAuth.register');
