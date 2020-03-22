@@ -61,4 +61,9 @@ class websiteController extends Controller
 
         return back()->with('msg','✔ We will contact though your Phone or Email');
     }
+
+    public function termsandconditions()
+    {
+        return view('website.pages.termsandconditions');
+    }
 }

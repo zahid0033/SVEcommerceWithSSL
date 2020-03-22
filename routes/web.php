@@ -22,6 +22,7 @@ Route::post('/ipn', 'Userend\SslCommerzPaymentController@ipn');
 Route::get('/','website\websiteController@index')->name('website.home');
 Route::get('/about_us','website\websiteController@about')->name('website.about');
 Route::get('/offers','website\websiteController@offers')->name('website.offers');
+Route::get('/termsandconditions','website\websiteController@termsandconditions')->name('website.termsandconditions');
 Route::get('/contact_us','website\websiteController@contact_us')->name('website.contact');
 Route::post('/submitContact','website\websiteController@submitContact')->name('website.submitContact');
 /* ====================================== Website end  ============================================== */
