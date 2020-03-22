@@ -8,11 +8,7 @@
     border-radius: 0px;
 }
 .slick-slide img{
-<<<<<<< HEAD
     /*height: 550px;*/
-=======
-    /*height: 500px;*/
->>>>>>> master
 }
 .card-img-top{
     width: 100%;
@@ -26,7 +22,7 @@
     box-shadow: 5px 5px 7px #8b8888;
 }
 #we_deliver{
-    background:#e30505;
+    background:linear-gradient(45deg, red, transparent);
     margin: 70px 0;
     padding: 33px 0;
 }

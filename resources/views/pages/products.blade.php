@@ -166,8 +166,8 @@
                                     </div>
                                 </div>
                             </div>
-                    @endforeach
-                    <!-- /Product Single -->
+                        @endforeach
+                        <!-- /Product Single -->
                     </div>
 
                     <!-- /row -->

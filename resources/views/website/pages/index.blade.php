@@ -7,12 +7,6 @@
             <div><img style="width: 100%" src="{{ asset('assets/website/images/banner6.jpg') }}" alt=""></div>
             <div><img style="width: 100%" src="{{ asset('assets/website/images/banner5.jpg') }}" alt=""></div>
             <div><img style="width: 100%" src="{{ asset('assets/website/images/image_wall.jpg') }}" alt=""></div>
-{{--            <div>--}}
-{{--                <video width="100%"  height="490px" autoplay loop>--}}
-{{--                    <source src="{{ asset('assets/website/images/banner5.mp4') }}" type="video/mp4">--}}
-{{--                    Your browser does not support the video tag.--}}
-{{--                </video>--}}
-{{--            </div>--}}
         </div>
     </section>
     <section id="why_us" style="margin: 50px 0">
@@ -36,256 +30,74 @@
                     <!-- section title -->
 
                     <!-- Product Single -->
-                    <div class="col-md-3 col-sm-6 col-xs-6">
-                        <div class="product product-single">
-                            <div class="product-thumb">
-                                <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-                                <img src="http://localhost/ecommerce_setcol/public/assets/img/product01.jpg" alt="">
-                            </div>
-                            <div class="product-body">
-                                <h3 class="product-price">$32.50</h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-o empty"></i>
+                    @foreach($products as $product)
+                        <div class="col-md-3 col-sm-6 col-xs-6">
+                            <div class="product product-single">
+                                <div class="product-thumb">
+                                    <div class="product-label">
+                                        @php
+                                            date_default_timezone_set("Asia/Dhaka");
+                                            $now = time(); // or your date as well
+                                            $your_date = strtotime( $product->created_at );
+                                            $datediff = $now - $your_date;
+                                            $days_left = round($datediff / (60 * 60 * 24));
+                                        @endphp
+                                        @if($days_left <= 30)
+                                            <span>New</span>
+                                        @endif
+                                        @if($product->offer_id != null && $product->offer_id == $product->offers->id)
+                                            @if($product->offers->type == "Discount")
+                                                <span class="sale">- {{$product->offers->offer_percentage}}%</span>
+                                            @elseif($product->offers->type == "Buy one get one")
+                                                <span class="sale" style="background: red">Buy 1 Get 1</span>
+                                            @endif
+                                        @endif
+
+                                    </div>
+
+                                    @php
+                                        $imgarray = json_decode($product->image);
+                                    @endphp
+                                    <img src="{{ asset('assets/vendor/images/products') }}/{{$imgarray[0]->image}}" alt="">
                                 </div>
-                                <h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
-                                <div class="product-btns">
-                                    <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
-                                    <button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
-                                    <button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+                                <div class="product-body">
+                                    @if($product->offer_id != null && $product->offer_id == $product->offers->id)
+                                        @if($product->offers->type == "Discount")
+                                            <h3 class="product-price">৳ {{ number_format($product->offer_price) }} <del class="product-old-price">৳ {{ number_format($product->price) }}</del></h3>
+                                        @elseif($product->offers->type == "Buy one get one")
+                                            @php
+                                                $main_product_id = json_decode($product->offers->product_ids);
+                                                $free_product_id = json_decode($product->offers->free_product_ids);
+                                            @endphp
+                                            @for($i = 0; $i < count($main_product_id) ; $i++)
+                                                @if($main_product_id[$i]->id == $product->id)
+                                                    @for($j = 0; $j < count($free_product_id) ; $j++)
+                                                        @php
+                                                            $free_product[$j] = \App\Product::find($free_product_id[$j]->id);
+                                                        @endphp
+                                                        <h3 class="product-price">৳ {{ number_format($product->price) }} <span class="product-old-price">Get {{ $free_product[$j]->name }} Free</span></h3>
+                                                    @endfor
+                                                @endif
+                                            @endfor
+                                        @endif
+                                    @elseif($product->offer_id == null)
+                                        <h3 class="product-price">৳ {{ number_format($product->price) }}</h3>
+                                    @endif
+
+                                    <h2 class="product-name"><a href="{{ route('pages.single_product',Crypt::encrypt($product->id) ) }}">{{ $product->name }}</a></h2>
+                                    <div class="product-btns text-center">
+                                        <a href="{{ route('pages.single_product',Crypt::encrypt($product->id)  ) }}" class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> See Details </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    @endforeach
                     <!-- /Product Single -->
 
-                    <!-- Product Single -->
-                    <div class="col-md-3 col-sm-6 col-xs-6">
-                        <div class="product product-single">
-                            <div class="product-thumb">
-                                <div class="product-label">
-                                    <span>New</span>
-                                    <span class="sale">-20%</span>
-                                </div>
-                                <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-                                <img src="http://localhost/ecommerce_setcol/public/assets/img/product02.jpg" alt="">
-                            </div>
-                            <div class="product-body">
-                                <h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-o empty"></i>
-                                </div>
-                                <h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
-                                <div class="product-btns">
-                                    <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
-                                    <button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
-                                    <button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /Product Single -->
-
-                    <!-- Product Single -->
-                    <div class="col-md-3 col-sm-6 col-xs-6">
-                        <div class="product product-single">
-                            <div class="product-thumb">
-                                <div class="product-label">
-                                    <span>New</span>
-                                    <span class="sale">-20%</span>
-                                </div>
-                                <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-                                <img src="http://localhost/ecommerce_setcol/public/assets/img/product03.jpg" alt="">
-                            </div>
-                            <div class="product-body">
-                                <h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-o empty"></i>
-                                </div>
-                                <h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
-                                <div class="product-btns">
-                                    <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
-                                    <button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
-                                    <button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /Product Single -->
-
-                    <!-- Product Single -->
-                    <div class="col-md-3 col-sm-6 col-xs-6">
-                        <div class="product product-single">
-                            <div class="product-thumb">
-                                <div class="product-label">
-                                    <span>New</span>
-                                </div>
-                                <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-                                <img src="http://localhost/ecommerce_setcol/public/assets/img/product04.jpg" alt="">
-                            </div>
-                            <div class="product-body">
-                                <h3 class="product-price">$32.50</h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-o empty"></i>
-                                </div>
-                                <h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
-                                <div class="product-btns">
-                                    <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
-                                    <button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
-                                    <button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /Product Single -->
-                </div>
-                <!-- /row -->
-
-                <!-- row -->
-                <div class="row">
-                    <!-- banner -->
-                    <div class="col-md-3 col-sm-6 col-xs-6">
-                        <div class="banner banner-2">
-                            <img src="http://localhost/ecommerce_setcol/public/assets/img/banner15.jpg" alt="">
-                            <div class="banner-caption">
-                                <h2 class="white-color">NEW<br>COLLECTION</h2>
-                                <button class="primary-btn">Shop Now</button>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /banner -->
-
-                    <!-- Product Single -->
-                    <div class="col-md-3 col-sm-6 col-xs-6">
-                        <div class="product product-single">
-                            <div class="product-thumb">
-                                <div class="product-label">
-                                    <span>New</span>
-                                    <span class="sale">-20%</span>
-                                </div>
-                                <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-                                <img src="http://localhost/ecommerce_setcol/public/assets/img/product07.jpg" alt="">
-                            </div>
-                            <div class="product-body">
-                                <h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-o empty"></i>
-                                </div>
-                                <h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
-                                <div class="product-btns">
-                                    <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
-                                    <button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
-                                    <button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /Product Single -->
-
-                    <!-- Product Single -->
-                    <div class="col-md-3 col-sm-6 col-xs-6">
-                        <div class="product product-single">
-                            <div class="product-thumb">
-                                <div class="product-label">
-                                    <span>New</span>
-                                    <span class="sale">-20%</span>
-                                </div>
-                                <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-                                <img src="http://localhost/ecommerce_setcol/public/assets/img/product06.jpg" alt="">
-                            </div>
-                            <div class="product-body">
-                                <h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-o empty"></i>
-                                </div>
-                                <h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
-                                <div class="product-btns">
-                                    <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
-                                    <button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
-                                    <button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /Product Single -->
-
-                    <!-- Product Single -->
-                    <div class="col-md-3 col-sm-6 col-xs-6">
-                        <div class="product product-single">
-                            <div class="product-thumb">
-                                <div class="product-label">
-                                    <span>New</span>
-                                    <span class="sale">-20%</span>
-                                </div>
-                                <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-                                <img src="http://localhost/ecommerce_setcol/public/assets/img/product05.jpg" alt="">
-                            </div>
-                            <div class="product-body">
-                                <h3 class="product-price">$32.50 <del class="product-old-price">$45.00</del></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-o empty"></i>
-                                </div>
-                                <h2 class="product-name"><a href="#">Product Name Goes Here</a></h2>
-                                <div class="product-btns">
-                                    <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
-                                    <button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
-                                    <button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /Product Single -->
                 </div>
                 <!-- /row -->
             </div>
             <!-- /container -->
-        </div>
-    </section>
-    <section id="we_have" style="margin: 50px 0">
-        <div class="container">
-            <h1 class="text-center mt-5 mb-3">Products We Have</h1>
-            <div class="row">
-                @foreach($categories as $category)
-                    <div class="col-md-4 mb-3">
-                        <a href="{{ route('pages.subCatgProductSearch',Crypt::encrypt($category->id) ) }}" target="_blank">
-                            <div class="card" >
-                            <img class="card-img-top p-2" src="{{ asset('assets/vendor/images/categories') }}/{{ $category->image }}" alt="Card image cap">
-                            <div class="card-body">
-                                <p class="card-text text-center"><b>{{ $category->name }}</b></p>
-                            </div>
-                        </div>
-                        </a>
-                    </div>
-                @endforeach
-            </div>
-
         </div>
     </section>
     <section>
@@ -296,22 +108,22 @@
                 <div class="row">
                     <!-- banner -->
                     <div class="col-md-8">
-                        <div class="banner banner-1">
-                            <img src="http://localhost/ecommerce_setcol/public/assets/img/banner13.jpg" alt="">
-                            <div class="banner-caption text-center">
-                                <h1 class="primary-color">HOT DEAL<br><span class="white-color font-weak">Up to 50% OFF</span></h1>
-                                <button class="primary-btn">Shop Now</button>
-                            </div>
-                        </div>
+                            <a  href="{{ route('pages.subCatgProductSearch',Crypt::encrypt($categories[0]->id) ) }}" class="banner banner-1">
+                                <img src="{{ asset('assets/vendor/images/categories') }}/{{ $categories[0]->image }}" alt="">
+                                <div class="banner-caption text-center">
+                                    <h1 class="primary-color">HOT DEAL<br><span class="white-color font-weak">{{$categories[0]->name}}</span></h1>
+                                    {{--                                <button class="primary-btn">Shop Now</button>--}}
+                                </div>
+                            </a>
                     </div>
                     <!-- /banner -->
 
                     <!-- banner -->
                     <div class="col-md-4 col-sm-6">
-                        <a class="banner banner-1" href="#">
-                            <img src="http://localhost/ecommerce_setcol/public/assets/img/banner11.jpg" alt="">
+                        <a class="banner banner-1" href="{{ route('pages.subCatgProductSearch',Crypt::encrypt($categories[1]->id) ) }}">
+                            <img src="{{ asset('assets/vendor/images/categories') }}/{{ $categories[1]->image }}" alt="">
                             <div class="banner-caption text-center">
-                                <h2 class="white-color">NEW COLLECTION</h2>
+                                <h2 class="white-color">{{$categories[1]->name}}</h2>
                             </div>
                         </a>
                     </div>
@@ -319,10 +131,10 @@
 
                     <!-- banner -->
                     <div class="col-md-4 col-sm-6">
-                        <a class="banner banner-1" href="#">
-                            <img src="http://localhost/ecommerce_setcol/public/assets/img/banner12.jpg" alt="">
+                        <a class="banner banner-1" href="{{ route('pages.subCatgProductSearch',Crypt::encrypt($categories[2]->id) ) }}">
+                            <img src="{{ asset('assets/vendor/images/categories') }}/{{ $categories[2]->image }}" alt="">
                             <div class="banner-caption text-center">
-                                <h2 class="white-color">NEW COLLECTION</h2>
+                                <h2 class="white-color">{{$categories[2]->name}}</h2>
                             </div>
                         </a>
                     </div>
@@ -333,6 +145,113 @@
             <!-- /container -->
         </div>
     </section>
+    <section>
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <!-- section title -->
+                <div class="col-md-12">
+                    <div class="section-title">
+                        <h2 class="title">Picked For You</h2>
+                    </div>
+                </div>
+                <!-- section title -->
+
+                <!-- Product Single -->
+                <div class="col-md-3 col-sm-6 col-xs-6">
+                    <div class="product product-single product-hot">
+                        <div class="product-thumb">
+{{--                            <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>--}}
+                            <img src="{{ asset('assets/vendor/images/categories') }}/{{ $categories[0]->image }}" alt="">
+                        </div>
+                        <div class="product-body">
+                            <h2 class="product-name text-center"><a href="#">Televisions</a></h2>
+                            <div class="product-btns text-center">
+                                <button class="primary-btn add-to-cart">Best Sellings</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Product Single -->
+
+                <!-- Product Slick -->
+                <div class="col-md-9 col-sm-6 col-xs-6">
+                    <div class="row">
+                        <div id="product-slick-2" class="">
+                            <!-- Product Single -->
+                            @foreach($tvs as $tv)
+
+                                <div class="col-md-3 col-sm-6 col-xs-6">
+                                    <div class="product product-single">
+                                        <div class="product-thumb">
+                                            <div class="product-label">
+                                                @php
+                                                    date_default_timezone_set("Asia/Dhaka");
+                                                    $now = time(); // or your date as well
+                                                    $your_date = strtotime( $tv->created_at );
+                                                    $datediff = $now - $your_date;
+                                                    $days_left = round($datediff / (60 * 60 * 24));
+                                                @endphp
+                                                @if($days_left <= 30)
+                                                    <span>New</span>
+                                                @endif
+                                                @if($tv->offer_id != null && $tv->offer_id == $tv->offers->id)
+                                                    @if($tv->offers->type == "Discount")
+                                                        <span class="sale">- {{$tv->offers->offer_percentage}}%</span>
+                                                    @elseif($tv->offers->type == "Buy one get one")
+                                                        <span class="sale" style="background: red">Buy 1 Get 1</span>
+                                                    @endif
+                                                @endif
+
+                                            </div>
+
+                                            @php
+                                                $imgarray = json_decode($tv->image);
+                                            @endphp
+                                            <img src="{{ asset('assets/vendor/images/products') }}/{{$imgarray[0]->image}}" alt="">
+                                        </div>
+                                        <div class="product-body">
+                                            @if($tv->offer_id != null && $tv->offer_id == $tv->offers->id)
+                                                @if($tv->offers->type == "Discount")
+                                                    <h3 class="product-price">৳ {{ number_format($tv->offer_price) }} <del class="product-old-price">৳ {{ number_format($tv->price) }}</del></h3>
+                                                @elseif($tv->offers->type == "Buy one get one")
+                                                    @php
+                                                        $main_product_id = json_decode($tv->offers->product_ids);
+                                                        $free_product_id = json_decode($tv->offers->free_product_ids);
+                                                    @endphp
+                                                    @for($i = 0; $i < count($main_product_id) ; $i++)
+                                                        @if($main_product_id[$i]->id == $tv->id)
+                                                            @for($j = 0; $j < count($free_product_id) ; $j++)
+                                                                @php
+                                                                    $free_product[$j] = \App\Product::find($free_product_id[$j]->id);
+                                                                @endphp
+                                                                <h3 class="product-price">৳ {{ number_format($tv->price) }} <span class="product-old-price">Get {{ $free_product[$j]->name }} Free</span></h3>
+                                                            @endfor
+                                                        @endif
+                                                    @endfor
+                                                @endif
+                                            @elseif($tv->offer_id == null)
+                                                <h3 class="product-price">৳ {{ number_format($tv->price) }}</h3>
+                                            @endif
+
+                                            <h2 class="product-name"><a href="{{ route('pages.single_product',Crypt::encrypt($tv->id) ) }}">{{ $tv->name }}</a></h2>
+                                            <div class="product-btns text-center">
+                                                <a href="{{ route('pages.single_product',Crypt::encrypt($tv->id)  ) }}" class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> See Details </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                            <!-- /Product Single -->
+
+                        </div>
+                    </div>
+                </div>
+                <!-- /Product Slick -->
+            </div>
+            <!-- /row -->
+        </div>
+    </section>
 
     @if(!$offers->isEmpty())
         <section id="we_have" style="margin: 50px 0">
@@ -340,12 +259,12 @@
                 <h1 class="text-center mt-5 mb-3">Latest Offers</h1>
                 <div class="row">
                     @foreach($offers as $offer)
-                        <div class="col-md-4 mb-3">
-                            <a href="{{ route('pages.offerSearchByTitle',Crypt::encrypt($offer->id) ) }}" target="_blank">
-                                <div class="card" >
-                                    <img class="card-img-top p-2" src="{{ asset('assets/vendor/images/offers') }}/{{$offer->image}}" alt="Card image cap">
-                                    <div class="card-body">
-                                        <p class="card-text text-center"><b>{{ $offer->title }}</b></p>
+                        <div class="col-md-4 col-sm-6">
+                            <a class="banner banner-1" href="{{ route('pages.offerSearchByTitle',Crypt::encrypt($offer->id) ) }}">
+                                <div class="card">
+                                    <img class="card-img-top p-2" src="{{ asset('assets/vendor/images/offers') }}/{{$offer->image}}" alt="">
+                                    <div class="banner-caption text-center">
+                                        <h2 class="white-color">{{ $offer->title }}</h2>
                                     </div>
                                 </div>
                             </a>
@@ -405,6 +324,7 @@
             </div>
         </div>
     </section>
+
     <script>
         $('#carousel02').owlCarousel({
             rtl:false,
@@ -432,5 +352,6 @@
                 }
             }
         });
+
     </script>
 @endsection

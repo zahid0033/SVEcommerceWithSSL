@@ -17,7 +17,11 @@ class websiteController extends Controller
     {
         $offers = Offer::where('status','!=','Deactive')->get();
         $categories = Category::where('parent_id','!=', null)->take(8)->get();
-        return view('website.pages.index',compact('categories','offers'));
+        $products = Product::all()->take(4);
+        $tvs = Product::whereHas('categories', function ($query) {
+            $query->where('name','LIKE','%'.'Tv'.'%');
+        })->get();
+        return view('website.pages.index',compact('categories','offers','products','tvs'));
     }
 
     public function about()
