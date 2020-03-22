@@ -121,7 +121,7 @@ class SslCommerzPaymentController extends Controller
         $post_data = array();
         $post_data['total_amount'] = str_replace(',', '', Cart::total()); # You cant not pay less than 10
         $post_data['currency'] = "BDT";
-        $post_data['tran_id'] = "NBO_".uniqid(); // tran_id must be unique
+        $post_data['tran_id'] = "NBO".uniqid(); // tran_id must be unique
 
         # CUSTOMER INFORMATION
         $post_data['cus_name'] = Auth::user()->name;

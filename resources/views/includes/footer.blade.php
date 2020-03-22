@@ -10,7 +10,7 @@
                     <!-- footer logo -->
                     <div class="footer-logo">
                         <a class="logo" href="#">
-                            <img src="{{ asset('assets/img/icon/276.gif') }}" alt="">
+                            <img src="{{ asset('assets/website/images/logo/nobinLogo.png') }}" alt="">
                         </a>
                     </div>
                     <!-- /footer logo -->
@@ -73,6 +73,12 @@
             <!-- /footer subscribe -->
         </div>
         <!-- /row -->
+        <hr>
+        <div class="row">
+            <div class="col-md-12">
+                <a target="_blank" href="https://www.sslcommerz.com/" title="SSLCommerz" alt="SSLCommerz"><img style="width:100%;height:auto;" src="https://securepay.sslcommerz.com/public/image/SSLCommerz-Pay-With-logo-All-Size-03.png" /></a>
+            </div>
+        </div>
         <hr>
 
     </div>

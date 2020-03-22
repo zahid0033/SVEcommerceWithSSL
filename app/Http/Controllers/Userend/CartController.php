@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Userend;
 
+use App\Order;
 use App\Temp_Order;
 use Cart;
 use App\Product;
@@ -18,14 +19,14 @@ class CartController extends Controller
 
     public function index(){
 
-        $previous_orders = Temp_Order::where ('customer_id',Auth::user()->id)
-            ->where('status','Due')
+        $previous_orders = Order::where ('customer_id',Auth::user()->id)
+            ->where('status','Pending')
             ->get();
 
 
         if(!$previous_orders->isEmpty()){
             foreach($previous_orders as $previous_order){
-                $cart_products = Temp_Order::find($previous_order->id);
+                $cart_products = Order::find($previous_order->id);
 
                 $cart_product = json_decode($cart_products->product_ids);
                 $quantity = json_decode($cart_products->quantity);
@@ -46,12 +47,11 @@ class CartController extends Controller
                         ]);
                     }
                 }
-                Temp_Order::destroy($previous_order->id);
+                Order::destroy($previous_order->id);
             }
         }
 
         $cart_datas = Cart::content();
-//        dd($cart_datas);
         return view('pages.cart',compact('cart_datas'));
     }
     public function addItem($id){
@@ -63,17 +63,17 @@ class CartController extends Controller
 
             if ($pro->offer_price != null){
                 Cart::add(['id' => $pro->id,
-                           'name' => $pro->name,
-                           'qty' => 1,
-                           'price' => $pro->offer_price,
-                           'weight' => 1,
-                           'options' => ['size' => $pro->size_capacity,
-                                         'image'=>$imgarray[0]->image,
-                                         'offer_type'=> "Discount",
-                                         'offer_percentage'=> $pro->offers->offer_percentage ,
-                                         'free_product'=> null,
-                                         'free_product_id'=> null
-                                         ]]);
+                    'name' => $pro->name,
+                    'qty' => 1,
+                    'price' => $pro->offer_price,
+                    'weight' => 1,
+                    'options' => ['size' => $pro->size_capacity,
+                        'image'=>$imgarray[0]->image,
+                        'offer_type'=> "Discount",
+                        'offer_percentage'=> $pro->offers->offer_percentage ,
+                        'free_product'=> null,
+                        'free_product_id'=> null
+                    ]]);
             }
             else{
                 $main_product_id = json_decode($pro->offers->product_ids);
