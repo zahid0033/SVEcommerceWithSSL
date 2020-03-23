@@ -57,59 +57,10 @@
            </div>
        </div>
         <div class="row">
-            <div class="col-md-12  content-panel " style="overflow: auto"><hr style="border-top: 8px solid #ccc; background: transparent;"><br>
-                @if(!$temp_orders->isEmpty() )
-                    <h1 class="text-center" style="margin: 20px 0">Pending Orders</h1><br>
-                    <div class="table-responsive text-nowrap">
-                        <table class="table table-hover" style="">
-                            <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Invoice Id</th>
-                                <th scope="col">Order Status</th>
-                                <th scope="col">Trx Id</th>
-                                {{--                    <th scope="col">Total Products</th>--}}
-                                <th scope="col">Total</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">View Details</th>
-                            </tr>
-                            </thead>
-                            <tbody>
 
-                            @php $i = 1 @endphp
-                            @foreach($temp_orders as $temp_Order)
-                                {{--@php
-                                    $product_ids = json_decode($temp_Order->product_ids);
-                                @endphp--}}
-                                <tr>
-                                    <td>{{ $i }}</td>
-                                    <td>{{ $temp_Order->invoice_id }}</td>
-                                    <td>
-                                        @if($temp_Order->status == "Cancel")
-                                            {{ $temp_Order->status }}<br>( <span style="color: red"> {{ $temp_Order->reason }} </span> )
-                                        @else
-                                            {{ $temp_Order->status }}
-                                        @endif
-                                    </td>
-                                    <td>{{ $temp_Order->trx_id }}</td>
-                                    {{--                        <td>{{ count($product_ids) }}</td>--}}
-                                    <td>{{ $temp_Order->total }}</td>
-                                    <td>{{ $temp_Order->created_at }}</td>
-                                    <td><a class="label label-info" href="{{ route('temp_order_details',Crypt::encrypt($temp_Order->id)) }}"><i class="fa fa-arrow-right" aria-hidden="true"></i></a></td>
-                                </tr>
-
-                                @php $i ++ @endphp
-                            @endforeach
-
-                            </tbody>
-                        </table>
-                    </div>
-                @endif
-
-            </div>
             <div class="col-md-12  content-panel " style="overflow: auto"><hr style="border-top: 8px solid #ccc; background: transparent;"><br>
                 @if(!$orders->isEmpty())
-                    <h1 class="text-center">Confirmed Orders</h1><br>
+                    <h1 class="text-center"> Orders</h1><br>
                     {{--        successfull orders --}}
                     <div class="table-responsive text-nowrap">
                         <table class="table table-hover">

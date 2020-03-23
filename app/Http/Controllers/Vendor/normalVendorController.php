@@ -791,7 +791,7 @@ class normalVendorController extends Controller
     public function orderShipping(Request $request)
     {
         $request->validate([
-            'shipping_tracking_number' => 'required|max:15',
+            'shipping_tracking_number' => 'required|max:25',
             'courier_name' => 'required|max:150',
             'shipping_date' => 'required',
         ]);
