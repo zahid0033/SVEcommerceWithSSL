@@ -45,7 +45,7 @@ class SslCommerzPaymentController extends Controller
         $offer_percentage = json_encode($offer_percentages);
         $free_product_id = json_encode($free_product_ids);
 
-
+        # validation start
         for ($i=0; $i<count($cart_contents); $i++){
             $pro_id = Product::find($product_ids[$i]);
             $pro_stock = $pro_id->stock;
@@ -96,8 +96,8 @@ class SslCommerzPaymentController extends Controller
 
             # normal validation if new stock is greater than 0 for inputs (end)
         }
+        #  after perfect validation now reduce the product's stock based on cart
         for($i=0; $i<count($cart_contents); $i++){
-            #  after perfect validation now reduce the product's stock based on cart
             $update = Product::find($product_ids[$i]);
             $updated_stock = $update->stock - $quantities[$i];
             if($updated_stock == 0){
@@ -136,18 +136,18 @@ class SslCommerzPaymentController extends Controller
         $post_data['cus_fax'] = "";
 
         # SHIPMENT INFORMATION
-        $post_data['ship_name'] = "NO";
-        $post_data['ship_add1'] = "Dhaka";
-        $post_data['ship_add2'] = "Dhaka";
-        $post_data['ship_city'] = "Dhaka";
-        $post_data['ship_state'] = "Dhaka";
-        $post_data['ship_postcode'] = "1000";
-        $post_data['ship_phone'] = "";
+        $post_data['ship_name'] = "YES";
+        $post_data['ship_add1'] = $request->address;
+        $post_data['ship_add2'] = "N/A";
+        $post_data['ship_city'] = $request->city;
+        $post_data['ship_state'] = "N/A";
+        $post_data['ship_postcode'] = "N/A";
+        $post_data['ship_phone'] = $request->phone;
         $post_data['ship_country'] = "Bangladesh";
 
         $post_data['shipping_method'] = "NO";
-        $post_data['product_name'] = "Computer";
-        $post_data['product_category'] = "Goods";
+        $post_data['product_name'] = "N/A";
+        $post_data['product_category'] = "N/A";
         $post_data['product_profile'] = "physical-goods";
 
         # OPTIONAL PARAMETERS
@@ -155,6 +155,17 @@ class SslCommerzPaymentController extends Controller
         $post_data['value_b'] = "ref002";
         $post_data['value_c'] = "ref003";
         $post_data['value_d'] = "ref004";
+
+        # CART PARAMETERS
+        for($i=0; $i<count($cart_contents); $i++){
+            $cart_pro_id = Product::find($product_ids[$i]);
+            $cart[] = array("product"=>$cart_pro_id->name,"quantity"=>$quantities[$i],"amount"=> $selling_prices[$i]);
+        }
+        $post_data['cart'] = json_encode($cart);
+        $post_data['product_amount'] = str_replace(',', '', Cart::total());
+        $post_data['vat'] = "0";
+        $post_data['discount_amount'] = "0";
+        $post_data['convenience_fee'] = "0";
 
         #Before  going to initiate the payment order status need to insert or update as Pending.
         # shipping address start
@@ -388,8 +399,8 @@ class SslCommerzPaymentController extends Controller
                 $quantities[] = $cart_content->qty;
             }
 
+            # product quantity increase after transaction failed
             for ($i=0; $i<count($cart_contents); $i++){
-                # product quantity increase after transaction failed
                 $product_id = $product_ids[$i];
                 $product_qty = $quantities[$i];
                 $update = Product::find($product_id);
@@ -404,8 +415,8 @@ class SslCommerzPaymentController extends Controller
                         'stock' => $new_stock,
                     ]);
                 }
-                # product quantity increase after transaction failed(end)
             }
+            # product quantity increase after transaction failed(end)
 
             Cart::destroy();
             return redirect()->route('pages.myOrder',Crypt::encrypt(Auth::user()->id)  )->with('msg','❎ Transaction Failed');
@@ -581,6 +592,33 @@ class SslCommerzPaymentController extends Controller
                         'payment_id' => $payment->id,
                         'status' => 'Failed'
                     ]);
+
+                    # product amount increase after failure
+                    $previous_order = Order::where('invoice_id',$tran_id)->first();
+
+
+                    $cart_products = Order::find($previous_order->id);
+
+                    $cart_product = json_decode($cart_products->product_ids);
+                    $quantity = json_decode($cart_products->quantity);
+
+                    for($i = 0; $i < count($cart_product) ; $i++){
+                        $pro_id = $cart_product[$i];
+                        $quanty = $quantity[$i];
+                        $updates = Product::find($pro_id);
+                        $new_stock = $updates->stock + $quanty;
+                        if($updates->stock == 0){
+                            $updates->update([
+                                'stock' => $new_stock,
+                                'status' => "Available",
+                            ]);
+                        }elseif ($updates->stock > 0){
+                            $updates->update([
+                                'stock' => $new_stock,
+                            ]);
+                        }
+                    }
+                    # product amount increase after failure (end)
 
                     echo "validation Fail";
                 }

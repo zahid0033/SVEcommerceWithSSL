@@ -52,6 +52,7 @@
                         <li><a href="{{ route('website.about') }}">About Us</a></li>
                         <li><a href="{{ route('website.contact') }}">Contact us</a></li>
                         <li><a href="{{ route('website.termsandconditions') }}">Terms and Conditions</a></li>
+                        <li><a href="{{ route('website.termsandconditions') }}/#refund">Refund</a></li>
                     </ul>
                 </div>
             </div>

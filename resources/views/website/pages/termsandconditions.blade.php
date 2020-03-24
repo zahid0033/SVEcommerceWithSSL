@@ -2,6 +2,7 @@
 @section('content')
     <div class="row">
         <div class="container">
+            <h1 class="text-center">Terms and Conditions</h1>
             <div class="com-md-12">
                 <p>NOBIN BANGLADESH is an E-COMMERCE Business Sites of Electronics Goods Seller is owned and operated in Bangladeshi Marketplace. Our office is physically
                     registered at House# 17 Road# Horonath Ghosh Road, PS# Lalbagh,PO# Posta, Dhaka-1211, Bangladesh.And. Please visit our page www.nobinbangladesh.com or you
@@ -34,7 +35,7 @@
                     <li>Please phone our customer advisor to confirm your order and you can also knock us for support.</li>
                 </ul>
                 <br>
-                <p><b>NOBIN BANGLADESH: On our platform. “Instructors” are the authorized license holders of their respective Business.</b></p>
+
                 <p><b>Product Pricing</b></p>
                 <p>Product prices are set based on NOBIN BANGLADESH demand, promotional policies and services; sometimes we may offer discounts on the basis of a situation or an event for a specific span of time.</p>
                 <br>
@@ -44,8 +45,8 @@
                 <p><b>Payment</b></p>
                 <p>When you purchase any Product, you are agreeing to pay the fees exactly as it is on the website through Mobile Banking, Visa card, Mobile Wallet or Mastercard. But if your payment fails because of any illegal or unauthorized activity, you agree to pay the corresponding fee within the next 7 days OF CLAIM FROM NOBIN BANGLADESH.</p>
                 <br>
-                <p><b>Refund</b></p>
-                <p>One’s Purchase then 72 Hours’ time to inform NOBIN BANGLADESH Contact Person for refund. for need refund analyzing everything and Confirm Right and Reserved by NOBIN BANGLADESH you can contact support team, we will check and take action according to the refund policy. As per our agreement, refund credit in case of those issues and after review within next 30 days, NOBIN BANGLADESH will refund the credit of 10% from your amount. But if we find that you are misusing the Refund Policy, we have full right to suspend your account without any prior notice. </p>
+                <p id="refund"><b>Refund</b></p>
+                <p>One’s Purchase then 72 Hours’ time to inform NOBIN BANGLADESH Contact Person for refund. for need refund analyzing everything and Confirm Right and Reserved by NOBIN BANGLADESH you can contact support team, we will check and take action according to the refund policy. As per our agreement, refund credit in case of those issues and after review within next 30 days, NOBIN BANGLADESH will refund the credit of 90% from your product amount. But if we find that you are misusing the Refund Policy, we have full right to suspend your account without any prior notice. </p>
                 <br>
                 <p><b>Content Disclaimer</b></p>
                 <p>The content on the Sites, including all text, information, software, technology, data, logos, marks, designs, text, graphics, pictures, audio and video files, other data or copyrightable materials or content, and their selection and arrangement, is referred to herein as &quot;Content</p>
@@ -111,9 +112,9 @@
                     <li><a href="https://nobinbangladesh.com/">www.nobinbangladesh.com</a></li>
                     <li>nobinbangladesh24@gmail.com</li>
                     <li>House#17 , Road# Horonath Ghosh Road, PS# Lalbagh, PO# Posta, Dhaka - 1211, Bangladesh.</li>
+                    <li>01407019955 , 01407019944</li>
                 </ul>
             </div>
         </div>
     </div>
 @endsection
-
