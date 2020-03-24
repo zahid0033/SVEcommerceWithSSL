@@ -162,3 +162,7 @@ Route::post('/sales_management','Vendor\normalVendorController@salesReport')->na
 
 });
 /* ====================================================== Backend #  =================================================================== */
+Route::get('/clear-cache', function() {
+    $exitCode = Artisan::call('cache:clear');
+    return 'cache cleared';
+});
