@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Notifications\CustomerResetPasswordNotification;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -11,6 +12,10 @@ use test\Mockery\HasUnknownClassAsTypeHintOnMethod;
 class Customer extends Authenticatable
 {
     use Notifiable;
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new CustomerResetPasswordNotification($token));
+    }
     protected $fillable = ['name','email','image','type','address','city','password','phone','gender','slug'];
     protected $table = 'customers';
     protected $guard = 'customer';

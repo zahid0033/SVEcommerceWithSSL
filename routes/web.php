@@ -55,14 +55,15 @@ Route::get('/customer/register', 'CustomerAuth\RegisterController@showRegistrati
 Route::post('/customer/register', 'CustomerAuth\RegisterController@register');
 
 
-
-Route::group(['middleware'=>['customerCheck']], function(){
-Route::get('/customer/home', 'Userend\customerController@index')/*->name('home')*/;
-
 Route::post('/customer/password/email', 'CustomerAuth\ForgotPasswordController@sendResetLinkEmail')->name('customer.password.email');
 Route::get('/customer/password/reset', 'CustomerAuth\ForgotPasswordController@showLinkRequestForm')->name('customer.password.request');
 Route::post('/customer/password/reset', 'CustomerAuth\ResetPasswordController@reset')->name('customer.password.update');
 Route::get('/customer/password/reset/{token}', 'CustomerAuth\ResetPasswordController@showResetForm')->name('customer.password.reset');
+
+Route::group(['middleware'=>['customerCheck']], function(){
+Route::get('/customer/home', 'Userend\customerController@index')/*->name('home')*/;
+
+
 
 //xahid
     Route::get('/myProfile', 'Userend\customerController@myProfile')->name('pages.myProfile');

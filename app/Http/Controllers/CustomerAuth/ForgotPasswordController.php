@@ -4,6 +4,7 @@ namespace App\Http\Controllers\CustomerAuth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Illuminate\Support\Facades\Password;
 
 class ForgotPasswordController extends Controller
 {
@@ -29,4 +30,13 @@ class ForgotPasswordController extends Controller
     {
         $this->middleware('guest:customer');
     }
+    public function showLinkRequestForm()
+    {
+        return view('customerAuth.passwords.email');
+    }
+    protected function broker()
+    {
+        return Password::broker('customers');
+    }
+
 }
