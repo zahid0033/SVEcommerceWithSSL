@@ -23,4 +23,11 @@ class Product extends Model
     {
         return $this->belongsTo(Offer::class,'offer_id');
     }
+
+    public function installmentOrders()
+    {
+        return $this->hasOne(InstallmentOrder::class,'product_id');
+    }
+
+
 }

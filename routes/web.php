@@ -167,3 +167,29 @@ Route::get('/clear-cache', function() {
     $exitCode = Artisan::call('cache:clear');
     return 'cache cleared';
 });
+/* ====================================================== Installment start #  =================================================================== */
+Route::get('/installment','Installment\installmentController@index')->name('installment.index');
+Route::get('/installmentProducts','Installment\installmentController@products')->name('installment.products');
+Route::get('/makeOrder/{id}','Installment\installmentController@makeOrder')->name('installment.makeOrder');
+Route::post('/makeOrder','Installment\installmentController@placeOrder')->name('installment.placeOrder');
+Route::get('/searchCustomerForOrder','Installment\installmentController@searchCustomerForOrder')->name('installment.searchCustomerForOrder');
+
+Route::get('/runningOrders','Installment\installmentController@runningOrders')->name('installment.runningOrders');
+Route::get('/updateOrder/{id}','Installment\installmentController@updateOrder')->name('installment.updateOrder');
+Route::get('/updateOrderStatus/{orderId}/{statusId}/{status}/{date}','Installment\installmentController@updateOrderStatus')->name('installment.updateOrderStatus');
+Route::get('/viewNoteDetails','Installment\installmentController@viewNoteDetails')->name('installment.viewNoteDetails');
+Route::post('/updateNote','Installment\installmentController@updateNote')->name('installment.updateNote');
+
+Route::get('/defaulters','Installment\installmentController@defaulters')->name('installment.defaulters');
+
+
+Route::get('/customers','Installment\installmentController@customers')->name('installment.customers');
+Route::get('/addCustomer','Installment\installmentController@addCustomer')->name('installment.addCustomer');
+Route::post('/addCustomer','Installment\installmentController@createCustomer')->name('installment.createCustomer');
+
+Route::get('/accounts','Installment\installmentController@accounts')->name('installment.accounts');
+Route::get('/accountsPerDate','Installment\installmentController@accountsPerDate')->name('installment.accountsPerDate');
+
+
+
+/* ====================================================== Installment end #  =================================================================== */

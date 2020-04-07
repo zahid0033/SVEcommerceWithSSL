@@ -132,5 +132,16 @@
         display: none;
     }
 }
+/* installment */
+.paid{
+    background-color: #5cb85c;
+}
+.latePaid{
+    background-color: #d9534f;
+}
+.pending{
+    background-color: #5bc0de;
+}
+
 
 
