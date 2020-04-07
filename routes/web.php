@@ -79,10 +79,11 @@ Route::get('/customer/home', 'Userend\customerController@index')/*->name('home')
 /* ====================================================== customer auth end   ============================================================== */
 /* ====================================================== Backend   =================================================================== */
 Auth::routes();
+Route::group(['middleware'=>['superVendorCheck']], function(){
+    Route::get('/vendors','Vendor\vendorController@index');
 
-Route::group(['middleware'=>['normalVendorCheck']], function(){
+    Route::group(['middleware'=>['normalVendorCheck']], function(){
     Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/vendors','Vendor\vendorController@index');
 /* ======== normalVendor   =================================================================== */
 //dashboard
 Route::get('/dashboard','Vendor\normalVendorController@index')->name('nvdashboard');
@@ -163,10 +164,7 @@ Route::post('/sales_management','Vendor\normalVendorController@salesReport')->na
 
 });
 /* ====================================================== Backend #  =================================================================== */
-Route::get('/clear-cache', function() {
-    $exitCode = Artisan::call('cache:clear');
-    return 'cache cleared';
-});
+
 /* ====================================================== Installment start #  =================================================================== */
 Route::get('/installment','Installment\installmentController@index')->name('installment.index');
 Route::get('/installmentProducts','Installment\installmentController@products')->name('installment.products');
@@ -189,7 +187,9 @@ Route::post('/addCustomer','Installment\installmentController@createCustomer')->
 
 Route::get('/accounts','Installment\installmentController@accounts')->name('installment.accounts');
 Route::get('/accountsPerDate','Installment\installmentController@accountsPerDate')->name('installment.accountsPerDate');
-
-
-
 /* ====================================================== Installment end #  =================================================================== */
+});
+Route::get('/clear-cache', function() {
+    $exitCode = Artisan::call('cache:clear');
+    return 'cache cleared';
+});

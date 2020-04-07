@@ -10,6 +10,12 @@
                     <span>DashBoard</span>
                 </a>
             </li>
+            <li class="sub-menu">
+                <a class="@yield('')" href="{{route('installment.index')}}" >
+                    <i class="fa fa-home"></i>
+                    <span>Installment Panel</span>
+                </a>
+            </li>
             {{--<li class="sub-menu">
                 <a class="@yield('Profile')" --}}{{--href="{{route('nvdashboard')}}"--}}{{-- title="Restricted">
                     <i class="fa fa-user"></i>
@@ -78,7 +84,6 @@
                     <span>Sales</span>
                 </a>
             </li>
-
         </ul>
         <!-- sidebar menu end-->`
     </div>
