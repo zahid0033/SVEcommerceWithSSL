@@ -4,6 +4,7 @@
         <ul class="sidebar-menu" id="nav-accordion">
             <p class="centered"><a href="profile.html"><img style="background: white;" src="{{asset('assets/vendor/images/brands/logo.jpg')}}" class="img-circle" width="60"></a></p>
             <h5 class="centered">{{ Auth::user()->name }}</h5>
+            @if(Auth::user()->type == 'Normal')
             <li class="sub-menu">
                 <a class="@yield('DashBoard')" href="{{route('nvdashboard')}}" >
                     <i class="fa fa-home"></i>
@@ -41,15 +42,23 @@
                 </a>
             </li>
             <li class="sub-menu">
-                <a class="@yield('Offer_management')" href="{{route('offerManagementView')}}" >
-                    <i class="fas fa-gift"></i>
-                    <span>Offer</span>
-                </a>
-            </li>
             <li class="sub-menu">
                 <a class="@yield('Inventory_management')" href="{{route('inventoryManagementView')}}" >
                     <i class="fas fa-store"></i>
                     <span>Inventory</span>
+                </a>
+            </li>
+            <li class="sub-menu">
+                <a class="@yield('sales_management')" href="{{route('sales')}}" >
+                    <i class="fas fa-hand-pointer"></i>
+                    <span>Sales</span>
+                </a>
+            </li>
+            @endif
+            <li>
+                <a class="@yield('Offer_management')" href="{{route('offerManagementView')}}" >
+                    <i class="fas fa-gift"></i>
+                    <span>Offer</span>
                 </a>
             </li>
             <li class="sub-menu">
@@ -76,12 +85,6 @@
                 <a class="@yield('customer_management')" href="{{route('customerList')}}" >
                     <i class="fas fa-people-carry"></i>
                     <span>Customers</span>
-                </a>
-            </li>
-            <li class="sub-menu">
-                <a class="@yield('sales_management')" href="{{route('sales')}}" >
-                    <i class="fas fa-hand-pointer"></i>
-                    <span>Sales</span>
                 </a>
             </li>
         </ul>

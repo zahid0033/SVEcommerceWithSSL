@@ -63,6 +63,7 @@ class Kernel extends HttpKernel
 
         'superVendorCheck' => \App\Http\Middleware\superVendorCheck::class,
         'normalVendorCheck' => \App\Http\Middleware\normalVendorCheck::class,
+        'vendorCheck' => \App\Http\Middleware\vendorCheck::class,
         'customerCheck' => \App\Http\Middleware\customerCheck::class,
     ];
 

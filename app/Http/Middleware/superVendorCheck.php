@@ -17,14 +17,14 @@ class superVendorCheck
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::user())
+        if(Auth::user()->type == 'Normal' or Auth::user()->type == 'Moderator')
         {
             return $next($request);
         }
         else
         {
             /* return back()->with('msg','⚠ Invalid Request');*/
-            return redirect()->route('login')->with('msg','⚠ You Must Login');
+            return redirect()->back()->with('msg','⚠ Restricted ');
         }
     }
 }

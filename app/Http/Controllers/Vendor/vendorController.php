@@ -18,13 +18,17 @@ class vendorController extends Controller
         {
             return redirect('dashboard');
         }
+        elseif(Auth::user()->type == 'Moderator')
+        {
+            return redirect('order_management/allorders');
+        }
         elseif(Auth::user()->type == 'Installment_Mod')
         {
             return redirect('installment');
         }
         else
-            {
-                return redirect('logout');
-            }
+        {
+            return redirect('logout');
+        }
     }
 }
