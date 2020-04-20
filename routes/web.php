@@ -143,6 +143,8 @@ Route::group(['middleware'=>['superVendorCheck']], function(){
         Route::get('/order_management/generateInvoice/{id}', 'Vendor\normalVendorController@generateInvoice')->name('generateInvoice');
         Route::get('/order_management/search', 'Vendor\normalVendorController@search')->name('search');//ajax
         Route::get('/order_management/allorders','Vendor\normalVendorController@allOrders')->name('allOrders');
+        Route::post('/order_management/excel','Vendor\normalVendorController@excel')->name('excel');
+
 
 //order management #
 //customer_management
@@ -199,4 +201,9 @@ Route::group(['middleware'=>['normalVendorCheck']], function(){
 Route::get('/clear-cache', function() {
     $exitCode = Artisan::call('cache:clear');
     return 'cache cleared';
+});
+Route::get('/updateapp', function()
+{
+    $exitCode = Artisan::call('dump-autoload');
+    echo 'dump-autoload complete';
 });
