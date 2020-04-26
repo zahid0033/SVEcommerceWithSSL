@@ -23,8 +23,8 @@
                 </a>
                 <ul class="sub" style="display: none;">
 {{--                    <li class="@yield('makeOrder')" ><a  href=""><i class="fas fa-network-wired"></i> Create Order</a></li>--}}
+                    <li class="@yield('PreviousOrder')" ><a  href="{{ route('installment.previousOrders') }}"><i class="fas fa-truck-loading"></i>Complete Orders</a></li>
                     <li class="@yield('RunningOrder')" ><a  href="{{ route('installment.runningOrders') }}"><i class="fas fa-truck-loading"></i>Running Orders</a></li>
-{{--                    <li class="@yield('Defaulters')" ><a  href="{{ route('installment.defaulters') }}"><i class="fas fa-ban"></i>Defaulters</a></li>--}}
                 </ul>
             </li>
             <li class="sub-menu">
@@ -50,7 +50,6 @@
                     <span>Accounts </span>
                 </a>
             </li>
-
 
         </ul>
         <!-- sidebar menu end-->`

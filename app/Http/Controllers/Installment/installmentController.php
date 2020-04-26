@@ -10,6 +10,7 @@ use App\Temp_Order;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 
@@ -88,7 +89,14 @@ class installmentController extends Controller
             'payment_dates' => json_encode($payment_dates),
             'installment_status' => json_encode($installment_status),
             'installment_note' => json_encode($installment_note),
-            'status' => "Pending"
+            'status' => "Pending",
+            'call_status' => "notCalled",
+            'call_note' => "No Note Yet"
+        ]);
+
+        $find_product = Product::find($product_id);
+        $find_product->update([
+            'installment_stock' => $find_product->installment_stock - 1
         ]);
 
         return redirect()->route('installment.runningOrders');
@@ -104,6 +112,12 @@ class installmentController extends Controller
         $cus_address = $customer->address;
 
         return response()->json(array('success'=> true, 'cus_name'=>$cus_name, 'cus_email'=>$cus_email, 'cus_phone'=>$cus_phone, 'cus_address'=>$cus_address ));
+    }
+
+    public function previousOrders()
+    {
+        $previous_orders = InstallmentOrder::where('status','done')->get();
+        return view('installment.order_management.previousOrder',compact('previous_orders'));
     }
 
     public function runningOrders()
@@ -188,32 +202,97 @@ class installmentController extends Controller
         ]);
 
         return response()->json(array('success'=>true, 'postSubmit'=>"done" ));
-//        return response()->json($updateNote);
-
     }
 
     public function defaulters()
     {
-        $havetime_id = array();
+        $order_id = [];
+        $nonDefaulterOrderId  = InstallmentOrder::where('id','>', 0)->pluck('id')->toArray();
+
         $orders = InstallmentOrder::all();
         foreach ($orders as $order){
-            $installment_date = json_decode($order->installment_dates);
+            $installment_dates = json_decode($order->installment_dates);
             $installment_status = json_decode($order->installment_status);
-            foreach ($installment_date as $key => $install_date){
-                $chosen_date = new Carbon($install_date);
+            foreach ($installment_dates as $key => $installment_date){
+                $chosen_date = new Carbon($installment_date);
                 if( Carbon::today()->gt($chosen_date) && $installment_status[$key] === 'pending' ){
-                    $havetime_id[] = $order->id;
+                    $order_id[] = $order->id;
                     break;
                 }
-                else{
-                    $latePayments_id[] = $order->id;
+            }
+        }
+        $result = array_diff($nonDefaulterOrderId,$order_id);
+
+        InstallmentOrder::whereIn('id',$result)->update(['call_status'=> "notCalled",'call_note'=> "No Note Yet"]);
+
+        return view('installment.defaulter_management.defaulters');
+    }
+
+    public function defaultersDateSearch(Request $request)
+    {
+        $start = Carbon::parse($request->start_date);
+        $end = Carbon::parse($request->end_date);
+        $dateRange = CarbonPeriod::create($start, $end);
+
+        $dates = [];
+        $order_id = [];
+
+        foreach($dateRange as $date) {
+            $dates[] = $date->toFormattedDateString();
+        }
+
+        $orders = InstallmentOrder::all();
+        foreach ($orders as $order){
+            $installment_dates = json_decode($order->installment_dates);
+            $installment_status = json_decode($order->installment_status);
+            foreach ($installment_dates as $key => $installment_date){
+                $chosen_date = new Carbon($installment_date);
+                if( Carbon::today()->gt($chosen_date) && $installment_status[$key] === 'pending' ){
+                    if(in_array($installment_date, $dates)){
+                        $order_id[] = $order->id;
+                        break;
+                    }
                 }
             }
         }
 
-        $late_orders = InstallmentOrder::whereIn('id',$havetime_id)->get();
+        $late_orders = InstallmentOrder::whereIn('id',$order_id)->get();
 
-        return view('installment.defaulter_management.defaulters',compact('late_orders'));
+
+        $returnHTML = view('installment.defaulter_management.search_table_for_defaulter')->with('late_orders', $late_orders)->render();
+        return response()->json(array( 'success'=>true, 'output' => $returnHTML, 'ids'=>$order_id ));
+
+    }
+
+    public function viewDefaulterCallNote()
+    {
+        $order_id = $_GET['order_id'];
+        $order = InstallmentOrder::find($order_id);
+        $note = $order->call_note;
+        $customer_name = $order->installmentCustomers->name;
+        return response()->json(array('success'=>true,'note'=>$note,'customer_name'=>$customer_name));
+    }
+
+    public function updateDefaulterCallNote(Request $request)
+    {
+        $order_id = $request->main_order_id;
+        $note = $request->note;
+
+        $update = InstallmentOrder::find($order_id);
+        $update->update([
+           'call_note' => $note
+        ]);
+        return response()->json(array('success'=>true, 'postSubmit'=>"done" ));
+    }
+
+    public function updateDefaulterCallStatus($orderId,$status)
+    {
+        $order = InstallmentOrder::find($orderId);
+        $order->update([
+            'call_status' => $status
+        ]);
+
+        return redirect()->route('installment.defaulters');
     }
 
     public function customers()
@@ -246,15 +325,22 @@ class installmentController extends Controller
 
     public function accountsPerDate()
     {
-        $date = $_GET['date'];
-        $chosen_date = Carbon::parse($date);
+        $start = Carbon::parse($_GET['start_date']);
+        $end = Carbon::parse($_GET['end_date']);
+        $dateRange = CarbonPeriod::create($start, $end);
 
-        $order_id = array();
+        $dates = [];
+        $order_id = [];
+        foreach($dateRange as $date) {
+            $dates[] = $date->toFormattedDateString();
+        }
+
+
         $orders = InstallmentOrder::all();
         foreach ($orders as $order){
             $payment_dates = json_decode($order->payment_dates);
             foreach ($payment_dates as $payment_date){
-                if(Carbon::parse($payment_date) == $chosen_date){
+                if(in_array($payment_date, $dates)){
                     $order_id[] = $order->id;
                     break;
                 }
@@ -262,7 +348,7 @@ class installmentController extends Controller
         }
         $per_date_orders = InstallmentOrder::whereIn('id',$order_id)->get();
 
-        $returnHTML = view('installment.account_management.search_table_for_account')->with('per_date_orders', $per_date_orders)->with('selected_date',$chosen_date)->render();
+        $returnHTML = view('installment.account_management.search_table_for_account')->with('per_date_orders', $per_date_orders)->with('selected_dates',$dates)->render();
         return response()->json(array( 'success'=>true, 'output' => $returnHTML, 'ids'=>$order_id ));
     }
 }

@@ -179,164 +179,204 @@ $(document).ready(function () {
             datatype: "json",
             success: function (data) {
                 $('#noteUpdateModal').modal("hide");
-                alert("Note Updated Successfully");
-                location.reload();
+                // alert("Note Updated Successfully");
+                // location.reload();
             }
         });
     });
     // Updated order page end
 
     // defaulters table start
-        // ##for table using jquery bootstrap
-    $('.defaulter_table').DataTable({
-        "footerCallback": function ( row, data, start, end, display ) {
-            var api = this.api(), data;
+    $( "#defaulterPageLoad" ).load( "no url rn",function() {
+        var start = moment().subtract(29, 'days');
+        var end = moment();
 
-            // Remove the formatting to get integer data for summation
-            var intVal = function ( i ) {
-                return typeof i === 'string' ?
-                    i.replace(/[\$,]/g, '')*1 :
-                    typeof i === 'number' ?
-                        i : 0;
-            };
+        function cb(start, end) {
+            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
 
-            // Total over all pages
-            total = api
-                .column( 5 )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
+            $('#start').val(start.format('MMMM D, YYYY'));
+            $('#end').val(end.format('MMMM D, YYYY'));
 
-            // Total over this page
-            pageTotal = api
-                .column( 5, { page: 'current'} )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
+            onloadDefaulters();
 
-            // Update footer
-            $( api.column( 5 ).footer() ).html(
-                '৳'+pageTotal +' ( ৳'+ total +' total)',
-                'hello'
-            );
+        }
 
 
+        $('#reportrange').daterangepicker({
+            startDate: start,
+            endDate: end,
+            ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            }
+        }, cb);
+
+        cb(start, end);
+
+        function onloadDefaulters(){
+            var start = $('#start').val();
+            var end = $('#end').val();
+            var _token = $('input[name="_token"]').val();
+
+            $.ajax({
+                type: "POST",
+                url: "/defaultersDateSearch",
+                data: {start_date: start, end_date: end,  _token: _token},
+                datatype: "json",
+                beforeSend: function() {
+                    // setting a timeout
+                    $('#loading').show();
+                    $('#output').hide();
+
+                },
+                success: function (data) {
+                    $('#output').html(data.output);
+                    // defaulters table start
+                    $('.defaulter_table').DataTable({
+                        "footerCallback": function ( row, data, start, end, display ) {
+                            var api = this.api(), data;
+
+                            // Remove the formatting to get integer data for summation
+                            var intVal = function ( i ) {
+                                return typeof i === 'string' ?
+                                    i.replace(/[\$,]/g, '')*1 :
+                                    typeof i === 'number' ?
+                                        i : 0;
+                            };
+
+                            // Total over all pages
+                            total = api
+                                .column( 5 )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+
+                            // Total over this page
+                            pageTotal = api
+                                .column( 5, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+
+                            // Update footer
+                            $( api.column( 5 ).footer() ).html(
+                                '৳'+pageTotal +' ( ৳'+ total +' total)',
+                                'hello'
+                            );
+
+
+                        }
+                    });
+                    // defaulters table end
+                },
+                complete: function() {
+                    $('#loading').hide();
+                    $('#output').show();
+                },
+            });
         }
     });
     // defaulters table end
     // Account table start
-    forToday();
-    function forToday(){
-        var fullDate = new Date();
-        //convert month to 2 digits<p>
-        var twoDigitMonth = ((fullDate.getMonth().length+1) === 1)? (fullDate.getMonth()+1) : '0' + (fullDate.getMonth()+1);
-        var currentDate =  fullDate.getFullYear()+ "/" + twoDigitMonth + "/" + fullDate.getDate();
-        var date = currentDate;
-        $('#fetchDate').val(currentDate);
-        $( "#fetchDate" ).datepicker({
-            changeYear:true,
-            changeMonth:true,
-        });
-        $.ajax({
-            type: "GET",
-            url: "/accountsPerDate",
-            data: {date:date},
-            datatype: "json",
-            success: function (data) {
-                $('#output').html(data.output);
-                $('.account_table').DataTable({
-                    "footerCallback": function ( row, data, start, end, display ) {
-                        var api = this.api(), data;
+    $( "#accountPageLoad" ).load( "no url rn",function() {
+        var start = moment().subtract(29, 'days');
+        var end = moment();
 
-                        // Remove the formatting to get integer data for summation
-                        var intVal = function ( i ) {
-                            return typeof i === 'string' ?
-                                i.replace(/[\$,]/g, '')*1 :
-                                typeof i === 'number' ?
-                                    i : 0;
-                        };
+        function cb(start, end) {
+            $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
 
-                        // Total over all pages
-                        total = api
-                            .column( 4 )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0 );
+            $('#start').val(start.format('MMMM D, YYYY'));
+            $('#end').val(end.format('MMMM D, YYYY'));
 
-                        // Total over this page
-                        pageTotal = api
-                            .column( 4, { page: 'current'} )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0 );
+            onloadAccount();
 
-                        // Update footer
-                        $( api.column( 4 ).footer() ).html(
-                            '৳'+pageTotal +' ( ৳'+ total +' total)',
-                            'hello'
-                        );
+        }
 
 
-                    }
-                });
+        $('#reportrange').daterangepicker({
+            startDate: start,
+            endDate: end,
+            ranges: {
+                'Today': [moment(), moment()],
+                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                'This Month': [moment().startOf('month'), moment().endOf('month')],
+                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
             }
-        });
+        }, cb);
 
-    }
+        cb(start, end);
 
-    $('.account_date').on("load change keyup paste click", function () {
-        var date = $('.account_date').val();
-        console.log(date);
-        $.ajax({
-            type: "GET",
-            url: "/accountsPerDate",
-            data: {date:date},
-            datatype: "json",
-            success: function (data) {
-                $('#output').html(data.output);
-                $('.account_table').DataTable({
-                    "footerCallback": function ( row, data, start, end, display ) {
-                        var api = this.api(), data;
+        function onloadAccount(){
+            var start = $('#start').val();
+            var end = $('#end').val();
 
-                        // Remove the formatting to get integer data for summation
-                        var intVal = function ( i ) {
-                            return typeof i === 'string' ?
-                                i.replace(/[\$,]/g, '')*1 :
-                                typeof i === 'number' ?
-                                    i : 0;
-                        };
+            $.ajax({
+                type: "GET",
+                url: "/accountsPerDate",
+                data: {start_date: start, end_date: end},
+                datatype: "json",
+                beforeSend: function() {
+                    // setting a timeout
+                    $('#loading').show();
+                    $('#output').hide();
 
-                        // Total over all pages
-                        total = api
-                            .column( 4 )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0 );
+                },
+                success: function (data) {
+                    $('#output').html(data.output);
+                    // defaulters table start
+                    $('.account_table').DataTable({
+                        "footerCallback": function ( row, data, start, end, display ) {
+                            var api = this.api(), data;
 
-                        // Total over this page
-                        pageTotal = api
-                            .column( 4, { page: 'current'} )
-                            .data()
-                            .reduce( function (a, b) {
-                                return intVal(a) + intVal(b);
-                            }, 0 );
+                            // Remove the formatting to get integer data for summation
+                            var intVal = function ( i ) {
+                                return typeof i === 'string' ?
+                                    i.replace(/[\$,]/g, '')*1 :
+                                    typeof i === 'number' ?
+                                        i : 0;
+                            };
 
-                        // Update footer
-                        $( api.column( 4 ).footer() ).html(
-                            '৳'+pageTotal +' ( ৳'+ total +' total)',
-                            'hello'
-                        );
+                            // Total over all pages
+                            total = api
+                                .column( 4 )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+
+                            // Total over this page
+                            pageTotal = api
+                                .column( 4, { page: 'current'} )
+                                .data()
+                                .reduce( function (a, b) {
+                                    return intVal(a) + intVal(b);
+                                }, 0 );
+
+                            // Update footer
+                            $( api.column( 4 ).footer() ).html(
+                                '৳'+pageTotal +' ( ৳'+ total +' total)',
+                                'hello'
+                            );
 
 
-                    }
-                });
-            }
-        });
+                        }
+                    });
+                    // defaulters table end
+                },
+                complete: function() {
+                    $('#loading').hide();
+                    $('#output').show();
+                }
+            });
+        }
     });
     // Account table end
 

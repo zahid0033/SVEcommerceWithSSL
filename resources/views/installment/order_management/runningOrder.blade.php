@@ -47,7 +47,7 @@
                             @php $chosen_date = new Carbon\Carbon($installment_date); @endphp
 
                             @if( Carbon\Carbon::today()->gt($chosen_date) && $installment_status[$key] === 'pending' )
-                                <span class="label {{$status[$key]}} " style="color: red;">{{$installment_date}} <span style="color: red;font-weight: 900;">&#9888;</span></span>
+                                <span class="label" style="background: #d43f3a;">{{$installment_date}} <span style="color: white;font-weight: 900;">&#9888;</span></span>
                             @else
                                 <span class="label {{$status[$key]}} ">{{$installment_date}}</span>
                             @endif

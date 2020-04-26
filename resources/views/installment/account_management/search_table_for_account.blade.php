@@ -31,11 +31,11 @@
                     $payment_dates = json_decode($per_date_order->payment_dates);
                 @endphp
                 @foreach($payment_dates as $payment_date)
-                    @if(Carbon\Carbon::parse($payment_date) == $selected_date)
+                    @if(in_array($payment_date, $selected_dates))
                         @php $counter= $counter+1; @endphp
                     @endif
                 @endforeach
-                {{ $per_date_order->installment_amount * $counter }}
+                {{ $per_date_order->installment_amount * $counter + $per_date_order->downPayment}}
             </td>
             <td>{{ $per_date_order->installment_amount }}</td>
             <td>{{ $per_date_order->due_amount }}</td>
@@ -45,16 +45,21 @@
                     $installment_status = json_decode($per_date_order->installment_status);
                     $status = json_decode($per_date_order->installment_status);
                 @endphp
-                @foreach($installment_dates as $key => $installment_date)
+{{--                @foreach($installment_dates as $key => $installment_date)--}}
 
-                    @php $chosen_date = new Carbon\Carbon($installment_date); @endphp
+{{--                    @php $chosen_date = new Carbon\Carbon($installment_date); @endphp--}}
 
-                    @if( Carbon\Carbon::today()->gt($chosen_date) && $installment_status[$key] === 'pending' )
-                        <span class="label {{$status[$key]}} " style="color: red;">{{$installment_date}} <span style="color: red;font-weight: 900;">&#9888;</span></span>
-                    @else
-                        <span class="label {{$status[$key]}} ">{{$installment_date}}</span>
+{{--                    @if( Carbon\Carbon::today()->gt($chosen_date) && $installment_status[$key] === 'pending' )--}}
+{{--                        <span class="label {{$status[$key]}} " style="color: red;">{{$installment_date}} <span style="color: red;font-weight: 900;">&#9888;</span></span>--}}
+{{--                    @else--}}
+{{--                        <span class="label {{$status[$key]}} ">{{$installment_date}}</span>--}}
+{{--                    @endif--}}
+{{--                    --}}{{--                            <span style="color: red;font-size: 20px;font-weight: 900;">&#9888;</span>--}}
+{{--                @endforeach--}}
+                @foreach($payment_dates as $key => $payment_date)
+                    @if(in_array($payment_date, $selected_dates))
+                        <span class="label {{$status[$key]}} ">{{$installment_dates[$key]}}</span>
                     @endif
-                    {{--                            <span style="color: red;font-size: 20px;font-weight: 900;">&#9888;</span>--}}
                 @endforeach
             </td>
             <td><a class="label label-info" href="{{ route('installment.updateOrder',Crypt::encrypt($per_date_order->id)) }}" title="View Details"><i class="fa fa-arrow-right" aria-hidden="true"></i></a></td>

@@ -26,7 +26,7 @@
     <link href="{{ asset('assets/vendor/css/custom.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"/>
 
-{{--    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />--}}{{--date range picker--}}
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     {{--jquery ui css --}}
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     {{-- table --}}
@@ -45,6 +45,7 @@
     <script src="https://cdn.tiny.cloud/1/jhv2goycu359q9scua0zdy5ec2pj3r2of9bxt2e09o198xnd/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script> {{--tinymce--}}
     <script src="{{ asset('assets/vendor/js/custom.js') }}"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>{{--date rang epicker--}}
+
 
 
 

@@ -31,21 +31,21 @@
                             @endif
                         </td>
                         <td>{{$product->name}}</td>
-                        <td>{{$product->stock}}</td>
+                        <td>{{$product->installment_stock}}</td>
                         <td>{{$product->price}}</td>
-                        <td><a href="{{ route('installment.makeOrder',Crypt::encrypt($product->id) ) }}" title="Place Order" class="btn btn-success"><i class="fa fa-cart-plus" aria-hidden="true"></i></a></td>
+                        <td>
+                            @if($product->installment_stock <= 0)
+                                <span href="" class="btn btn-danger"> Out of Stock </span>
+                            @else
+                                <a href="{{ route('installment.makeOrder',Crypt::encrypt($product->id) ) }}" title="Place Order" class="btn btn-success"><i class="fa fa-cart-plus" aria-hidden="true"></i></a>
+                            @endif
+
+                        </td>
                     </tr>
                 @endforeach
 
                 </tbody>
             </table>
-{{--            @foreach($products as $product)--}}
-{{--                <div class="col-md-4">--}}
-{{--                    <h2>{{$product->name}}</h2>--}}
-{{--                    <p>{{$product->price}}/=</p>--}}
-{{--                    <a href="{{ route('installment.makeOrder',Crypt::encrypt($product->id) ) }}" class="btn btn-success">Place Order</a>--}}
-{{--                </div>--}}
-{{--            @endforeach--}}
         </div>
     </div>
 @endsection

@@ -164,8 +164,9 @@ Route::post('/sales_management','Vendor\normalVendorController@salesReport')->na
 });
 /* ====================================================== Backend #  =================================================================== */
 Route::get('/clear-cache', function() {
-    $exitCode = Artisan::call('cache:clear');
-    return 'cache cleared';
+    $run = Artisan::call('cache:clear');
+    $run = Artisan::call('config:cache');
+    return 'FINISHED';
 });
 /* ====================================================== Installment start #  =================================================================== */
 Route::get('/installment','Installment\installmentController@index')->name('installment.index');
@@ -174,6 +175,7 @@ Route::get('/makeOrder/{id}','Installment\installmentController@makeOrder')->nam
 Route::post('/makeOrder','Installment\installmentController@placeOrder')->name('installment.placeOrder');
 Route::get('/searchCustomerForOrder','Installment\installmentController@searchCustomerForOrder')->name('installment.searchCustomerForOrder');
 
+Route::get('/previousOrders','Installment\installmentController@previousOrders')->name('installment.previousOrders');
 Route::get('/runningOrders','Installment\installmentController@runningOrders')->name('installment.runningOrders');
 Route::get('/updateOrder/{id}','Installment\installmentController@updateOrder')->name('installment.updateOrder');
 Route::get('/updateOrderStatus/{orderId}/{statusId}/{status}/{date}','Installment\installmentController@updateOrderStatus')->name('installment.updateOrderStatus');
@@ -181,6 +183,10 @@ Route::get('/viewNoteDetails','Installment\installmentController@viewNoteDetails
 Route::post('/updateNote','Installment\installmentController@updateNote')->name('installment.updateNote');
 
 Route::get('/defaulters','Installment\installmentController@defaulters')->name('installment.defaulters');
+Route::post('/defaultersDateSearch','Installment\installmentController@defaultersDateSearch')->name('installment.defaultersDateSearch');
+Route::get('/viewDefaulterCallNote','Installment\installmentController@viewDefaulterCallNote')->name('installment.viewDefaulterCallNote');
+Route::post('/updateDefaulterCallNote','Installment\installmentController@updateDefaulterCallNote')->name('installment.updateDefaulterCallNote');
+Route::get('/updateDefaulterCallStatus/{orderId}/{status}','Installment\installmentController@updateDefaulterCallStatus')->name('installment.updateDefaulterCallStatus');
 
 
 Route::get('/customers','Installment\installmentController@customers')->name('installment.customers');

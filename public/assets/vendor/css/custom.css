@@ -137,10 +137,14 @@
     background-color: #5cb85c;
 }
 .latePaid{
-    background-color: #d9534f;
+    background-color: #eea236;
 }
 .pending{
     background-color: #5bc0de;
+}
+.loading{
+    width: 100%;
+    text-align: center;
 }
 
 

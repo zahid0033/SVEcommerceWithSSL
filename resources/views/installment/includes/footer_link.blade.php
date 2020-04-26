@@ -9,12 +9,10 @@
 <script src="{{ asset('assets/vendor/js/jquery.nicescroll.js') }}" type="text/javascript"></script>
 <script src="{{ asset('assets/vendor/js/jquery.sparkline.js') }}"></script>
 
-
 <!--common script for all pages-->
 <script src="{{ asset('assets/vendor/js/common-scripts.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/vendor/js/gritter/js/jquery.gritter.js') }}"></script> {{--gritter--}}
 <script type="text/javascript" src="{{ asset('assets/vendor/js/gritter-conf.js') }}"></script> {{--gritter--}}
-
 
 <!--script for this page-->
 <script src="{{ asset('assets/vendor/js/sparkline-chart.js') }}"></script>
@@ -26,11 +24,11 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 {{--date range picker--}}
+
 {{-- table sorting --}}
 {{--<script type="text/javascript" src="http://tablesorter.com/jquery.tablesorter.js"></script>--}}
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
-
 
 <script src="{{ asset('assets/vendor/js/installment.js') }}"></script>
 
