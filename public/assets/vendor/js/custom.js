@@ -144,8 +144,12 @@ function setOrderShipping(id,orderid,cn,courirer,date)
     document.getElementById('order_shipment_courier').value = courirer ;
     document.getElementById('order_shipment_date').value = date ;
 }
+//excel
+//var excel_data ;
+var excel_data ;
 function getSearch(type)
 {
+    var daterange = document.getElementById('daterange').value;
     if(type === 'temp')
     {
         var search = document.getElementById('search_temp').value;
@@ -161,18 +165,20 @@ function getSearch(type)
     $.ajax({
         url: "/order_management/search",
         method: "GET",
-        data: {search: search,type: type},
+        data: {search: search,type: type,daterange:daterange},
         dataType:'json',
         success: function(data)
         {
             $("#search_table").html(data.table_data);
             $("#search_total_record").html(data.total_data);
             // console.log(data.table_data);
-            console.log(data.total_data);
+            //console.log(data.order_id);
+            excel_data = data.order_id.join();
+            document.getElementById('excel_id').value = excel_data ;
+            //console.log(excel_data);
         }
     });
 }
-
 function printDiv(divName)
 {
     var nonp = document.getElementsByClassName('print_hide');

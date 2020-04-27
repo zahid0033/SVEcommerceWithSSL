@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Support\Facades\Auth;
 
 
-class normalVendorCheck
+class superVendorCheck
 {
     /**
      * Handle an incoming request.
@@ -17,13 +17,13 @@ class normalVendorCheck
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::user()->type == 'Normal' or Auth::user()->type == 'Installment_Mod')
+        if(Auth::user()->type == 'Normal' or Auth::user()->type == 'Moderator')
         {
             return $next($request);
         }
         else
         {
-           /* return back()->with('msg','⚠ Invalid Request');*/
+            /* return back()->with('msg','⚠ Invalid Request');*/
             return redirect()->back()->with('msg','⚠ Restricted ');
         }
     }

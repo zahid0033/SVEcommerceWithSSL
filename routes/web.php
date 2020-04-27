@@ -79,123 +79,137 @@ Route::get('/customer/home', 'Userend\customerController@index')/*->name('home')
 /* ====================================================== customer auth end   ============================================================== */
 /* ====================================================== Backend   =================================================================== */
 Auth::routes();
-
-Route::group(['middleware'=>['normalVendorCheck']], function(){
-    Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/vendors','Vendor\vendorController@index');
+Route::group(['middleware'=>['superVendorCheck']], function(){
+    Route::get('/home', 'HomeController@index')->name('home');
 /* ======== normalVendor   =================================================================== */
-//dashboard
-Route::get('/dashboard','Vendor\normalVendorController@index')->name('nvdashboard');
+
+    Route::group(['middleware'=>['vendorCheck']], function(){
+        //dashboard
+        Route::get('/dashboard','Vendor\normalVendorController@index')->name('nvdashboard');
 //dashboard #
 //category management
-Route::get('/category_management','Vendor\normalVendorController@categoryManagementView')->name('categoryManagementView');
-Route::post('/category_management','Vendor\normalVendorController@categoryAdd')->name('categoryAdd');
-Route::get('/category_management/sub/{pid}','Vendor\normalVendorController@subCategoryView')->name('subCategoryView');
-Route::get('/category_management/remove/{id}','Vendor\normalVendorController@categoryRemove')->name('categoryRemove');
-Route::post('/category_management/update','Vendor\normalVendorController@categoryUpdate')->name('categoryUpdate');
+        Route::get('/category_management','Vendor\normalVendorController@categoryManagementView')->name('categoryManagementView');
+        Route::post('/category_management','Vendor\normalVendorController@categoryAdd')->name('categoryAdd');
+        Route::get('/category_management/sub/{pid}','Vendor\normalVendorController@subCategoryView')->name('subCategoryView');
+        Route::get('/category_management/remove/{id}','Vendor\normalVendorController@categoryRemove')->name('categoryRemove');
+        Route::post('/category_management/update','Vendor\normalVendorController@categoryUpdate')->name('categoryUpdate');
 //category managment #
 //brand management
-Route::get('/brand_management','Vendor\normalVendorController@brandManagementView')->name('brandManagementView');
-Route::post('/brand_management','Vendor\normalVendorController@brandAdd')->name('brandAdd');
-Route::get('/brand_management/edit/{id}','Vendor\normalVendorController@brandManagementEdit')->name('brandManagementEdit');
-Route::post('/brand_management/update','Vendor\normalVendorController@brandUpdate')->name('brandUpdate');
-Route::get('/brand_management/remove/{id}','Vendor\normalVendorController@brandRemove')->name('brandRemove');
+        Route::get('/brand_management','Vendor\normalVendorController@brandManagementView')->name('brandManagementView');
+        Route::post('/brand_management','Vendor\normalVendorController@brandAdd')->name('brandAdd');
+        Route::get('/brand_management/edit/{id}','Vendor\normalVendorController@brandManagementEdit')->name('brandManagementEdit');
+        Route::post('/brand_management/update','Vendor\normalVendorController@brandUpdate')->name('brandUpdate');
+        Route::get('/brand_management/remove/{id}','Vendor\normalVendorController@brandRemove')->name('brandRemove');
 //brand management #
 //product management
-Route::get('/product_management','Vendor\normalVendorController@productManagementView')->name('productManagementView');
-Route::post('/product_management','Vendor\normalVendorController@productAdd')->name('productAdd');
-Route::get('/product_management/edit/{id}','Vendor\normalVendorController@productManagementEdit')->name('productManagementEdit');
-Route::post('/product_management/update','Vendor\normalVendorController@productUpdate')->name('productUpdate');
-Route::get('/product_management/remove/{id}','Vendor\normalVendorController@productRemove')->name('brandRemove');
+        Route::get('/product_management','Vendor\normalVendorController@productManagementView')->name('productManagementView');
+        Route::post('/product_management','Vendor\normalVendorController@productAdd')->name('productAdd');
+        Route::get('/product_management/edit/{id}','Vendor\normalVendorController@productManagementEdit')->name('productManagementEdit');
+        Route::post('/product_management/update','Vendor\normalVendorController@productUpdate')->name('productUpdate');
+        Route::get('/product_management/remove/{id}','Vendor\normalVendorController@productRemove')->name('brandRemove');
 //product management #
-//offer management
-Route::get('/offer_emanagement','Vendor\normalVendorController@offerManagementView')->name('offerManagementView');
-Route::post('/offer_management','Vendor\normalVendorController@offerAdd')->name('offerAdd');
-Route::get('/offer_management/edit/{id}','Vendor\normalVendorController@offerManagementEdit')->name('offerManagementEdit');
-Route::post('/offer_management/update','Vendor\normalVendorController@offerUpdate')->name('offerUpdate');
-Route::get('/offer_management/remove/{id}','Vendor\normalVendorController@offerRemove')->name('offerRemove');
-//offer management #
-//inventory management
-Route::get('/inventory_management','Vendor\normalVendorController@inventoryManagementView')->name('inventoryManagementView');
+////inventory management
+        Route::get('/inventory_management','Vendor\normalVendorController@inventoryManagementView')->name('inventoryManagementView');
 //inventory management #
-//order management
-Route::post('/order_management/daterange','Vendor\normalVendorController@orderReport')->name('orderReport');
-Route::get('/Processingorders','Vendor\normalVendorController@processingOrderView')->name('processingOrderView');
-Route::get('/Shippingorders','Vendor\normalVendorController@shippingOrderView')->name('shippingOrderView');
-Route::get('/Deliveredorders','Vendor\normalVendorController@deliveredOrderView')->name('deliveredOrderView');
-Route::get('/pending_orders','Vendor\normalVendorController@pendingOrderView')->name('pendingOrderView');
-Route::get('/orders/remove/{id}','Vendor\normalVendorController@OrderRemove')->name('OrderRemove');
-Route::post('/order_management/shipping','Vendor\normalVendorController@orderShipping')->name('orderShipping');
-Route::get('/order_management/delivered/{id}','Vendor\normalVendorController@orderDelivered')->name('orderDelivered');
-Route::get('/order_management/processing/{id}','Vendor\normalVendorController@orderProcessiong')->name('orderProcessiong');
-Route::get('/failed_orders','Vendor\normalVendorController@failedOrderView')->name('failedOrderView');
+//sales management
+        Route::get('/sales_management','Vendor\normalVendorController@sales')->name('sales');
+        Route::post('/sales_management','Vendor\normalVendorController@salesReport')->name('salesReport');
+//sales management #
 
-/**/
-Route::get('/order_management/order_details/{id}','Vendor\normalVendorController@order_details')->name('order_details');
-Route::get('/order_management/generateInvoice/{id}', 'Vendor\normalVendorController@generateInvoice')->name('generateInvoice');
-Route::get('/order_management/search', 'Vendor\normalVendorController@search')->name('search');//ajax
-Route::get('/order_management/allorders','Vendor\normalVendorController@allOrders')->name('allOrders');
+    });
+//offer management
+        Route::get('/offer_emanagement','Vendor\normalVendorController@offerManagementView')->name('offerManagementView');
+        Route::post('/offer_management','Vendor\normalVendorController@offerAdd')->name('offerAdd');
+        Route::get('/offer_management/edit/{id}','Vendor\normalVendorController@offerManagementEdit')->name('offerManagementEdit');
+        Route::post('/offer_management/update','Vendor\normalVendorController@offerUpdate')->name('offerUpdate');
+        Route::get('/offer_management/remove/{id}','Vendor\normalVendorController@offerRemove')->name('offerRemove');
+//offer management #
+
+//order management
+        Route::post('/order_management/daterange','Vendor\normalVendorController@orderReport')->name('orderReport');
+        Route::get('/Processingorders','Vendor\normalVendorController@processingOrderView')->name('processingOrderView');
+        Route::get('/Shippingorders','Vendor\normalVendorController@shippingOrderView')->name('shippingOrderView');
+        Route::get('/Deliveredorders','Vendor\normalVendorController@deliveredOrderView')->name('deliveredOrderView');
+        Route::get('/pending_orders','Vendor\normalVendorController@pendingOrderView')->name('pendingOrderView');
+        Route::get('/orders/remove/{id}','Vendor\normalVendorController@OrderRemove')->name('OrderRemove');
+        Route::post('/order_management/shipping','Vendor\normalVendorController@orderShipping')->name('orderShipping');
+        Route::get('/order_management/delivered/{id}','Vendor\normalVendorController@orderDelivered')->name('orderDelivered');
+        Route::get('/order_management/processing/{id}','Vendor\normalVendorController@orderProcessiong')->name('orderProcessiong');
+        Route::get('/failed_orders','Vendor\normalVendorController@failedOrderView')->name('failedOrderView');
+
+        /**/
+        Route::get('/order_management/order_details/{id}','Vendor\normalVendorController@order_details')->name('order_details');
+        Route::get('/order_management/generateInvoice/{id}', 'Vendor\normalVendorController@generateInvoice')->name('generateInvoice');
+        Route::get('/order_management/search', 'Vendor\normalVendorController@search')->name('search');//ajax
+        Route::get('/order_management/allorders','Vendor\normalVendorController@allOrders')->name('allOrders');
+        Route::post('/order_management/excel','Vendor\normalVendorController@excel')->name('excel');
+
 
 //order management #
 //customer_management
-Route::get('/customer_management','Vendor\normalVendorController@customerList')->name('customerList');
-Route::get('/customer_management/details/{id}','Vendor\normalVendorController@customer_details')->name('customer_details');
-Route::get('/customer_management/search', 'Vendor\normalVendorController@searchCustomer')->name('searchCustomer');//ajax
+        Route::get('/customer_management','Vendor\normalVendorController@customerList')->name('customerList');
+        Route::get('/customer_management/details/{id}','Vendor\normalVendorController@customer_details')->name('customer_details');
+        Route::get('/customer_management/search', 'Vendor\normalVendorController@searchCustomer')->name('searchCustomer');//ajax
 //customer_management #
 
 //contact management
-Route::get('/contact_management','Vendor\normalVendorController@contact_management')->name('contact_management');
-Route::get('/contact_details/{id}','Vendor\normalVendorController@contact_details')->name('contact_details');
-Route::get('/contact_delete/{id}','Vendor\normalVendorController@contact_delete')->name('contact_delete');
-Route::get('/contact_processing/{id}','Vendor\normalVendorController@contact_processing')->name('contact_processing');
-Route::get('/contact_solved/{id}','Vendor\normalVendorController@contact_solved')->name('contact_solved');
-Route::get('/contact_cancel/{id}','Vendor\normalVendorController@contact_cancel')->name('contact_cancel');
-Route::post('/contact_note_update','Vendor\normalVendorController@contact_note_update')->name('contact_note_update');
-Route::get('/contact_search','Vendor\normalVendorController@contact_search')->name('contact_search');
+        Route::get('/contact_management','Vendor\normalVendorController@contact_management')->name('contact_management');
+        Route::get('/contact_details/{id}','Vendor\normalVendorController@contact_details')->name('contact_details');
+        Route::get('/contact_delete/{id}','Vendor\normalVendorController@contact_delete')->name('contact_delete');
+        Route::get('/contact_processing/{id}','Vendor\normalVendorController@contact_processing')->name('contact_processing');
+        Route::get('/contact_solved/{id}','Vendor\normalVendorController@contact_solved')->name('contact_solved');
+        Route::get('/contact_cancel/{id}','Vendor\normalVendorController@contact_cancel')->name('contact_cancel');
+        Route::post('/contact_note_update','Vendor\normalVendorController@contact_note_update')->name('contact_note_update');
+        Route::get('/contact_search','Vendor\normalVendorController@contact_search')->name('contact_search');
 //contact management #
-//sales management
-Route::get('/sales_management','Vendor\normalVendorController@sales')->name('sales');
-Route::post('/sales_management','Vendor\normalVendorController@salesReport')->name('salesReport');
 
-//sales management #
+
 ///* ======== normalVendor #   =================================================================== */
 
 
-});
+
 /* ====================================================== Backend #  =================================================================== */
-Route::get('/clear-cache', function() {
-    $run = Artisan::call('cache:clear');
-    $run = Artisan::call('config:cache');
-    return 'FINISHED';
+
 });
 /* ====================================================== Installment start #  =================================================================== */
-Route::get('/installment','Installment\installmentController@index')->name('installment.index');
-Route::get('/installmentProducts','Installment\installmentController@products')->name('installment.products');
-Route::get('/makeOrder/{id}','Installment\installmentController@makeOrder')->name('installment.makeOrder');
-Route::post('/makeOrder','Installment\installmentController@placeOrder')->name('installment.placeOrder');
-Route::get('/searchCustomerForOrder','Installment\installmentController@searchCustomerForOrder')->name('installment.searchCustomerForOrder');
+Route::group(['middleware'=>['normalVendorCheck']], function(){
 
-Route::get('/previousOrders','Installment\installmentController@previousOrders')->name('installment.previousOrders');
-Route::get('/runningOrders','Installment\installmentController@runningOrders')->name('installment.runningOrders');
-Route::get('/updateOrder/{id}','Installment\installmentController@updateOrder')->name('installment.updateOrder');
-Route::get('/updateOrderStatus/{orderId}/{statusId}/{status}/{date}','Installment\installmentController@updateOrderStatus')->name('installment.updateOrderStatus');
-Route::get('/viewNoteDetails','Installment\installmentController@viewNoteDetails')->name('installment.viewNoteDetails');
-Route::post('/updateNote','Installment\installmentController@updateNote')->name('installment.updateNote');
+    Route::get('/installment','Installment\installmentController@index')->name('installment.index');
+    Route::get('/installmentProducts','Installment\installmentController@products')->name('installment.products');
+    Route::get('/makeOrder/{id}','Installment\installmentController@makeOrder')->name('installment.makeOrder');
+    Route::post('/makeOrder','Installment\installmentController@placeOrder')->name('installment.placeOrder');
+    Route::get('/searchCustomerForOrder','Installment\installmentController@searchCustomerForOrder')->name('installment.searchCustomerForOrder');
 
-Route::get('/defaulters','Installment\installmentController@defaulters')->name('installment.defaulters');
-Route::post('/defaultersDateSearch','Installment\installmentController@defaultersDateSearch')->name('installment.defaultersDateSearch');
-Route::get('/viewDefaulterCallNote','Installment\installmentController@viewDefaulterCallNote')->name('installment.viewDefaulterCallNote');
-Route::post('/updateDefaulterCallNote','Installment\installmentController@updateDefaulterCallNote')->name('installment.updateDefaulterCallNote');
-Route::get('/updateDefaulterCallStatus/{orderId}/{status}','Installment\installmentController@updateDefaulterCallStatus')->name('installment.updateDefaulterCallStatus');
+    Route::get('/previousOrders','Installment\installmentController@previousOrders')->name('installment.previousOrders');
+    Route::get('/runningOrders','Installment\installmentController@runningOrders')->name('installment.runningOrders');
+    Route::get('/updateOrder/{id}','Installment\installmentController@updateOrder')->name('installment.updateOrder');
+    Route::get('/updateOrderStatus/{orderId}/{statusId}/{status}/{date}','Installment\installmentController@updateOrderStatus')->name('installment.updateOrderStatus');
+    Route::get('/viewNoteDetails','Installment\installmentController@viewNoteDetails')->name('installment.viewNoteDetails');
+    Route::post('/updateNote','Installment\installmentController@updateNote')->name('installment.updateNote');
 
-
-Route::get('/customers','Installment\installmentController@customers')->name('installment.customers');
-Route::get('/addCustomer','Installment\installmentController@addCustomer')->name('installment.addCustomer');
-Route::post('/addCustomer','Installment\installmentController@createCustomer')->name('installment.createCustomer');
-
-Route::get('/accounts','Installment\installmentController@accounts')->name('installment.accounts');
-Route::get('/accountsPerDate','Installment\installmentController@accountsPerDate')->name('installment.accountsPerDate');
+    Route::get('/defaulters','Installment\installmentController@defaulters')->name('installment.defaulters');
+    Route::post('/defaultersDateSearch','Installment\installmentController@defaultersDateSearch')->name('installment.defaultersDateSearch');
+    Route::get('/viewDefaulterCallNote','Installment\installmentController@viewDefaulterCallNote')->name('installment.viewDefaulterCallNote');
+    Route::post('/updateDefaulterCallNote','Installment\installmentController@updateDefaulterCallNote')->name('installment.updateDefaulterCallNote');
+    Route::get('/updateDefaulterCallStatus/{orderId}/{status}','Installment\installmentController@updateDefaulterCallStatus')->name('installment.updateDefaulterCallStatus');
 
 
+    Route::get('/customers','Installment\installmentController@customers')->name('installment.customers');
+    Route::get('/addCustomer','Installment\installmentController@addCustomer')->name('installment.addCustomer');
+    Route::post('/addCustomer','Installment\installmentController@createCustomer')->name('installment.createCustomer');
 
+    Route::get('/accounts','Installment\installmentController@accounts')->name('installment.accounts');
+    Route::get('/accountsPerDate','Installment\installmentController@accountsPerDate')->name('installment.accountsPerDate');
+});
 /* ====================================================== Installment end #  =================================================================== */
+
+Route::get('/clear-cache', function() {
+    $exitCode = Artisan::call('cache:clear');
+    return 'cache cleared';
+});
+Route::get('/updateapp', function()
+{
+    $exitCode = Artisan::call('dump-autoload');
+    echo 'dump-autoload complete';
+});

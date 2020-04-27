@@ -14,10 +14,21 @@ class vendorController extends Controller
     }
     public function index()
     {
-        if(Auth::user()->type == 'Normal') {return redirect('dashboard');}
+        if(Auth::user()->type == 'Normal')
+        {
+            return redirect('dashboard');
+        }
+        elseif(Auth::user()->type == 'Moderator')
+        {
+            return redirect('order_management/allorders');
+        }
+        elseif(Auth::user()->type == 'Installment_Mod')
+        {
+            return redirect('installment');
+        }
         else
-            {
-                return redirect('logout');
-            }
+        {
+            return redirect('logout');
+        }
     }
 }

@@ -3,7 +3,7 @@
         <!-- sidebar menu start-->
         <ul class="sidebar-menu" id="nav-accordion">
             <p class="centered"><a href="profile.html"><img style="background: white;" src="{{asset('assets/vendor/images/brands/logo.jpg')}}" class="img-circle" width="60"></a></p>
-{{--            <h5 class="centered">{{ Auth::user()->name }}</h5>--}}
+            <h5 class="centered">{{ Auth::user()->name }}</h5>
             <li class="sub-menu">
                 <a class="@yield('DashBoard')" href="{{route('installment.index')}}" >
                     <i class="fa fa-home"></i>

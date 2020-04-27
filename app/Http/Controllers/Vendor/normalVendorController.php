@@ -6,6 +6,7 @@ use App\Brand;
 use App\Category;
 use App\Customer;
 use App\Contact;
+use App\Exports\OrderExportExcel;
 use App\Offer;
 use App\Payment;
 use App\Product;
@@ -18,6 +19,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Barryvdh\DomPDF\Facade as PDF;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class normalVendorController extends Controller
 {
@@ -858,21 +861,33 @@ class normalVendorController extends Controller
         $pdf = PDF::loadView('pdf/pdf', compact('order','products','selling_price','quantity','offer_type','offer_percentage','free_products'));
         return $pdf->stream('order :'.$order->invoice_id.'.pdf');
     }
+
+    public function excel(Request $request)
+    {
+        $order_id = $request->excel_id;
+        $data =  explode(",",$order_id);
+       return Excel::download(new OrderExportExcel($data), 'orders.xlsx');
+    }
     public function search(Request $request)
     {
         $search = $_GET['search'];
         $type = $_GET['type'];
+        $dateRange = $_GET['daterange'];
+        $date = explode('-', $dateRange);
+        $from = date('Y-m-d 00:00:00', strtotime($date[0]));
+        $to = date('Y-m-d 23:59:59', strtotime($date[1]));
+
         if($type == 'main')
         {
             if(!empty($search))
             {
-                $search_result = Order::where('invoice_id','LIKE','%'.$search.'%')->orWhere('status','LIKE','%'.$search.'%')->get();
+                $search_result = Order::where('invoice_id','LIKE','%'.$search.'%')->orWhere('status','LIKE','%'.$search.'%')->whereBetween('created_at', [$from, $to])->get();
                 $search_count = $search_result->count();
                 $count = $search_count.' records found';
             }
             else
             {
-                $search_result = Order::whereIn('status',['Delivered','Shipping','Processing'])->orderBy('updated_at','DESC')->get();
+                $search_result = Order::whereIn('status',['Delivered','Shipping','Processing'])->orderBy('updated_at','DESC')->whereBetween('created_at', [$from, $to])->get();
                 $search_count = $search_result->count();
                 $count = '';
             }
@@ -886,7 +901,7 @@ class normalVendorController extends Controller
                 {
                     $product_array[] = $p->id;
                 }
-                $orders = Order::whereIn('status',['Delivered','Shipping','Processing'])->orderBy('status','DESC')->get();
+                $orders = Order::whereIn('status',['Delivered','Shipping','Processing'])->orderBy('status','DESC')->whereBetween('created_at', [$from, $to])->get();
                 $search_result = [];
                 foreach ($orders as $o)
                 {
@@ -902,13 +917,17 @@ class normalVendorController extends Controller
             }
             else
             {
-                $search_result = Order::whereIn('status',['Delivered','Shipping','Processing'])->orderBy('updated_at','DESC')->get();
+                $search_result = Order::whereIn('status',['Delivered','Shipping','Processing'])->orderBy('updated_at','DESC')->whereBetween('created_at', [$from, $to])->get();
                 $search_count = $search_result->count();;
                 $count = '';
             }
         }
+        foreach ($search_result as $s )
+        {
+            $order_id[] = $s->id;
+        }
         $returnHTML = view('vendor.order_management.search')->with('search_result', $search_result)->with('search_count', $search_count)->render();
-        return response()->json(array('success' => true, 'table_data'=>$returnHTML,'total_data'=>$count));
+        return response()->json(array('success' => true, 'table_data'=>$returnHTML,'total_data'=>$count,'order_id'=>$order_id));
     }
     public function allOrders()
     {
