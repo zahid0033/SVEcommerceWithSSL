@@ -146,6 +146,12 @@
     width: 100%;
     text-align: center;
 }
+.actions{
+    display: -webkit-box;
+}
+.actions a{
+    margin-right: 2px;
+}
 
 
 

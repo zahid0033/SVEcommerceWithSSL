@@ -7,13 +7,14 @@
             <h1 class="text-center">Accounts</h1>
 
             <div class="row" style="margin-bottom: 3em">
-                <div class="col-md-3" style="text-align: center">
+                <div class="col-md-4"></div>
+                <div class="col-md-4" style="text-align: center">
                     <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%;">
                         <i class="fa fa-calendar"></i>&nbsp;
                         <span></span> <i class="fa fa-caret-down"></i>
                     </div>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-4">
                     <form action="" method="post">
                         @csrf
                         <input class="form-control start_date" id="start" type="hidden" name="start_date">

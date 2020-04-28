@@ -48,13 +48,15 @@
             <td>{{ $order->installment_amount }}</td>
             <td><span class="label label-success defaulters_note_view" id="{{ $order->id }}" data-toggle="modal" ><i class="far fa-sticky-note"></i></span></td>
             <td>
-                <a class="label label-info" href="{{ route('installment.updateOrder',Crypt::encrypt($order->id)) }}" title="View Details"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
-                @if($order->call_status == "called")
-                    <a class="label label-success" href="{{ route('installment.updateDefaulterCallStatus',['orderId'=>$order->id,'status'=> "notCalled"]) }}" title="Called"><i class="fas fa-phone-volume"></i></a>
-                @elseif($order->call_status == "notCalled")
-                    <a class="label label-info" href="{{ route('installment.updateDefaulterCallStatus',['orderId'=>$order->id,'status'=> "called"]) }}" title="Not called yet"><i class="fas fa-phone-slash"></i></a>
-                @endif
-                <span class="label label-warning call_note_edit" id="{{ $order->id }}" href="" title="Add note"><i class="far fa-clipboard"></i></span>
+                <span class="actions">
+                    <a class="label label-info" href="{{ route('installment.updateOrder',Crypt::encrypt($order->id)) }}" title="View Details"><i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+                    @if($order->call_status == "called")
+                        <a class="label label-success" href="{{ route('installment.updateDefaulterCallStatus',['orderId'=>$order->id,'status'=> "notCalled"]) }}" title="Called"><i class="fas fa-phone-volume"></i></a>
+                    @elseif($order->call_status == "notCalled")
+                        <a class="label label-primary" href="{{ route('installment.updateDefaulterCallStatus',['orderId'=>$order->id,'status'=> "called"]) }}" title="Not called yet"><i class="fas fa-phone-slash"></i></a>
+                    @endif
+                    <span class="label label-warning call_note_edit" id="{{ $order->id }}" href="" title="Add note"><i class="far fa-clipboard"></i></span>
+                </span>
             </td>
         </tr>
     @endforeach
@@ -62,7 +64,7 @@
     <tfoot>
     <tr>
         <th colspan="5" style="text-align:right">Total Due Until Today:</th>
-        <th colspan="4" id="total_amount_footer"></th>
+        <th colspan="5" id="total_amount_footer"></th>
     </tr>
     </tfoot>
 </table>
