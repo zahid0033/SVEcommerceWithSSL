@@ -309,6 +309,7 @@ class normalVendorController extends Controller
                 'specification' => $request->specification,
                 'description' => $request->description,
                 'stock' => $request->stock,
+                'installment_stock' => $request->installment_stock,
                 'image' => $imageEncode,
                 'price' => $request->price,
                 'offer_price' => $request->offer_price,
@@ -331,6 +332,7 @@ class normalVendorController extends Controller
                 'specification' => $request->specification,
                 'description' => $request->description,
                 'stock' => $request->stock,
+                'installment_stock' => $request->installment_stock,
                 /* 'image' => $request->image,*/
                 'price' => $request->price,
                 'offer_price' => $request->offer_price,
@@ -393,6 +395,7 @@ class normalVendorController extends Controller
                 'specification' => $request->specification,
                 'description' => $request->description,
                 'stock' => $request->stock,
+                'installment_stock' => $request->installment_stock,
                 'image' => $imageEncode,
                 'price' => $request->price,
                 'offer_price' => $request->offer_price,
@@ -413,6 +416,7 @@ class normalVendorController extends Controller
                 'specification' => $request->specification,
                 'description' => $request->description,
                 'stock' => $request->stock,
+                'installment_stock' => $request->installment_stock,
                 'price' => $request->price,
                 'offer_price' => $request->offer_price,
                 'offer_percentage' => $request->offer_percentage,
@@ -850,6 +854,9 @@ class normalVendorController extends Controller
     {
         $oid = Crypt::decrypt($id);
         $order = Order::where('id',$oid)->first();
+        $order->update([
+            'print_count' => 1 ,
+        ]);
         $product_ids = json_decode($order->product_ids);
         $products = Product::wherein('id',$product_ids)->get();
         $selling_price = json_decode($order->selling_price);
@@ -860,14 +867,28 @@ class normalVendorController extends Controller
         $free_products = Product::wherein('id',$free_product_ids)->get();
         $pdf = PDF::loadView('pdf/pdf', compact('order','products','selling_price','quantity','offer_type','offer_percentage','free_products'));
         return $pdf->stream('order :'.$order->invoice_id.'.pdf');
-    }
 
+    }
     public function excel(Request $request)
     {
         $order_id = $request->excel_id;
+        $dateInterval = $request->daterange;
         $data =  explode(",",$order_id);
-       return Excel::download(new OrderExportExcel($data), 'orders.xlsx');
+       return Excel::download(new OrderExportExcel($data), $dateInterval.'.xlsx');
     }
+    /*public function printCount(Request $request)
+    {
+        $print_count = $request->print_count;
+        $data =  explode(",",$print_count);
+        $orders = Order::whereIn('id',$data)->orderBy('updated_at','DESC')->get();
+        foreach ($orders as $update)
+        {
+            $update->update([
+                'print_count' =>$update->print_count+1,
+            ]);
+        }
+        return back()->with('msg',"Print Count Updated Updated");
+    }*/
     public function search(Request $request)
     {
         $search = $_GET['search'];

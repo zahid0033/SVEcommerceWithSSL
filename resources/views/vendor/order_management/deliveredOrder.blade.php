@@ -68,7 +68,11 @@
                                 <td class="text-center"><b>{{$s->customers->phone}}</b></td>
                                 <td class="text-center">@if($s->status === 'Processing')<span class="label label-info label-mini">{{$s->status}}</span>@elseif($s->status === 'Delivered')<span class="label label-success label-mini">{{$s->status}}</span>@else<span class="label label-primary label-mini">{{$s->status}}</span> @endif</td>
                                 <td class="text-left">
-                                    <a href="{{route('generateInvoice',Crypt::encrypt($s->id))}}" title="Generate Invoice" class="btn btn-default "><i class="fas fa-file-invoice-dollar"></i> </a>
+                                    @if(!empty($s->print_count))
+                                        <a href="{{route('generateInvoice',Crypt::encrypt($s->id))}}" title="Downloded" class="btn btn-danger "><i class="fas fa-file-invoice-dollar"></i> </a>
+                                    @else
+                                        <a href="{{route('generateInvoice',Crypt::encrypt($s->id))}}" title="Downlode Invoice" class="btn btn-default "><i class="fas fa-file-invoice-dollar"></i> </a>
+                                    @endif
                                     <a href="{{route('order_details',Crypt::encrypt($s->id))}}" title="See Details" class="btn btn-primary "><i class="fas fa-arrow-circle-right"></i> </a>
                                     @if($s->status === "Processing")
                                         <a class="btn btn-info " data-toggle="modal" data-target="#modal_order_shipping" onclick="setOrderShipping('{{$s->id}}','{{$s->invoice_id}}','{{$s->shippings->shipping_tracking_number}}','{{$s->shippings->courier_name}}','{{$s->shippings->shipping_date}}')" data-whatever="@mdo" title="Shipping"><i class="fas fa-truck"></i></a>

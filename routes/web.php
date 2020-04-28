@@ -144,6 +144,7 @@ Route::group(['middleware'=>['superVendorCheck']], function(){
         Route::get('/order_management/search', 'Vendor\normalVendorController@search')->name('search');//ajax
         Route::get('/order_management/allorders','Vendor\normalVendorController@allOrders')->name('allOrders');
         Route::post('/order_management/excel','Vendor\normalVendorController@excel')->name('excel');
+        Route::post('/order_management/print_count','Vendor\normalVendorController@printCount')->name('printCount');
 
 
 //order management #
