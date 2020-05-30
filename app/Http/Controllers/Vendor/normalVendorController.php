@@ -842,6 +842,7 @@ class normalVendorController extends Controller
         $order = Order::where('id',$oid)->first();
         $product_ids = json_decode($order->product_ids);
         $products = Product::wherein('id',$product_ids)->get();
+        $base_price = json_decode($order->base_price);
         $selling_price = json_decode($order->selling_price);
         $quantity = json_decode($order->quantity);
         $offer_type = json_decode($order->offer_type);
@@ -849,7 +850,7 @@ class normalVendorController extends Controller
         $free_product_ids = json_decode($order->free_product_ids);
         $free_products = Product::wherein('id',$free_product_ids)->get();
 
-        return view('vendor.order_management.order_details',compact('order','products','selling_price','quantity','offer_type','offer_percentage','free_products'));
+        return view('vendor.order_management.order_details',compact('order','products','base_price','selling_price','quantity','offer_type','offer_percentage','free_products'));
     }
     public function generateInvoice($id)
     {
@@ -860,13 +861,14 @@ class normalVendorController extends Controller
         ]);
         $product_ids = json_decode($order->product_ids);
         $products = Product::wherein('id',$product_ids)->get();
+        $base_price = json_decode($order->base_price);
         $selling_price = json_decode($order->selling_price);
         $quantity = json_decode($order->quantity);
         $offer_type = json_decode($order->offer_type);
         $offer_percentage = json_decode($order->offer_percentage);
         $free_product_ids = json_decode($order->free_product_ids);
         $free_products = Product::wherein('id',$free_product_ids)->get();
-        $pdf = PDF::loadView('pdf/pdf', compact('order','products','selling_price','quantity','offer_type','offer_percentage','free_products'));
+        $pdf = PDF::loadView('pdf/pdf', compact('order','products','base_price','selling_price','quantity','offer_type','offer_percentage','free_products'));
         return $pdf->stream('order :'.$order->invoice_id.'.pdf');
 
     }

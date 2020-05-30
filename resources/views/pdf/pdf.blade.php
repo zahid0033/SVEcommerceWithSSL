@@ -108,7 +108,9 @@
         </td>
         <td align="center">
             @if($offer_type[$i] === 'Discount')
-                <del> {{number_format($products[$i]->price)}} </del>
+                @if(!empty($base_price[$i]))
+                    <del> {{number_format($base_price[$i])}} </del>
+                @endif
                 {{number_format($selling_price[$i])}} BDT
             @else
                 {{number_format($selling_price[$i])}} BDT
