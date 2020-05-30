@@ -1,21 +1,21 @@
 var Script = function () {
 
-    var due = parseInt(document.getElementById('doughnut_due').value) ;
-    var cancel = parseInt(document.getElementById('doughnut_cancel').value) ;
+    /*var due = parseInt(document.getElementById('doughnut_due').value) ;
+    var cancel = parseInt(document.getElementById('doughnut_cancel').value) ;*/
     var pending = parseInt(document.getElementById('doughnut_pending').value) ;
     var processing = parseInt(document.getElementById('doughnut_processing').value) ;
     var shipping = parseInt(document.getElementById('doughnut_shipping').value) ;
     var delivered = parseInt(document.getElementById('doughnut_delivered').value) ;
 
     var doughnutData = [
-        {
+        /*{
             value: due,
             color:"#d9534f"
         },
         {
             value : cancel,
             color : "#777"
-        },
+        },*/
         {
             value : pending,
             color : "#f0ad4e"

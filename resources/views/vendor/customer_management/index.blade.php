@@ -8,8 +8,12 @@
                 <label  class=" label label-primary">Search</label>
                 <input name="search" type="text" id="search_customer" onmouseleave="getSearchCustomer()"  onKeyUp="getSearchCustomer()" placeholder="Write here to search customer" class="form-control form-control-sm " >
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <b><span id="search_customer_total_record" style="color: #0BBA8B"></span></b>
+            </div>
+            <div class="col-md-1">
+                <a href="{{route('customerExcel')}}" title="Excel" class="btn btn-info mar-top" ><i class="fas fa-file-excel"></i>  </a>
+
             </div>
         </div>
             <div class="row">
@@ -18,7 +22,7 @@
                         <thead class="thead-dark">
                         <tr>
                             <th scope="col"class="text-center"> Image</th>
-                            <th scope="col" class="text-center">  Name</th>
+                            <th scope="col" class="text-center">Name</th>
                             <th scope="col"class="text-center"> Email</th>
                             <th scope="col"class="text-center"> Phone</th>
                             <th scope="col"class="text-center"> Gender</th>
