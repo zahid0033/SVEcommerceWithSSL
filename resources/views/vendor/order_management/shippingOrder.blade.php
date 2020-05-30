@@ -43,6 +43,7 @@
                     <table class="table  table-advance table-hover ">
                         <thead class="thead-dark">
                         <tr>
+                            <th scope="col"class="text-center"><i class="fas fa-sort-numeric-down"></i> </th>
                             <th scope="col"class="text-center"><i class="fab fa-slack-hash"></i> Order Id</th>
                             <th scope="col" class="text-center"> <i class="fas fa-puzzle-piece"></i>Payment Type</th>
                             <th scope="col"class="text-center"><i class="fas fa-mobile-alt"></i> Delivery Contact</th>
@@ -56,8 +57,9 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($orders as $s)
+                        @foreach($orders as $i=>$s)
                             <tr >
+                                <td class="text-center"><b>{{$i+1}}</b></td>
                                 <td class="text-center"><b>{{$s->invoice_id}}</b></td>
                                 <td class="text-center"><b>{{$s->payments->card_type}}</b></td>
                                 <td class="text-center"><b>{{$s->shippings->phone}}</b></td>

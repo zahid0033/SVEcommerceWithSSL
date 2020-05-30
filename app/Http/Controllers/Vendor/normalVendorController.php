@@ -7,6 +7,7 @@ use App\Category;
 use App\Customer;
 use App\Contact;
 use App\Exports\OrderExportExcel;
+use App\Exports\customerExport;
 use App\Offer;
 use App\Payment;
 use App\Product;
@@ -987,6 +988,14 @@ class normalVendorController extends Controller
             }
         $returnHTML = view('vendor.customer_management.search')->with('search_result', $search_result)->with('search_count', $search_count)->render();
         return response()->json(array('success' => true, 'table_data'=>$returnHTML,'total_data'=>$count));
+    }
+    public function customerExcel()
+    {
+        /*$order_id = $request->excel_id;
+        $dateInterval = $request->daterange;
+        $data =  explode(",",$order_id);*/
+        $downloadDate = date("Y-m-d h:i:sa");
+        return Excel::download(new customerExport(), $downloadDate.'  AllCustomers.xlsx');
     }
     //************************ page = customer_management #
     //************************ page = contact_management
