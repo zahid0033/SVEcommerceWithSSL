@@ -28,14 +28,20 @@
             <td>
                 @php
                     $counter = 0;
+                    $downPaymentCounter = 0;
                     $payment_dates = json_decode($per_date_order->payment_dates);
+                    $downPaymentDates = \Illuminate\Support\Carbon::parse($per_date_order->created_at)->toFormattedDateString();
                 @endphp
                 @foreach($payment_dates as $payment_date)
                     @if(in_array($payment_date, $selected_dates))
                         @php $counter= $counter+1; @endphp
                     @endif
                 @endforeach
-                {{ $per_date_order->installment_amount * $counter + $per_date_order->downPayment}}
+                @if(in_array($downPaymentDates, $selected_dates))
+                    @php $downPaymentCounter = $downPaymentCounter+1; @endphp
+                @endif
+
+                {{ $per_date_order->installment_amount * $counter + $per_date_order->downPayment * $downPaymentCounter }}
             </td>
             <td>{{ $per_date_order->installment_amount }}</td>
             <td>{{ $per_date_order->due_amount }}</td>
@@ -44,6 +50,7 @@
                     $installment_dates = json_decode($per_date_order->installment_dates);
                     $installment_status = json_decode($per_date_order->installment_status);
                     $status = json_decode($per_date_order->installment_status);
+                    $downPaymentDate = \Illuminate\Support\Carbon::parse($per_date_order->created_at)->toFormattedDateString();
                 @endphp
 {{--                @foreach($installment_dates as $key => $installment_date)--}}
 
@@ -61,6 +68,9 @@
                         <span class="label {{$status[$key]}} ">{{$installment_dates[$key]}}</span>
                     @endif
                 @endforeach
+                @if(in_array($downPaymentDate, $selected_dates))
+                    <span class="label label-primary ">{{$downPaymentDate}}</span>
+                @endif
             </td>
             <td><a class="label label-info" href="{{ route('installment.updateOrder',Crypt::encrypt($per_date_order->id)) }}" title="View Details"><i class="fa fa-arrow-right" aria-hidden="true"></i></a></td>
         </tr>

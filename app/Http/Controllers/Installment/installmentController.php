@@ -339,8 +339,9 @@ class installmentController extends Controller
         $orders = InstallmentOrder::all();
         foreach ($orders as $order){
             $payment_dates = json_decode($order->payment_dates);
+            $installment_date = Carbon::parse($order->created_at)->toFormattedDateString();
             foreach ($payment_dates as $payment_date){
-                if(in_array($payment_date, $dates)){
+                if(in_array($payment_date, $dates) || in_array($installment_date, $dates) ){
                     $order_id[] = $order->id;
                     break;
                 }

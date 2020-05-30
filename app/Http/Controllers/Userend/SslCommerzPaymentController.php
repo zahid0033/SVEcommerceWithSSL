@@ -28,10 +28,13 @@ class SslCommerzPaymentController extends Controller
         $user_id = $request->user_id;
         $cart_contents = Cart::content();
 
+//        dd($cart_contents);
+
         # fetch carts data
         foreach ($cart_contents as $cart_content){
 
             $product_ids[] = $cart_content->id;
+            $base_prices[] = $cart_content->options->base_price;
             $selling_prices[] = $cart_content->price;
             $quantities[] = $cart_content->qty;
             $offer_types[] = $cart_content->options->offer_type;
@@ -39,6 +42,7 @@ class SslCommerzPaymentController extends Controller
             $free_product_ids[] = $cart_content->options->free_product_id;
         }
         $product_id = json_encode($product_ids);
+        $base_price = json_encode($base_prices);
         $selling_price = json_encode($selling_prices);
         $quantity = json_encode($quantities);
         $offer_type = json_encode($offer_types);
@@ -184,6 +188,7 @@ class SslCommerzPaymentController extends Controller
             'shipping_id' => $shipping->id,
             'invoice_id' => $post_data['tran_id'],
             'product_ids' => $product_id,
+            'base_price' => $base_price,
             'selling_price' => $selling_price,
             'quantity' => $quantity,
             'offer_type' => $offer_type,
