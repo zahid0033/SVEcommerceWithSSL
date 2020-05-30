@@ -68,6 +68,7 @@ class CartController extends Controller
                     'price' => $pro->offer_price,
                     'weight' => 1,
                     'options' => ['size' => $pro->size_capacity,
+                        'base_price'=>$pro->price,
                         'image'=>$imgarray[0]->image,
                         'offer_type'=> "Discount",
                         'offer_percentage'=> $pro->offers->offer_percentage ,
@@ -81,13 +82,13 @@ class CartController extends Controller
                 for ($i=0; $i<count($main_product_id); $i++){
                     if($main_product_id[$i]->id == $pro->id){
                         $free_product = Product::find($free_product_id[0]->id);
-                        Cart::add(['id' => $pro->id, 'name' => $pro->name, 'qty' => 1, 'price' => $pro->price, 'weight' => 1, 'options' => ['size' => $pro->size_capacity,'image'=>$imgarray[0]->image, 'offer_type'=> 'Buy one get one', 'offer_percentage'=> null , 'free_product'=>$free_product->name, 'free_product_id'=>$free_product_id[0]->id ]]);
+                        Cart::add(['id' => $pro->id, 'name' => $pro->name, 'qty' => 1, 'price' => $pro->price, 'weight' => 1, 'options' => ['size' => $pro->size_capacity,'base_price'=>$pro->price,'image'=>$imgarray[0]->image, 'offer_type'=> 'Buy one get one', 'offer_percentage'=> null , 'free_product'=>$free_product->name, 'free_product_id'=>$free_product_id[0]->id ]]);
                     }
                 }
             }
         }
         else{
-            Cart::add(['id' => $pro->id, 'name' => $pro->name, 'qty' => 1, 'price' => $pro->price, 'weight' => 1, 'options' => ['size' => $pro->size_capacity,'image'=>$imgarray[0]->image, 'offer_type'=> null, 'offer_percentage'=> null , 'free_product'=> null, 'free_product_id'=> null ]]);
+            Cart::add(['id' => $pro->id, 'name' => $pro->name, 'qty' => 1, 'price' => $pro->price, 'weight' => 1, 'options' => ['size' => $pro->size_capacity,'base_price'=>$pro->price,'image'=>$imgarray[0]->image, 'offer_type'=> null, 'offer_percentage'=> null , 'free_product'=> null, 'free_product_id'=> null ]]);
         }
 
         return back();
