@@ -17,7 +17,7 @@ class customerExport implements FromView
     public function view(): View
     {
         return view('vendor.customer_management.excel_table', [
-            'search_result' => Customer::/*whereIn('id',$this->data)->*/orderBy('updated_at','DESC')->get() /*$this->data*/
+            'search_result' => Customer::/*whereIn('id',$this->data)->*/orderBy('id','ASC')->get() /*$this->data*/
         ]);
     }
 }
