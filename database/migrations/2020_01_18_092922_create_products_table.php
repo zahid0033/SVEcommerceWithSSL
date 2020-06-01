@@ -23,6 +23,7 @@ class CreateProductsTable extends Migration
             $table->longText('specification')->nullable();
             $table->longText('description')->nullable();
             $table->integer('stock')->nullable();
+            $table->integer('installment_stock')->nullable();
             $table->longText('image')->nullable();
             $table->float('price')->nullable();
             $table->float('offer_price')->nullable();

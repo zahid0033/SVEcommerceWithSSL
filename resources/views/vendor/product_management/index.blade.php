@@ -139,6 +139,10 @@
                                 <input name="size_capacity" type="text" class="form-control form-control-sm" value="{{ old('size_capacity') }}" >
                             </div>
                             <div class="col-sm-2">
+                                <label  class=" label label-default">Installment Stock</label>
+                                <input name="installment_stock" type="number" class="form-control form-control-sm" value="{{ old('installment_stock') }}" >
+                            </div>
+                            <div class="col-sm-2">
                                 <label  class=" label label-default">Model</label>
                                 <input name="model" type="text" class="form-control form-control-sm" value="{{ old('model') }}" >
                             </div>

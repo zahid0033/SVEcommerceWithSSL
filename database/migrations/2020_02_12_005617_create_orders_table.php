@@ -21,11 +21,13 @@ class CreateOrdersTable extends Migration
             $table->integer('vendor_id')->nullable();
             $table->string('invoice_id')->nullable();
             $table->string('product_ids')->nullable();
+            $table->string('base_price')->nullable();
             $table->string('selling_price')->nullable();
             $table->string('quantity')->nullable();
             $table->string('offer_type')->nullable();
             $table->string('offer_percentage')->nullable();
             $table->string('free_product_ids')->nullable();
+            $table->integer('print_count')->nullable();
             $table->string('status')->nullable();
             $table->string('slug')->nullable();
             $table->timestamps();

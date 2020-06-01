@@ -43,6 +43,7 @@
                     <table class="table  table-advance table-hover ">
                         <thead class="thead-dark">
                         <tr>
+                            <th scope="col"class="text-center"><i class="fas fa-sort-numeric-down"></i> </th>
                             <th scope="col"class="text-center"><i class="fab fa-slack-hash"></i> Order Id</th>
                             <th scope="col" class="text-center"> <i class="fas fa-puzzle-piece"></i>Payment Type</th>
                             <th scope="col"class="text-center"><i class="fas fa-mobile-alt"></i> Delivery Contact</th>
@@ -56,8 +57,9 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($orders as $s)
+                        @foreach($orders as $i=>$s)
                             <tr >
+                                <td class="text-center"><b>{{$i+1}}</b></td>
                                 <td class="text-center"><b>{{$s->invoice_id}}</b></td>
                                 <td class="text-center"><b>{{$s->payments->card_type}}</b></td>
                                 <td class="text-center"><b>{{$s->shippings->phone}}</b></td>
@@ -68,7 +70,11 @@
                                 <td class="text-center"><b>{{$s->customers->phone}}</b></td>
                                 <td class="text-center">@if($s->status === 'Processing')<span class="label label-info label-mini">{{$s->status}}</span>@elseif($s->status === 'Delivered')<span class="label label-success label-mini">{{$s->status}}</span>@else<span class="label label-primary label-mini">{{$s->status}}</span> @endif</td>
                                 <td class="text-left">
-                                    <a href="{{route('generateInvoice',Crypt::encrypt($s->id))}}" title="Generate Invoice" class="btn btn-default "><i class="fas fa-file-invoice-dollar"></i> </a>
+                                    @if(!empty($s->print_count))
+                                        <a href="{{route('generateInvoice',Crypt::encrypt($s->id))}}" title="Downloded" class="btn btn-danger "><i class="fas fa-file-invoice-dollar"></i> </a>
+                                    @else
+                                        <a href="{{route('generateInvoice',Crypt::encrypt($s->id))}}" title="Downlode Invoice" class="btn btn-default "><i class="fas fa-file-invoice-dollar"></i> </a>
+                                    @endif
                                     <a href="{{route('order_details',Crypt::encrypt($s->id))}}" title="See Details" class="btn btn-primary "><i class="fas fa-arrow-circle-right"></i> </a>
                                     @if($s->status === "Processing")
                                         <a class="btn btn-info " data-toggle="modal" data-target="#modal_order_shipping" onclick="setOrderShipping('{{$s->id}}','{{$s->invoice_id}}','{{$s->shippings->shipping_tracking_number}}','{{$s->shippings->courier_name}}','{{$s->shippings->shipping_date}}')" data-whatever="@mdo" title="Shipping"><i class="fas fa-truck"></i></a>

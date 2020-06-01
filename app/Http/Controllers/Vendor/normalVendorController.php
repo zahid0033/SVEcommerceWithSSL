@@ -7,6 +7,7 @@ use App\Category;
 use App\Customer;
 use App\Contact;
 use App\Exports\OrderExportExcel;
+use App\Exports\customerExport;
 use App\Offer;
 use App\Payment;
 use App\Product;
@@ -309,6 +310,7 @@ class normalVendorController extends Controller
                 'specification' => $request->specification,
                 'description' => $request->description,
                 'stock' => $request->stock,
+                'installment_stock' => $request->installment_stock,
                 'image' => $imageEncode,
                 'price' => $request->price,
                 'offer_price' => $request->offer_price,
@@ -331,6 +333,7 @@ class normalVendorController extends Controller
                 'specification' => $request->specification,
                 'description' => $request->description,
                 'stock' => $request->stock,
+                'installment_stock' => $request->installment_stock,
                 /* 'image' => $request->image,*/
                 'price' => $request->price,
                 'offer_price' => $request->offer_price,
@@ -393,6 +396,7 @@ class normalVendorController extends Controller
                 'specification' => $request->specification,
                 'description' => $request->description,
                 'stock' => $request->stock,
+                'installment_stock' => $request->installment_stock,
                 'image' => $imageEncode,
                 'price' => $request->price,
                 'offer_price' => $request->offer_price,
@@ -413,6 +417,7 @@ class normalVendorController extends Controller
                 'specification' => $request->specification,
                 'description' => $request->description,
                 'stock' => $request->stock,
+                'installment_stock' => $request->installment_stock,
                 'price' => $request->price,
                 'offer_price' => $request->offer_price,
                 'offer_percentage' => $request->offer_percentage,
@@ -836,7 +841,12 @@ class normalVendorController extends Controller
         $oid = Crypt::decrypt($id);
         $order = Order::where('id',$oid)->first();
         $product_ids = json_decode($order->product_ids);
-        $products = Product::wherein('id',$product_ids)->get();
+
+        //$products = Product::wherein('id',$product_ids)->orderBy('id','DESC')->get(); // error asc or desc
+        $ids_ordered = implode(',', $product_ids);
+        $products = Product::wherein('id',$product_ids)->orderByRaw("FIELD(id, $ids_ordered)")->get();
+//      //
+        $base_price = json_decode($order->base_price);
         $selling_price = json_decode($order->selling_price);
         $quantity = json_decode($order->quantity);
         $offer_type = json_decode($order->offer_type);
@@ -844,30 +854,53 @@ class normalVendorController extends Controller
         $free_product_ids = json_decode($order->free_product_ids);
         $free_products = Product::wherein('id',$free_product_ids)->get();
 
-        return view('vendor.order_management.order_details',compact('order','products','selling_price','quantity','offer_type','offer_percentage','free_products'));
+        return view('vendor.order_management.order_details',compact('order','products','base_price','selling_price','quantity','offer_type','offer_percentage','free_products'));
     }
     public function generateInvoice($id)
     {
         $oid = Crypt::decrypt($id);
         $order = Order::where('id',$oid)->first();
+        $order->update([
+            'print_count' => 1 ,
+        ]);
         $product_ids = json_decode($order->product_ids);
-        $products = Product::wherein('id',$product_ids)->get();
+
+        //$products = Product::wherein('id',$product_ids)->orderBy('id','DESC')->get(); // error asc or desc
+        $ids_ordered = implode(',', $product_ids);
+        $products = Product::wherein('id',$product_ids)->orderByRaw("FIELD(id, $ids_ordered)")->get();
+//      //
+        $products = Product::wherein('id',$product_ids)->orderByRaw("FIELD(id, $ids_ordered)")->get();
+        $base_price = json_decode($order->base_price);
         $selling_price = json_decode($order->selling_price);
         $quantity = json_decode($order->quantity);
         $offer_type = json_decode($order->offer_type);
         $offer_percentage = json_decode($order->offer_percentage);
         $free_product_ids = json_decode($order->free_product_ids);
         $free_products = Product::wherein('id',$free_product_ids)->get();
-        $pdf = PDF::loadView('pdf/pdf', compact('order','products','selling_price','quantity','offer_type','offer_percentage','free_products'));
+        $pdf = PDF::loadView('pdf/pdf', compact('order','products','base_price','selling_price','quantity','offer_type','offer_percentage','free_products'));
         return $pdf->stream('order :'.$order->invoice_id.'.pdf');
-    }
 
+    }
     public function excel(Request $request)
     {
         $order_id = $request->excel_id;
+        $dateInterval = $request->daterange;
         $data =  explode(",",$order_id);
-       return Excel::download(new OrderExportExcel($data), 'orders.xlsx');
+       return Excel::download(new OrderExportExcel($data), $dateInterval.'.xlsx');
     }
+    /*public function printCount(Request $request)
+    {
+        $print_count = $request->print_count;
+        $data =  explode(",",$print_count);
+        $orders = Order::whereIn('id',$data)->orderBy('updated_at','DESC')->get();
+        foreach ($orders as $update)
+        {
+            $update->update([
+                'print_count' =>$update->print_count+1,
+            ]);
+        }
+        return back()->with('msg',"Print Count Updated Updated");
+    }*/
     public function search(Request $request)
     {
         $search = $_GET['search'];
@@ -966,6 +999,14 @@ class normalVendorController extends Controller
             }
         $returnHTML = view('vendor.customer_management.search')->with('search_result', $search_result)->with('search_count', $search_count)->render();
         return response()->json(array('success' => true, 'table_data'=>$returnHTML,'total_data'=>$count));
+    }
+    public function customerExcel()
+    {
+        /*$order_id = $request->excel_id;
+        $dateInterval = $request->daterange;
+        $data =  explode(",",$order_id);*/
+        $downloadDate = date("Y-m-d h:i:sa");
+        return Excel::download(new customerExport(), $downloadDate.'  AllCustomers.xlsx');
     }
     //************************ page = customer_management #
     //************************ page = contact_management

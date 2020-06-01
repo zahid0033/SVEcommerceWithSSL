@@ -144,6 +144,7 @@ Route::group(['middleware'=>['superVendorCheck']], function(){
         Route::get('/order_management/search', 'Vendor\normalVendorController@search')->name('search');//ajax
         Route::get('/order_management/allorders','Vendor\normalVendorController@allOrders')->name('allOrders');
         Route::post('/order_management/excel','Vendor\normalVendorController@excel')->name('excel');
+        Route::post('/order_management/print_count','Vendor\normalVendorController@printCount')->name('printCount');
 
 
 //order management #
@@ -151,6 +152,8 @@ Route::group(['middleware'=>['superVendorCheck']], function(){
         Route::get('/customer_management','Vendor\normalVendorController@customerList')->name('customerList');
         Route::get('/customer_management/details/{id}','Vendor\normalVendorController@customer_details')->name('customer_details');
         Route::get('/customer_management/search', 'Vendor\normalVendorController@searchCustomer')->name('searchCustomer');//ajax
+        Route::get('/customer_management/excel','Vendor\normalVendorController@customerExcel')->name('customerExcel');
+
 //customer_management #
 
 //contact management

@@ -53,7 +53,11 @@
                                         <a href="{{route('orderProcessiong',Crypt::encrypt($order->id))}}" title="Undo to processing" class="btn btn-warning " onclick="return confirm('Are you sure that the order is still in processing ?')"><i class="fas fa-undo"></i></i> </a>
                                     @endif
                                      @if($order->status != "Pending" )
-                                        <a href="{{route('generateInvoice',Crypt::encrypt($order->id))}}" title="Generate Invoice" class="btn btn-default "><i class="fas fa-file-invoice-dollar"></i> </a>
+                                        @if(!empty($order->print_count))
+                                            <a href="{{route('generateInvoice',Crypt::encrypt($order->id))}}" title="Downloded" class="btn btn-danger "><i class="fas fa-file-invoice-dollar"></i> </a>
+                                        @else
+                                            <a href="{{route('generateInvoice',Crypt::encrypt($order->id))}}" title="Downlode Invoice" class="btn btn-default "><i class="fas fa-file-invoice-dollar"></i> </a>
+                                        @endif
                                     @endif
                                 </span>
                             </td>
@@ -127,7 +131,9 @@
 
                                         <b>
                                             @if($offer_type[$i] === 'Discount')
-                                                Actual Price : ৳ {{number_format($products[$i]->price)}} <br>
+                                                @if(!empty($base_price[$i]))
+                                                    Actual Price : ৳ {{number_format($base_price[$i])}} <br>
+                                                @endif
                                                Discount : {{$offer_percentage[$i]}} %
                                             @elseif($offer_type[$i] === 'Buy one get one')
                                                     @if(!empty($free_products[$i]->image))

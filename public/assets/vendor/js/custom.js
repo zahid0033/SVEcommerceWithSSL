@@ -182,6 +182,12 @@ function getSearch(type)
 function printDiv(divName)
 {
     var nonp = document.getElementsByClassName('print_hide');
+   /* document.getElementById('excelButton').disabled = true;
+    document.getElementById('search_type').disabled = true;
+    document.getElementById('search_main').disabled = true;
+    document.getElementById('search_product').disabled = true;
+    document.getElementById('printme').disabled = true;
+    document.getElementById('printed').disabled = false;*/
 
     for(var i = 0; i < nonp.length; i++)
     {
@@ -196,6 +202,7 @@ function printDiv(divName)
     {
         nonp[i].style.visibility = "visible";
     }
+    /*document.getElementById('print_count').value = excel_data;*/
 }
 $(document).on('change','#search_type',function()
 {
@@ -227,7 +234,7 @@ $(document).on('change','#search_type',function()
 //page = vendor>order_management#
 //page = vendor>sales_management
 $(function() {//date range picker
-    var start = moment().subtract(29, 'days');
+    var start = moment().subtract(1, 'years');
     var end = moment();
     function cb(start, end)
     {
