@@ -107,7 +107,9 @@
 
                                 <b>
                                     @if($offer_type[$i] === 'Discount')
-                                        Actual Price : ৳ {{number_format($products[$i]->price)}} <br>
+                                        @if(!empty($base_price[$i]))
+                                            Actual Price : ৳ {{number_format($base_price[$i])}} <br>
+                                        @endif
                                         Discount : {{$offer_percentage[$i]}} %
                                     @elseif($offer_type[$i] === 'Buy one get one')
                                         @if(!empty($free_products[$i]->image))
