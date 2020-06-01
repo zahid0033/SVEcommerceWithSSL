@@ -841,7 +841,11 @@ class normalVendorController extends Controller
         $oid = Crypt::decrypt($id);
         $order = Order::where('id',$oid)->first();
         $product_ids = json_decode($order->product_ids);
-        $products = Product::wherein('id',$product_ids)->get();
+
+        //$products = Product::wherein('id',$product_ids)->orderBy('id','DESC')->get(); // error asc or desc
+        $ids_ordered = implode(',', $product_ids);
+        $products = Product::wherein('id',$product_ids)->orderByRaw("FIELD(id, $ids_ordered)")->get();
+//      //
         $base_price = json_decode($order->base_price);
         $selling_price = json_decode($order->selling_price);
         $quantity = json_decode($order->quantity);
@@ -860,7 +864,12 @@ class normalVendorController extends Controller
             'print_count' => 1 ,
         ]);
         $product_ids = json_decode($order->product_ids);
-        $products = Product::wherein('id',$product_ids)->get();
+
+        //$products = Product::wherein('id',$product_ids)->orderBy('id','DESC')->get(); // error asc or desc
+        $ids_ordered = implode(',', $product_ids);
+        $products = Product::wherein('id',$product_ids)->orderByRaw("FIELD(id, $ids_ordered)")->get();
+//      //
+        $products = Product::wherein('id',$product_ids)->orderByRaw("FIELD(id, $ids_ordered)")->get();
         $base_price = json_decode($order->base_price);
         $selling_price = json_decode($order->selling_price);
         $quantity = json_decode($order->quantity);
