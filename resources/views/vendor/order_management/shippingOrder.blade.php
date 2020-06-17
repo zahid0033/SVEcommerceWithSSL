@@ -14,7 +14,7 @@
                         <span></span> <i class="fa fa-caret-down"></i>
                     </div>
                     <input type="text" id="daterange" name="daterange"  class="form-control form-control-sm" style="display: none"/>
-                    <input type="text"  name="type"   value ="processing" class="form-control form-control-sm" style="display: none"/>
+                    <input type="text"  name="type"   value ="Shipping" class="form-control form-control-sm" style="display: none"/>
                 </div>
                 <div class="col-md-8 mar-top text-left">
                     <input type="text"  name="type"   value ="Shipping" class="form-control form-control-sm" style="display: none"/>

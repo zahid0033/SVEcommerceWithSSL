@@ -725,23 +725,23 @@ class normalVendorController extends Controller
         $to = date('Y-m-d 23:59:59', strtotime($date[1]));
         if($request->type == "Processing")
         {
-            $orders = Order::whereBetween('created_at', [$from, $to])->where("status","Processing")->orderBy('id','ASC')->paginate(18);;
-            return view('vendor.order_management.processingOrder',compact('orders'));
+            $orders = Order::whereBetween('created_at', [$from, $to])->where("status","Processing")->orderBy('id','ASC')->get();
+            return view('vendor.order_management.dateRangeOrder',compact('orders'));
         }
         if($request->type == "Shipping")
         {
-            $orders = Order::whereBetween('updated_at', [$from, $to])->where("status","Shipping")->orderBy('id','ASC')->paginate(18);;
-            return view('vendor.order_management.shippingOrder',compact('orders'));
+            $orders = Order::whereBetween('updated_at', [$from, $to])->where("status","Shipping")->orderBy('id','ASC')->paginate(12);
+            return view('vendor.order_management.dateRangeOrder',compact('orders'));
         }
         if($request->type == "Delivered")
         {
-            $orders = Order::whereBetween('updated_at', [$from, $to])->where("status","Delivered")->orderBy('id','ASC')->paginate(18);;
-            return view('vendor.order_management.deliveredOrder',compact('orders'));
+            $orders = Order::whereBetween('updated_at', [$from, $to])->where("status","Delivered")->orderBy('id','ASC')->paginate(12);
+            return view('vendor.order_management.dateRangeOrder',compact('orders'));
         }
     }
     public function processingOrderView()
     {
-        $orders = Order::where('status','Processing')->orderBy('id','ASC')->paginate(18);
+        $orders = Order::where('status','Processing')->orderBy('id','ASC')->paginate(12);
         return view('vendor.order_management.processingOrder',compact('orders'));
     }
     public function shippingOrderView()

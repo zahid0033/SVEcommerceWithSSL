@@ -234,7 +234,7 @@ $(document).on('change','#search_type',function()
 //page = vendor>order_management#
 //page = vendor>sales_management
 $(function() {//date range picker
-    var start = moment().subtract(1, 'years');
+    var start = moment().subtract(0, 'years');
     var end = moment();
     function cb(start, end)
     {
